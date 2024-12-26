@@ -14,7 +14,7 @@
 <meta property="og:description" content="CC1链 分析环境要求：jdk8u65，Commons-Collections 3.2.1  首先我们再次明确一下反序列化的攻击思路。  入口类这里，我们需要一个 readObject 方法，结尾这里需要一个能够命令执行的方法。我们中间通过链子引导过去。所以我们的攻击一定是从尾部出发去寻找头的，流程图如下。     Common-Collections介绍 Apache Commons是Apach">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://drun1baby.top/2022/06/06/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96Commons-Collections%E7%AF%8701-CC1%E9%93%BE/AttackRoad.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241105194118934.png">
+<meta property="og:image" content="d:\myblog\source_posts\Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC1%E9%93%BE%E5%88%86%E6%9E%90\image-20241105194118934.png">
 <meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241105194436449.png">
 <meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241105195833535.png">
 <meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241105202442609.png">
@@ -46,7 +46,7 @@
 <meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241130150406600.png">
 <meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241130150715540.png">
 <meta property="article:published_time" content="2024-12-26T12:06:36.000Z">
-<meta property="article:modified_time" content="2024-12-26T12:07:27.968Z">
+<meta property="article:modified_time" content="2024-12-26T12:15:49.175Z">
 <meta property="article:author" content="Meteor_Kai">
 <meta property="article:tag" content="Web安全">
 <meta name="twitter:card" content="summary">
@@ -185,7 +185,7 @@
       
         <time datetime="2024-12-26T12:06:36.000Z" class="dt-published" itemprop="datePublished">2024-12-26</time>
         
-        (Updated: <time datetime="2024-12-26T12:07:27.968Z" class="dt-updated" itemprop="dateModified">2024-12-26</time>)
+        (Updated: <time datetime="2024-12-26T12:15:49.175Z" class="dt-updated" itemprop="dateModified">2024-12-26</time>)
         
       
     </div>
@@ -220,8 +220,7 @@
 <li>简单来说，Common-Collections 这个项目开发出来是为了给 Java 标准的 <code>Collections API</code> 提供了相当好的补充。在此基础上对其常用的数据结构操作进行了很好的封装、抽象和补充。</li>
 </ul>
 <h2 id="终点-利用点"><a href="#终点-利用点" class="headerlink" title="终点-利用点"></a>终点-利用点</h2><p>CC1链的源头就是Commons Collections库中的Tranformer接口，这个接口里面有个transform方法。</p>
-<img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241105194118934.png" alt="image-20241105194118934" style="zoom:80%;" />
-
+<p><img src="D:\myblog\source_posts\Java反序列化CC1链分析\image-20241105194118934.png"></p>
 <p>快捷键ctrl+alt+B，查看实现接口的类</p>
 <img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241105194436449.png" alt="image-20241105194436449" style="zoom:80%;" />
 
