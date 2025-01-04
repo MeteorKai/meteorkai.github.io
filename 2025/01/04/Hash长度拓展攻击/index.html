@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Hash长度拓展攻击 参考： https:&#x2F;&#x2F;www.0x002.com&#x2F;2020&#x2F;%E6%B5%85%E8%B0%88HASH%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB&#x2F; https:&#x2F;&#x2F;xz.aliyun.com&#x2F;t&#x2F;10602?time__1311&#x3D;CqjxRGiteiq05DK5YIx7Ki%3DoQet6QHW4D#toc">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hash长度拓展攻击">
+<meta property="og:url" content="http://meteorkai.github.io/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/index.html">
+<meta property="og:site_name" content="Meteor_Kai">
+<meta property="og:description" content="Hash长度拓展攻击 参考： https:&#x2F;&#x2F;www.0x002.com&#x2F;2020&#x2F;%E6%B5%85%E8%B0%88HASH%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB&#x2F; https:&#x2F;&#x2F;xz.aliyun.com&#x2F;t&#x2F;10602?time__1311&#x3D;CqjxRGiteiq05DK5YIx7Ki%3DoQet6QHW4D#toc">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://img.0x002.com/article/hashLengthExtensionHack/20180813125243-b731fe76-9eb4-1.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/image-20250104092231452.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/image-20250104092526249.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/image-20250104092538591.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/image-20250104092858007.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/image-20250104093536746.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/image-20250104094147690.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/image-20250104094227950.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/image-20250104094235021.png">
+<meta property="og:image" content="https://img.0x002.com/article/hashLengthExtensionHack/20200906234219.png">
+<meta property="og:image" content="https://img.0x002.com/article/hashLengthExtensionHack/20200907000504.png">
+<meta property="og:image" content="https://img.0x002.com/article/hashLengthExtensionHack/20200907002411.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/image-20250104095951008.png">
+<meta property="article:published_time" content="2025-01-04T04:17:23.000Z">
+<meta property="article:modified_time" content="2025-01-04T04:26:47.735Z">
+<meta property="article:author" content="Meteor_Kai">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.0x002.com/article/hashLengthExtensionHack/20180813125243-b731fe76-9eb4-1.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Hash长度拓展攻击</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About me</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/MeteorKai/">Projects</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/12/29/%E7%AC%AC%E4%B8%80%E5%B1%8Asolar%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-wp/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://meteorkai.github.io/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://meteorkai.github.io/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/&text=Hash长度拓展攻击"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://meteorkai.github.io/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/&title=Hash长度拓展攻击"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://meteorkai.github.io/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/&is_video=false&description=Hash长度拓展攻击"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Hash长度拓展攻击&body=Check out this article: http://meteorkai.github.io/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://meteorkai.github.io/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/&title=Hash长度拓展攻击"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://meteorkai.github.io/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/&title=Hash长度拓展攻击"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://meteorkai.github.io/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/&title=Hash长度拓展攻击"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://meteorkai.github.io/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/&title=Hash长度拓展攻击"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://meteorkai.github.io/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/&name=Hash长度拓展攻击&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://meteorkai.github.io/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/&t=Hash长度拓展攻击"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB"><span class="toc-number">1.</span> <span class="toc-text">Hash长度拓展攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#md5%E7%AE%97%E6%B3%95%E8%BF%87%E7%A8%8B"><span class="toc-number">1.1.</span> <span class="toc-text">md5算法过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9E%E9%A6%96demo"><span class="toc-number">1.1.1.</span> <span class="toc-text">回首demo</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E5%B7%A5%E5%85%B7exploit"><span class="toc-number">1.2.</span> <span class="toc-text">利用工具exploit</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#hash-ext-attack-master"><span class="toc-number">1.2.1.</span> <span class="toc-text">hash-ext-attack-master</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hashpump"><span class="toc-number">1.2.2.</span> <span class="toc-text">hashpump</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hash-extender"><span class="toc-number">1.2.3.</span> <span class="toc-text">hash_extender</span></a></li></ol></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        Hash长度拓展攻击
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Meteor_Kai</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-01-04T04:17:23.000Z" class="dt-published" itemprop="datePublished">2025-01-04</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/Web%E5%AE%89%E5%85%A8/">Web安全</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="Hash长度拓展攻击"><a href="#Hash长度拓展攻击" class="headerlink" title="Hash长度拓展攻击"></a>Hash长度拓展攻击</h1><blockquote>
+<p>参考：</p>
+<p><a target="_blank" rel="noopener" href="https://www.0x002.com/2020/%E6%B5%85%E8%B0%88HASH%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/">https://www.0x002.com/2020/%E6%B5%85%E8%B0%88HASH%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/</a></p>
+<p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/10602?time__1311=CqjxRGiteiq05DK5YIx7Ki=oQet6QHW4D#toc-1">https://xz.aliyun.com/t/10602?time__1311=CqjxRGiteiq05DK5YIx7Ki%3DoQet6QHW4D#toc-1</a></p>
+<p><a target="_blank" rel="noopener" href="https://ciphersaw.me/2017/11/12/hash-length-extension-attack/#0x00-%E5%89%8D%E8%A8%80">https://ciphersaw.me/2017/11/12/hash-length-extension-attack/#0x00-%E5%89%8D%E8%A8%80</a></p>
+</blockquote>
+<p>hash长度拓展攻击，概括一下就是由于hash的生成机制使得我们可以人为的在原先的明文基础上添加新的拓展字符，从而使得原本的加密链变长，进一步控制加密链的最后一节，使得我们得以控制最终的结果。</p>
+<p>这里首先给出一个相关demo：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">include</span> <span class="string">&quot;flag.php&quot;</span>;</span><br><span class="line"><span class="variable">$secretKey</span> = <span class="string">&#x27;xxxxxx&#x27;</span>; <span class="comment">#xxx为未知内容，但长度已知为6。</span></span><br><span class="line"><span class="variable">$v1</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;str&#x27;</span>];</span><br><span class="line"><span class="variable">$sign</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;sign&#x27;</span>];</span><br><span class="line"><span class="variable">$token</span> = <span class="title function_ invoke__">md5</span>(<span class="variable">$secretKey</span>.<span class="variable">$v1</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$v1</span> === <span class="string">&#x27;test&#x27;</span>) &#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="variable">$token</span>); <span class="comment">#token=2df51a84abc64a28740d6d2ae8cd7b16</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="variable">$token</span> === <span class="variable">$sign</span>) &#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="variable">$flag</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中，我们需要使得变量<code>$token</code>与我们输入的sign参数满足一致才会输出flag。</p>
+<p>而由于我们无法知道变量<code>$secretKey</code>的内容，所以无法得到<code>$token</code>的值，故而看似是没有办法获取到flag的死局，而这时便轮到我们的拓展攻击来大显身手了。</p>
+<h2 id="md5算法过程"><a href="#md5算法过程" class="headerlink" title="md5算法过程"></a>md5算法过程</h2><img src="https://img.0x002.com/article/hashLengthExtensionHack/20180813125243-b731fe76-9eb4-1.png" alt="MD5加密流程" style="zoom:80%;" />
+
+<p>md5算法是512位一组的，也就是64字节一组，见下面的例子：</p>
+<img src="/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/image-20250104092231452.png" class="" title="图片引用方法一">
+
+<p>由64个a和3个b组成，这里的64个a其二进制长度为512位，已经符合一个md5分组，后面的bbb是下一个分组了。</p>
+<blockquote>
+<p>对于md5算法，我们需要将原始数据分块处理，以512个二进制数据为一块。”最后“一块的处理分为以下两种情况：</p>
+<ul>
+<li>明文数据的二进制数据长度&lt;&#x3D;448，填充padding(无意义占位)数据使其长度为448，再添加原始明文数据的二进制长度信息（64位）使其长度为512位即可。</li>
+<li>448&lt;明文数据的二进制数据长度&lt;&#x3D;512，填充padding数据至下一块的448位，而后再添加原始明文数据的二进制长度信息（64位）使其长度为512位即可。</li>
+</ul>
+</blockquote>
+<p><strong>情况一：</strong></p>
+<img src="/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/image-20250104092526249.png" class="" title="图片引用方法一">
+
+<img src="/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/image-20250104092538591.png" class="" title="图片引用方法一">
+
+<p>这里其实64个字符a组成了一个md5分组，剩下的32个字符b作为下一个md5分组，然后需要进行填充。</p>
+<p>进行填充的方式就是在二进制下第一个补1，后面的依次补0 。但是在这里咱们是以十六进制形式在010里演示的，而对于十六进制来说，一个十六进制字符对应4个二进制字符，所以对于010里面数据来说，10000000(2)&#x3D;&#x3D;80(16)，补充上去就是：</p>
+<img src="/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/image-20250104092858007.png" class="" title="图片引用方法一">
+
+<p>然后后面依次补0，知道填满448位为止，得到最终补位结果为：</p>
+<img src="/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/image-20250104093536746.png" class="" title="图片引用方法一">
+
+<p>然后还需要补位8个字节，原始明文为64个a和32个b，共96个字符，768位，转换为十六进制就是300。</p>
+<img src="/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/image-20250104094147690.png" class="" title="图片引用方法一">
+
+
+
+<p><strong>情况二：</strong></p>
+<img src="/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/image-20250104094227950.png" class="" title="图片引用方法一">
+
+<img src="/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/image-20250104094235021.png" class="" title="图片引用方法一">
+
+<p>补位就不展示了，跟上面的情况一是同理的。</p>
+<p>对于MD5算法来说，有一串初始向量如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">A=0x67452301</span><br><span class="line">B=0xefcdab89</span><br><span class="line">C=0x98badcfe</span><br><span class="line">D=0x10325476</span><br></pre></td></tr></table></figure>
+
+<p>这串初始向量的值是固定的，作为与第一块数据运算的原始向量。</p>
+<p>当这串向量与第一块数据块运算之后，得到了一串新的向量值，这串新的向量值接着与第二块数据块参加运算，直到最后一块数据块。</p>
+<img src="https://img.0x002.com/article/hashLengthExtensionHack/20200906234219.png" alt="向量运算" style="zoom:67%;" />
+
+<p>而最后的MD5值就是这最后的向量串经过如下转换的结果。</p>
+<p>如向量串：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">A=0xab45bc01</span><br><span class="line">B=0x6a64bb53</span><br><span class="line">C=0x23ba8afe</span><br><span class="line">D=0x46847a62</span><br></pre></td></tr></table></figure>
+
+<p>再进行高低位互换，得到如下数据：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">01 bc 45 ab</span><br><span class="line">53 bb 64 6a</span><br><span class="line">fe 8a ba 23</span><br><span class="line">62 7a 84 46</span><br></pre></td></tr></table></figure>
+
+<p>最终拼接得到MD5值：<code>01bc45ab53bb646afe8aba23627a8446</code>。</p>
+<h3 id="回首demo"><a href="#回首demo" class="headerlink" title="回首demo"></a>回首demo</h3><p>然后回到先前那个例子：</p>
+<p>对于MD5值：<code>2df51a84abc64a28740d6d2ae8cd7b16</code>。我们可以根据MD5与向量互转规则，将MD5转成<code>md5($secretKey + &quot;test&quot;)</code>的最终向量值（A’、B’、C’、D’）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">A&#x27;=0x841af52d</span><br><span class="line">B&#x27;=0x284ac6ab</span><br><span class="line">C&#x27;=0x2a6d0d74</span><br><span class="line">D&#x27;=0x167bcde8</span><br></pre></td></tr></table></figure>
+
+<img src="https://img.0x002.com/article/hashLengthExtensionHack/20200907000504.png" alt="例子向量运算过程" style="zoom:80%;" />
+
+<p>这时候我们修改<code>$v1</code>变量的内容为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&quot;test&quot; + [0x80 + (0x0)*45] + [0x50 + 0x0*7] + &quot;abc&quot;</span><br><span class="line">相当于:</span><br><span class="line">&quot;test&quot; + padding数据 + 长度数据 + &quot;abc&quot;</span><br></pre></td></tr></table></figure>
+
+<p>则上述过程则被延续成下图所示：</p>
+<p><img src="https://img.0x002.com/article/hashLengthExtensionHack/20200907002411.png" alt="延续运算过程"></p>
+<p>而对于上述运算过程来说，我们知道了倒数第二个向量串的内容和最后一个数据块，这样一来，最终的MD5值我们也可以自己通过MD5算法计算出来了。</p>
+<h2 id="利用工具exploit"><a href="#利用工具exploit" class="headerlink" title="利用工具exploit"></a>利用工具exploit</h2><h3 id="hash-ext-attack-master"><a href="#hash-ext-attack-master" class="headerlink" title="hash-ext-attack-master"></a>hash-ext-attack-master</h3><h3 id="hashpump"><a href="#hashpump" class="headerlink" title="hashpump"></a>hashpump</h3><img src="/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/image-20250104095951008.png" class="" title="图片引用方法一">
+
+<h3 id="hash-extender"><a href="#hash-extender" class="headerlink" title="hash_extender"></a>hash_extender</h3><p><a target="_blank" rel="noopener" href="https://github.com/iagox86/hash_extender">https://github.com/iagox86/hash_extender</a></p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About me</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="https://github.com/MeteorKai/">Projects</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB"><span class="toc-number">1.</span> <span class="toc-text">Hash长度拓展攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#md5%E7%AE%97%E6%B3%95%E8%BF%87%E7%A8%8B"><span class="toc-number">1.1.</span> <span class="toc-text">md5算法过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9E%E9%A6%96demo"><span class="toc-number">1.1.1.</span> <span class="toc-text">回首demo</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E5%B7%A5%E5%85%B7exploit"><span class="toc-number">1.2.</span> <span class="toc-text">利用工具exploit</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#hash-ext-attack-master"><span class="toc-number">1.2.1.</span> <span class="toc-text">hash-ext-attack-master</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hashpump"><span class="toc-number">1.2.2.</span> <span class="toc-text">hashpump</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hash-extender"><span class="toc-number">1.2.3.</span> <span class="toc-text">hash_extender</span></a></li></ol></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://meteorkai.github.io/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://meteorkai.github.io/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/&text=Hash长度拓展攻击"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://meteorkai.github.io/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/&title=Hash长度拓展攻击"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://meteorkai.github.io/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/&is_video=false&description=Hash长度拓展攻击"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Hash长度拓展攻击&body=Check out this article: http://meteorkai.github.io/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://meteorkai.github.io/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/&title=Hash长度拓展攻击"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://meteorkai.github.io/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/&title=Hash长度拓展攻击"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://meteorkai.github.io/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/&title=Hash长度拓展攻击"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://meteorkai.github.io/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/&title=Hash长度拓展攻击"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://meteorkai.github.io/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/&name=Hash长度拓展攻击&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://meteorkai.github.io/2025/01/04/Hash%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/&t=Hash长度拓展攻击"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2024-2025
+    Meteor_Kai
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About me</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/MeteorKai/">Projects</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+	  <ul>
+            
+              <!-- 不蒜子统计 -->
+              <span id="busuanzi_container_site_pv">
+                  本站总访问量<span id="busuanzi_value_site_pv"></span>次
+              </span>
+              <span class="post-meta-divider">|</span>
+              <span id="busuanzi_container_site_uv" style='display:none'>
+                      本站访客数<span id="busuanzi_value_site_uv"></span>人
+              </span>
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            
+          </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'Meteor_Kai';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>
