@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="PE文件结构PE（ Portable Execute）文件是Windows下可执行文件的总称，常见的有 DLL，EXE，OCX，SYS 等。其文件的结构一般来说：从起始位置开始依次是 DOS头，NT头，节表 以及 具体的节。如下图所示。  PE文件执行顺序 检查DOS头：当一个PE文件被执行时，Windows的PE装载器首先会检查DOS头（DOS Header）。DOS头的结构中包含一个指向PE头">
+<meta property="og:type" content="article">
+<meta property="og:title" content="免杀基础知识之PE相关数据结构">
+<meta property="og:url" content="http://meteorkai.github.io/2025/05/03/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%B9%8BPE%E7%9B%B8%E5%85%B3%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/index.html">
+<meta property="og:site_name" content="Meteor_Kai">
+<meta property="og:description" content="PE文件结构PE（ Portable Execute）文件是Windows下可执行文件的总称，常见的有 DLL，EXE，OCX，SYS 等。其文件的结构一般来说：从起始位置开始依次是 DOS头，NT头，节表 以及 具体的节。如下图所示。  PE文件执行顺序 检查DOS头：当一个PE文件被执行时，Windows的PE装载器首先会检查DOS头（DOS Header）。DOS头的结构中包含一个指向PE头">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250503013427428.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250503155932432.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250503160042184.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250503160551907.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250503160812865.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250503160907558.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250503161238916.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250503164646112.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250503164702124.png">
+<meta property="article:published_time" content="2025-05-03T09:04:35.000Z">
+<meta property="article:modified_time" content="2025-05-03T09:05:35.339Z">
+<meta property="article:author" content="Meteor_Kai">
+<meta property="article:tag" content="免杀">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250503013427428.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>免杀基础知识之PE相关数据结构</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About me</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/MeteorKai/">Projects</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">tags</a></li><!--
+     --><!--
+       --><li><a href="/links/">links</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2025/05/01/FIC2025-wp/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://meteorkai.github.io/2025/05/03/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%B9%8BPE%E7%9B%B8%E5%85%B3%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://meteorkai.github.io/2025/05/03/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%B9%8BPE%E7%9B%B8%E5%85%B3%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/&text=免杀基础知识之PE相关数据结构"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://meteorkai.github.io/2025/05/03/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%B9%8BPE%E7%9B%B8%E5%85%B3%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/&title=免杀基础知识之PE相关数据结构"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://meteorkai.github.io/2025/05/03/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%B9%8BPE%E7%9B%B8%E5%85%B3%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/&is_video=false&description=免杀基础知识之PE相关数据结构"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=免杀基础知识之PE相关数据结构&body=Check out this article: http://meteorkai.github.io/2025/05/03/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%B9%8BPE%E7%9B%B8%E5%85%B3%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://meteorkai.github.io/2025/05/03/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%B9%8BPE%E7%9B%B8%E5%85%B3%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/&title=免杀基础知识之PE相关数据结构"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://meteorkai.github.io/2025/05/03/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%B9%8BPE%E7%9B%B8%E5%85%B3%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/&title=免杀基础知识之PE相关数据结构"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://meteorkai.github.io/2025/05/03/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%B9%8BPE%E7%9B%B8%E5%85%B3%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/&title=免杀基础知识之PE相关数据结构"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://meteorkai.github.io/2025/05/03/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%B9%8BPE%E7%9B%B8%E5%85%B3%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/&title=免杀基础知识之PE相关数据结构"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://meteorkai.github.io/2025/05/03/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%B9%8BPE%E7%9B%B8%E5%85%B3%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/&name=免杀基础知识之PE相关数据结构&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://meteorkai.github.io/2025/05/03/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%B9%8BPE%E7%9B%B8%E5%85%B3%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/&t=免杀基础知识之PE相关数据结构"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#PE%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="toc-number">1.</span> <span class="toc-text">PE文件结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#PE%E6%96%87%E4%BB%B6%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F"><span class="toc-number">1.1.</span> <span class="toc-text">PE文件执行顺序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PE%E6%96%87%E4%BB%B6%E5%AD%98%E5%82%A8%E5%8A%A0%E8%BD%BD%E5%B7%AE%E5%BC%82"><span class="toc-number">1.2.</span> <span class="toc-text">PE文件存储加载差异</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%98%A0%E5%B0%84"><span class="toc-number">1.3.</span> <span class="toc-text">文件映射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PE%E6%96%87%E4%BB%B6%E5%AD%97%E6%AE%B5%E8%AF%A6%E8%A7%A3"><span class="toc-number">1.4.</span> <span class="toc-text">PE文件字段详解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#DOS%E5%A4%B4"><span class="toc-number">1.4.1.</span> <span class="toc-text">DOS头</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#MZ%E5%A4%B4"><span class="toc-number">1.4.1.1.</span> <span class="toc-text">MZ头</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#DOS-stub"><span class="toc-number">1.4.1.2.</span> <span class="toc-text">DOS stub</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#NT%E5%A4%B4"><span class="toc-number">1.4.2.</span> <span class="toc-text">NT头</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Signature"><span class="toc-number">1.4.2.1.</span> <span class="toc-text">Signature</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#FileHeader"><span class="toc-number">1.4.2.2.</span> <span class="toc-text">FileHeader</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#OptionalHeader"><span class="toc-number">1.4.2.3.</span> <span class="toc-text">OptionalHeader</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%BC%E5%87%BA%E8%A1%A8"><span class="toc-number">1.4.3.</span> <span class="toc-text">导出表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%BC%E5%85%A5%E8%A1%A8"><span class="toc-number">1.4.4.</span> <span class="toc-text">导入表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%87%8D%E5%AE%9A%E4%BD%8D"><span class="toc-number">1.4.5.</span> <span class="toc-text">重定位</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E4%B8%8A%E4%B8%8B%E6%96%87"><span class="toc-number">2.</span> <span class="toc-text">线程上下文</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#PEB"><span class="toc-number">2.1.</span> <span class="toc-text">PEB</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="toc-number">3.</span> <span class="toc-text">参考文章</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        免杀基础知识之PE相关数据结构
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Meteor_Kai</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-05-03T09:04:35.000Z" class="dt-published" itemprop="datePublished">2025-05-03</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%85%8D%E6%9D%80%E5%AF%B9%E6%8A%97/">免杀对抗</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/%E5%85%8D%E6%9D%80/" rel="tag">免杀</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="PE文件结构"><a href="#PE文件结构" class="headerlink" title="PE文件结构"></a>PE文件结构</h2><p>PE（ Portable Execute）文件是Windows下可执行文件的总称，常见的有 <strong>DLL，EXE，OCX，SYS</strong> 等。其文件的结构一般来说：从起始位置开始依次是 <code>DOS头</code>，<code>NT头</code>，<code>节表</code> 以及 <code>具体的节</code>。如下图所示。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250503013427428.png" alt="image-20250503013427428"></p>
+<h3 id="PE文件执行顺序"><a href="#PE文件执行顺序" class="headerlink" title="PE文件执行顺序"></a>PE文件执行顺序</h3><ol>
+<li><strong>检查DOS头</strong>：当一个PE文件被执行时，Windows的PE装载器首先会检查DOS头（DOS Header）。<code>DOS头的结构中包含一个指向PE头（PE Header）的偏移量</code>。PE头是PE文件格式的核心，包含了关于文件的基本信息。</li>
+<li><strong>跳转到PE头</strong>：如果找到有效的PE头偏移量，装载器会跳转到该位置，开始解析PE头。</li>
+<li><strong>验证PE头</strong>：在PE头中，装载器会检查PE文件的有效性，包括检查“PE\0\0”标识符、机器类型、时间戳等信息。如果PE头有效，装载器将继续处理。</li>
+<li><strong>跳转到PE头尾部</strong>：装载器会跳过PE头的内容，直接跳转到PE头的尾部，接下来会读取节表（Section Table）。</li>
+<li><strong>读取节表</strong>：节表包含了所有节段的信息，如节名、虚拟地址、大小、读写权限等。装载器会遍历节表，获取每个节段的相关信息。</li>
+<li><strong>文件映射</strong>：Windows使用文件映射机制将PE文件的节段映射到进程的虚拟地址空间。</li>
+<li><strong>设置节段属性</strong>：在映射节段到内存时，装载器会根据节表中指定的属性（如可读、可写、可执行）来设置每个节段的内存保护属性。</li>
+<li><strong>处理导入表</strong>：映射完成后，装载器会继续处理PE文件中的导入表（Import Table）。导入表包含了程序依赖的其他模块（DLL）的信息，以及所需的导出函数。装载器会根据导入表加载所需的DLL，并解析其中的函数地址。</li>
+<li><strong>执行入口点</strong>：最后，装载器会找到程序的入口点（Entry Point），并开始执行程序的代码。</li>
+</ol>
+<h3 id="PE文件存储加载差异"><a href="#PE文件存储加载差异" class="headerlink" title="PE文件存储加载差异"></a>PE文件存储加载差异</h3><p>其实就是PE文件在硬盘中与在内存中的差异</p>
+<p>假设有一个PE文件，其中一个代码节的大小为3KB，另一个数据节的大小为2KB。在加载到内存时，操作系统可能会为代码节分配一个完整的4KB页，随后为数据节分配另一个完整的4KB页。这将导致在内存中产生3KB的空洞。下面给一个图解释：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250503155932432.png" alt="image-20250503155932432"></p>
+<h3 id="文件映射"><a href="#文件映射" class="headerlink" title="文件映射"></a>文件映射</h3><p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250503160042184.png" alt="image-20250503160042184"></p>
+<h3 id="PE文件字段详解"><a href="#PE文件字段详解" class="headerlink" title="PE文件字段详解"></a>PE文件字段详解</h3><h4 id="DOS头"><a href="#DOS头" class="headerlink" title="DOS头"></a>DOS头</h4><p>DOS头由MZ文件头和Dos Stub两部分组成。无论是32位或64位可执行文件，其文件的头部必定是<code>IMAGE_DOS_HEADER</code>。</p>
+<h5 id="MZ头"><a href="#MZ头" class="headerlink" title="MZ头"></a>MZ头</h5><p><code>IMAGE_DOS_HEADER</code> 结构体，其大小占64个字节。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">IMAGE_DOS_HEADER</span> &#123;</span>      <span class="comment">// DOS .EXE header</span></span><br><span class="line">  WORD   e_magic;                     <span class="comment">// Magic number</span></span><br><span class="line">  WORD   e_cblp;                      <span class="comment">// Bytes on last page of file</span></span><br><span class="line">  WORD   e_cp;                        <span class="comment">// Pages in file</span></span><br><span class="line">  WORD   e_crlc;                      <span class="comment">// Relocations</span></span><br><span class="line">  WORD   e_cparhdr;                   <span class="comment">// Size of header in paragraphs</span></span><br><span class="line">  WORD   e_minalloc;                  <span class="comment">// Minimum extra paragraphs needed</span></span><br><span class="line">  WORD   e_maxalloc;                  <span class="comment">// Maximum extra paragraphs needed</span></span><br><span class="line">  WORD   e_ss;                        <span class="comment">// Initial (relative) SS value</span></span><br><span class="line">  WORD   e_sp;                        <span class="comment">// Initial SP value</span></span><br><span class="line">  WORD   e_csum;                      <span class="comment">// Checksum</span></span><br><span class="line">  WORD   e_ip;                        <span class="comment">// Initial IP value</span></span><br><span class="line">  WORD   e_cs;                        <span class="comment">// Initial (relative) CS value</span></span><br><span class="line">  WORD   e_lfarlc;                    <span class="comment">// File address of relocation table</span></span><br><span class="line">  WORD   e_ovno;                      <span class="comment">// Overlay number</span></span><br><span class="line">  WORD   e_res[<span class="number">4</span>];                    <span class="comment">// Reserved words</span></span><br><span class="line">  WORD   e_oemid;                     <span class="comment">// OEM identifier (for e_oeminfo)</span></span><br><span class="line">  WORD   e_oeminfo;                   <span class="comment">// OEM information; e_oemid specific</span></span><br><span class="line">  WORD   e_res2[<span class="number">10</span>];                  <span class="comment">// Reserved words</span></span><br><span class="line">  LONG   e_lfanew;                    <span class="comment">// File address of new exe header</span></span><br><span class="line">&#125; IMAGE_DOS_HEADER, *PIMAGE_DOS_HEADER;</span><br><span class="line"><span class="comment">//一个word是对应2个字节，该结构体大小为64个字节，因为里面定义了两个word型数组。</span></span><br></pre></td></tr></table></figure>
+
+<p>我们随便找一个exe看看效果</p>
+<p><strong>e_magic</strong>：值是一个常数 0x4D5A（小端序），用文本编辑器查看该值位对应的ASCII字符串是‘MZ’，可执行文件必须都是’MZ’开头。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250503160551907.png" alt="image-20250503160551907"></p>
+<p><strong>e_lfanew</strong>：用来表示 DOS头之后的 <strong>NT头相对文件起始地址的偏移量</strong>。这可太重要了，有了这个我们就可以根据偏移计算出NT头的信息，然后读取节表的信息。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250503160812865.png" alt="image-20250503160812865"></p>
+<h5 id="DOS-stub"><a href="#DOS-stub" class="headerlink" title="DOS stub"></a>DOS stub</h5><p>dos存根，在IMAGE_DOS_HEADER和IMAGE_NT_HEADERS之间存在一DOS存根。PE文件是运行在32位或64位操作系统下的。其功能是当该EXE运行在16位环境下，输出一段文字：“This program cannot be run in DOS mode”，然后并退出该进程。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250503160907558.png" alt="image-20250503160907558"></p>
+<h4 id="NT头"><a href="#NT头" class="headerlink" title="NT头"></a>NT头</h4><p><strong>PE Header</strong>：是PE相关结构<code>NT映像头（IMAGE_NT_HEADER）</code>的简称，其中包含许多PE装载器用到的重要字段。执行体在支持PE文件结构的操作系统中执行时，PE装载器将从<code>IMAGE_DOS_HEADER</code>结构中的<code>e_lfanew</code>字段里找到PE Header的起始偏移量，加上基址得到PE文件头的指针。 ★★★ <strong>NTHeader &#x3D; ImageBase + dosHeader-&gt;e_lfanew</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">IMAGE_NT_HEADERS</span>&#123;</span>  </span><br><span class="line">     DWORD Signature;  </span><br><span class="line">     IMAGE_FILE_HEADER FileHeader;  </span><br><span class="line">     IMAGE_OPTIONAL_HEADER32 OptionalHeader;  </span><br><span class="line">&#125;IMAGE_NT_HEADERS,*PIMAGE_NT_HEADERS;   </span><br></pre></td></tr></table></figure>
+
+<p>这三个结构其实就对应了PE签名，PE文件头，PE可选头</p>
+<h5 id="Signature"><a href="#Signature" class="headerlink" title="Signature"></a>Signature</h5><p>将文件标识为 PE 映像的 4 字节签名。字节为“PE\0\0”。这个字段是PE文件的标志字段，通常设置成00004550h，其ASCII码为PE00，这个字段是PE文件头的开始，<strong>前面的DOS_HEADER结构中的字段e_lfanew字段就是指向这里</strong>。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250503161238916.png" alt="image-20250503161238916"></p>
+<h5 id="FileHeader"><a href="#FileHeader" class="headerlink" title="FileHeader"></a>FileHeader</h5><p><strong>IMAGE_FILE_HEADE</strong>：共20字节的数据</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">IMAGE_FILE_HEADER</span> &#123;</span>  </span><br><span class="line">   WORD    Machine;                    <span class="comment">//运行平台  </span></span><br><span class="line">   WORD    NumberOfSections;           <span class="comment">//该PE文件中有多少个节，也就是节表中的项数。  </span></span><br><span class="line">   DWORD   TimeDateStamp;              <span class="comment">//文件创建日期和时间  </span></span><br><span class="line">   DWORD   PointerToSymbolTable;       <span class="comment">//指向符号表（用于调试）  </span></span><br><span class="line">   DWORD   NumberOfSymbols;            <span class="comment">//符号表中符号个数（用于调试）  </span></span><br><span class="line">   WORD    SizeOfOptionalHeader;       <span class="comment">//IMAGE_OPTIONAL_HEADER32结构大小  </span></span><br><span class="line">   WORD    Characteristics;            <span class="comment">//文件属性  </span></span><br><span class="line">&#125; IMAGE_FILE_HEADER, *PIMAGE_FILE_HEADER;  </span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="OptionalHeader"><a href="#OptionalHeader" class="headerlink" title="OptionalHeader"></a>OptionalHeader</h5><p><strong>IMAGE_OPTIONAL_HEADER32</strong>：是一个可选的机构，实际上<code>IMAGE_FILE_HEADER</code>结构不足以定义PE文件属性，因此可选映像头中定义了更多的数据。 总共224个字节，最后128个字节为数据目录（Data Directory）</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">IMAGE_OPTIONAL_HEADER</span> &#123;</span></span><br><span class="line">    WORD    Magic;</span><br><span class="line">    BYTE    MajorLinkerVersion;</span><br><span class="line">    BYTE    MinorLinkerVersion;</span><br><span class="line">    DWORD   SizeOfCode;</span><br><span class="line">    DWORD   SizeOfInitializedData;</span><br><span class="line">    DWORD   SizeOfUninitializedData;</span><br><span class="line">    DWORD   AddressOfEntryPoint;</span><br><span class="line">    DWORD   BaseOfCode;</span><br><span class="line">    DWORD   BaseOfData;</span><br><span class="line">    DWORD   ImageBase;</span><br><span class="line">    DWORD   SectionAlignment;</span><br><span class="line">    DWORD   FileAlignment;</span><br><span class="line">    WORD    MajorOperatingSystemVersion;</span><br><span class="line">    WORD    MinorOperatingSystemVersion;</span><br><span class="line">    WORD    MajorImageVersion;</span><br><span class="line">    WORD    MinorImageVersion;</span><br><span class="line">    WORD    MajorSubsystemVersion;</span><br><span class="line">    WORD    MinorSubsystemVersion;</span><br><span class="line">    DWORD   Win32VersionValue;</span><br><span class="line">    DWORD   SizeOfImage;</span><br><span class="line">    DWORD   SizeOfHeaders;</span><br><span class="line">    DWORD   CheckSum;</span><br><span class="line">    WORD    Subsystem;</span><br><span class="line">    WORD    DllCharacteristics;</span><br><span class="line">    DWORD   SizeOfStackReserve;</span><br><span class="line">    DWORD   SizeOfStackCommit;</span><br><span class="line">    DWORD   SizeOfHeapReserve;</span><br><span class="line">    DWORD   SizeOfHeapCommit;</span><br><span class="line">    DWORD   LoaderFlags;</span><br><span class="line">    DWORD   NumberOfRvaAndSizes;</span><br><span class="line">    IMAGE_DATA_DIRECTORY DataDirectory[IMAGE_NUMBEROF_DIRECTORY_ENTRIES];</span><br><span class="line">&#125; IMAGE_OPTIONAL_HEADER32, *PIMAGE_OPTIONAL_HEADER32;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>DataDirectory</strong>：数据目录，这是一个数组。</p>
+<ul>
+<li><strong>VirtualAddress</strong>：是一个RVA。</li>
+<li><strong>Size</strong>：是一个大小。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">IMAGE_DATA_DIRECTORY</span> &#123;</span></span><br><span class="line">    DWORD   VirtualAddress;</span><br><span class="line">    DWORD   Size;</span><br><span class="line">&#125; IMAGE_DATA_DIRECTORY, *PIMAGE_DATA_DIRECTORY;</span><br></pre></td></tr></table></figure>
+
+<p>DataDirectory数组的每一项的内容如下，都是C语言的宏定义。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> IMAGE_DIRECTORY_ENTRY_EXPORT          0   <span class="comment">// Export Directory</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> IMAGE_DIRECTORY_ENTRY_IMPORT          1   <span class="comment">// Import Directory</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> IMAGE_DIRECTORY_ENTRY_RESOURCE        2   <span class="comment">// Resource Directory</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> IMAGE_DIRECTORY_ENTRY_EXCEPTION       3   <span class="comment">// Exception Directory</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> IMAGE_DIRECTORY_ENTRY_SECURITY        4   <span class="comment">// Security Directory</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> IMAGE_DIRECTORY_ENTRY_BASERELOC       5   <span class="comment">// Base Relocation Table</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> IMAGE_DIRECTORY_ENTRY_DEBUG           6   <span class="comment">// Debug Directory</span></span></span><br><span class="line"><span class="comment">//      IMAGE_DIRECTORY_ENTRY_COPYRIGHT       7   // (X86 usage)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> IMAGE_DIRECTORY_ENTRY_ARCHITECTURE    7   <span class="comment">// Architecture Specific Data</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> IMAGE_DIRECTORY_ENTRY_GLOBALPTR       8   <span class="comment">// RVA of GP</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> IMAGE_DIRECTORY_ENTRY_TLS             9   <span class="comment">// TLS Directory</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> IMAGE_DIRECTORY_ENTRY_LOAD_CONFIG    10   <span class="comment">// Load Configuration Directory</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> IMAGE_DIRECTORY_ENTRY_BOUND_IMPORT   11   <span class="comment">// Bound Import Directory in headers</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> IMAGE_DIRECTORY_ENTRY_IAT            12   <span class="comment">// Import Address Table</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> IMAGE_DIRECTORY_ENTRY_DELAY_IMPORT   13   <span class="comment">// Delay Load Import Descriptors</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> IMAGE_DIRECTORY_ENTRY_COM_DESCRIPTOR 14   <span class="comment">// COM Runtime descriptor</span></span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="导出表"><a href="#导出表" class="headerlink" title="导出表"></a>导出表</h4><p>是 Windows PE（Portable Executable）文件格式中的一个重要数据结构，主要用于<code>描述一个动态链接库（DLL）所提供的可供外部调用的函数和数据</code>。</p>
+<h4 id="导入表"><a href="#导入表" class="headerlink" title="导入表"></a>导入表</h4><p><strong>①导入表（Import Table）</strong>：是Windows可执行文件中的一部分，<code>导入表的地址是由DataDirectory[IMAGE_DIRECTORY_ENTRY_IMPORT].VirtualAddress提供， 它记录了一个程序或DLL所需调用的外部函数（或API）的名称，以及这些函数在哪些动态链接库（DLL）中可以找到</code></p>
+<p>当程序需要调用某个函数时，它必须知道该函数的名称和所在的DLL文件名，并将DLL文件加载到进程的内存中。导入表就是告诉程序这些信息的重要数据结构。</p>
+<ol>
+<li><strong>Import Lookup Table</strong>：通常被称为<strong>ILT</strong>，<code>记录了程序需要调用的外部函数的名称，每个名称以0结尾</code>。如果使用了API重命名技术，这里的名称就是修改过的名称。</li>
+<li><strong>Import Address Table</strong>：通常被称为<strong>IAT</strong>，<code>记录了如何定位到程序需要调用的外部函数，即每个函数在DLL文件中的虚拟地址</code>。在程序加载DLL文件时，IAT中的每一个条目都会被填充为实际函数在DLL中的地址。如果DLL中的函数地址发生变化，程序会重新填充IAT中的条目。这个IAT与免杀是有很密切的关系的，如我们后续的一项技术：<strong>动态API调用</strong>。</li>
+<li><strong>Import Directory Table</strong>：通常被称为<strong>IDT</strong>，<code>记录了DLL文件的名称、ILT和IAT在可执行文件中的位置等信息</code>。</li>
+</ol>
+<p><strong>ALL IN ALL</strong>：ILT记录API名称，IAT记录API在DLL的虚拟地址，IDT记录了DLL文件的名称、ILT和IAT的位置。</p>
+<p><strong>②导入表的DESCRIPTOR的定义</strong>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">IMAGE_IMPORT_DESCRIPTOR</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">union</span> &#123;</span></span><br><span class="line">        DWORD   Characteristics;            <span class="comment">// 0 for terminating null import descriptor</span></span><br><span class="line">        DWORD   OriginalFirstThunk;         <span class="comment">// RVA to original unbound IAT (PIMAGE_THUNK_DATA)</span></span><br><span class="line">    &#125; DUMMYUNIONNAME;</span><br><span class="line">    DWORD   TimeDateStamp;                  <span class="comment">// 0 if not bound,</span></span><br><span class="line">                                            <span class="comment">// -1 if bound, and real date\time stamp</span></span><br><span class="line">                                            <span class="comment">//     in IMAGE_DIRECTORY_ENTRY_BOUND_IMPORT (new BIND)</span></span><br><span class="line">                                            <span class="comment">// O.W. date/time stamp of DLL bound to (Old BIND)</span></span><br><span class="line"> </span><br><span class="line">    DWORD   ForwarderChain;                 <span class="comment">// -1 if no forwarders</span></span><br><span class="line">    DWORD   Name;</span><br><span class="line">    DWORD   FirstThunk;                     <span class="comment">// RVA to IAT (if bound this IAT has actual addresses)</span></span><br><span class="line">&#125; IMAGE_IMPORT_DESCRIPTOR;</span><br><span class="line"><span class="keyword">typedef</span> IMAGE_IMPORT_DESCRIPTOR UNALIGNED *PIMAGE_IMPORT_DESCRIPTOR;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><strong>DUMMYUNIONNAME</strong>：<ul>
+<li><strong>Characteristics</strong>: 如果该值为 0，表示这是导入描述符的终止标志（即没有更多的导入描述符）</li>
+<li><strong>OriginalFirstThunk</strong>: 如果该值不为 0，表示原始未绑定的 <code>ILT</code> 的 RVA（相对虚拟地址），指向 <code>IMAGE_THUNK_DATA</code> 结构，包含导入的函数名称或序号，这个数组中的每一项表示一个导入函数。</li>
+</ul>
+</li>
+<li><strong>TimeDateStamp</strong>：映象绑定前，这个值是0，绑定后是导入模块的时间戳。</li>
+<li><strong>ForwarderChain</strong>：转发链，如果没有转发器，这个值是 -1 。</li>
+<li><strong>Name</strong>：一个 RVA，指向导入模块的名字，所以一个 <strong>IMAGE_IMPORT_DESCRIPTOR</strong> 描述一个导入的DLL。</li>
+<li><strong>FirstThunk</strong>：该字段是一个 RVA，指向 <code>IAT</code>。如果绑定，则 IAT 包含实际的函数地址。操作系统将使用这个地址来调用导入的函数。也指向一个 <code>IMAGE_THUNK_DATA</code> 数组。</li>
+</ol>
+<p><code>IMAGE_THUNK_DATA</code> 的定义</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">IMAGE_THUNK_DATA32</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">union</span> &#123;</span></span><br><span class="line">        DWORD ForwarderString;      <span class="comment">// PBYTE </span></span><br><span class="line">        DWORD Function;             <span class="comment">// PDWORD</span></span><br><span class="line">        DWORD Ordinal;</span><br><span class="line">        DWORD AddressOfData;        <span class="comment">// PIMAGE_IMPORT_BY_NAME</span></span><br><span class="line">    &#125; u1;</span><br><span class="line">&#125; IMAGE_THUNK_DATA32;</span><br><span class="line"><span class="keyword">typedef</span> IMAGE_THUNK_DATA32 * PIMAGE_THUNK_DATA32;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>OriginalFirstThunk</code> 主要用于在 <code>程序加载时</code> 查找导入的函数。它提供了函数的原始信息（名称或序号），允许操作系统在运行时解析这些函数的地址。</li>
+<li><code>FirstThunk</code> 当 <code>程序调用导入的函数时</code>，它使用 <code>FirstThunk</code> 中的地址进行调用。这个字段在程序运行时被填充为实际的函数地址，是由PELoader负责的。</li>
+<li><code>OriginalFirstThunk</code> 和 <code>FirstThunk</code> 他们指向的不是同一个 <code>IMAGE_THUNK_DATA</code> 数组。<code>OriginalFirstThunk</code> 指向的 <code>IMAGE_THUNK_DATA</code> 数组包含导入信息，在这个数组中只有 <code>Ordinal</code> 和 <code>AddressOfData</code> 是有用的，因此可以通过 <code>OriginalFirstThunk</code> 查找到函数的地址。<code>FirstThunk</code>则略有不同，在PE文件加载以前或者说在导入表未处理以前，他所指向的数组与 <code>OriginalFirstThunk</code> 中的数组虽不是同一个，但是内容却是相同的，都包含了导入信息，而在加载之后，<code>FirstThunk</code> 中的<code> Function</code> 开始生效，他指向实际的函数地址，因为<code>FirstThunk</code> 实际上指向 IAT 中的一个位置。</li>
+</ul>
+<p>PE文件加载之前，或者说导入表未处理之前：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250503164646112.png" alt="image-20250503164646112"></p>
+<p>PE文件加载之后，或者说导入表未处理之后：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250503164702124.png" alt="image-20250503164702124"></p>
+<p><strong>ALL IN ALL</strong>：</p>
+<ol>
+<li>导入表的地址是由<code>DataDirectory[IMAGE_DIRECTORY_ENTRY_IMPORT].VirtualAddress</code>提供</li>
+<li>每一个被导入的DLL对应一个 <code>IMAGE_IMPORT_DESCRIPTOR</code>，而 <code>IMAGE_IMPORT_DESCRIPTOR</code> 是导入表的表项</li>
+<li><code>IMAGE_IMPORT_DESCRIPTOR</code> 包含两个 <code>IMAGE_THUNK_DATA</code> 数组，数组中的每一项对应一个导入函数</li>
+<li>加载前 <code>OriginalFirstThunk</code> 与 <code>FirstThunk</code> 的数组都指向名字信息，加载后 <code>FirstThunk</code> 数组指函数在DLL的虚拟地址（VA）。</li>
+<li><code>IMAGE_IMPORT_BY_NAME</code> 是一个结构体。相应函数的 <code>IMAGE_IMPORT_BY_NAME</code> 组合成一个数组，用于存放函数名称，支持名称导入函数地址。<code>AddressOfData</code> 表示了相应函数的 <code>IMAGE_IMPORT_BY_NAME</code> 在整个PE文件的偏移量是多少。即 <strong>pImgImportByName &#x3D; (PIMAGE_IMPORT_BY_NAME)(pebase + pOriginalFirstThunk-&gt;u1.AddressOfData);</strong></li>
+</ol>
+<h4 id="重定位"><a href="#重定位" class="headerlink" title="重定位"></a>重定位</h4><p>程序在加载之前，按照规定应该要占据这个地址，但是出于某种原因，现在这个地址不能给程序用了，程序必须转移到别的地址，这使得所有这些嵌入的地址无效。为了解决这个加载问题，一个包含所有这些需要调整的嵌入地址的列表被存储在PE文件的一个专门表中，称为重定位表（Relocation Table）。这个表位于.reloc节的一个数据目录中。</p>
+<p>步骤如下：</p>
+<ol>
+<li><strong>获取重定位表</strong>：通过 <code>IMAGE_NT_HEADERS</code> 结构中的 <code>DataDirectory</code> 字段获取重定位表的地址和大小。</li>
+<li><strong>计算偏移量</strong>：计算实际加载地址与原始基址之间的差异（<code>delta</code>）。</li>
+<li><strong>遍历重定位表</strong>：检查每个重定位块，获取需要重定位的地址，并根据重定位类型进行调整。</li>
+<li><strong>处理不同的重定位类型</strong>：根据需要处理不同类型的重定位（如 <code>IMAGE_REL_BASED_HIGHLOW</code>、<code>IMAGE_REL_BASED_ABSOLUTE</code> 等）。</li>
+</ol>
+<h2 id="线程上下文"><a href="#线程上下文" class="headerlink" title="线程上下文"></a>线程上下文</h2><p>在现代操作系统中，线程（thread）作为CPU调度的基本单位，每次调度就是线程上下文的切换。线程上下文就是表示线程信息的一系列东西，包括<strong>各种变量</strong>、<strong>寄存器</strong>以及<strong>进程的运行的环境</strong>。这样，当进程被切换后，下次再切换回来继续执行，能够知道原来的状态</p>
+<table>
+<thead>
+<tr>
+<th align="center">特征</th>
+<th align="center">PCB</th>
+<th align="center">PEB</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">定义</td>
+<td align="center">进程控制块，用于管理进程的状态和信息。</td>
+<td align="center">进程环境块，存储进程运行时环境信息。</td>
+</tr>
+<tr>
+<td align="center">作用</td>
+<td align="center">主要用于进程调度和状态管理。</td>
+<td align="center">提供进程执行所需的环境和模块信息。</td>
+</tr>
+<tr>
+<td align="center">存在形式</td>
+<td align="center">每个进程都有一个 PCB，存在于内存中。</td>
+<td align="center">每个进程都有一个 PEB，存在于内存中。</td>
+</tr>
+<tr>
+<td align="center">组成部分</td>
+<td align="center">包含 PID、状态、程序计数器、寄存器等。</td>
+<td align="center">包含进程参数、图像基址、已加载模块等。</td>
+</tr>
+<tr>
+<td align="center">使用场景</td>
+<td align="center">操作系统在调度进程时使用。</td>
+<td align="center">操作系统和进程在运行时访问环境信息。</td>
+</tr>
+</tbody></table>
+<p>一些应用如下：</p>
+<p>在设置 <code>上下文劫持注入</code> 中我们通过进程上下文获取 <code>EIP/RIP</code> 的值，这样可以直接劫持cpu的 <code>EIP/RIP</code> 寄存器，使其直接指向我们的恶意代码；或者在 <code>进程镂空注入</code> 中，我们可以获取 <code>EBX/RDX</code> 寄存器的值，根据 Windows 的调用约定，PEB 的地址通常存储在 <code>EBX/RDX</code> 寄存器中，进一步根据PEB获取特定进程的<strong>映像基址（ImageBase）</strong></p>
+<p>在注入中常用寄存器的调用约定：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// x64 注入</span></span><br><span class="line">ctx.Rcx = 入口点地址  </span><br><span class="line">ctx.Rdx = PEB地址</span><br><span class="line">ctx.Rip = 入口点</span><br><span class="line"></span><br><span class="line"><span class="comment">// x86 注入 </span></span><br><span class="line">ctx.Eax = 入口点地址</span><br><span class="line">ctx.Ebx = PEB地址</span><br><span class="line">ctx.Eip = 入口点</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="PEB"><a href="#PEB" class="headerlink" title="PEB"></a>PEB</h3><p>这里详细说说<code>PEB（Process Environment Block，进程环境控制块）</code>。</p>
+<p><strong>PEB</strong>：是Windows操作系统中用于管理进程的一个数据结构。它包含了与进程相关的所有信息，比如进程的环境变量、进程的状态、内存管理信息、句柄信息等。其中非常关键的信息就是<strong>进程的映像基址</strong>。</p>
+<p><strong>作用</strong>：我们利用 PEB 可以完成很多事情，比如说 <code>动态获取 api</code>，<code>进程伪装</code>，<code>反调试</code> 等等。</p>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p>宝藏：<a target="_blank" rel="noopener" href="https://oneday.gitbook.io/onedaybook/mian-sha/wen-ding-mian-sha-zhi-lu/di-yi-zhang-ji-chu/1pe-de-xiang-guan-shu-ju-jie-gou#id-2.4-pe-wen-jian-zi-duan-xiang-jie">https://oneday.gitbook.io/onedaybook/mian-sha/wen-ding-mian-sha-zhi-lu/di-yi-zhang-ji-chu/1pe-de-xiang-guan-shu-ju-jie-gou#id-2.4-pe-wen-jian-zi-duan-xiang-jie</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About me</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="https://github.com/MeteorKai/">Projects</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+          <li><a href="/categories/">categories</a></li>
+        
+          <li><a href="/tags/">tags</a></li>
+        
+          <li><a href="/links/">links</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#PE%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="toc-number">1.</span> <span class="toc-text">PE文件结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#PE%E6%96%87%E4%BB%B6%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F"><span class="toc-number">1.1.</span> <span class="toc-text">PE文件执行顺序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PE%E6%96%87%E4%BB%B6%E5%AD%98%E5%82%A8%E5%8A%A0%E8%BD%BD%E5%B7%AE%E5%BC%82"><span class="toc-number">1.2.</span> <span class="toc-text">PE文件存储加载差异</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%98%A0%E5%B0%84"><span class="toc-number">1.3.</span> <span class="toc-text">文件映射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PE%E6%96%87%E4%BB%B6%E5%AD%97%E6%AE%B5%E8%AF%A6%E8%A7%A3"><span class="toc-number">1.4.</span> <span class="toc-text">PE文件字段详解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#DOS%E5%A4%B4"><span class="toc-number">1.4.1.</span> <span class="toc-text">DOS头</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#MZ%E5%A4%B4"><span class="toc-number">1.4.1.1.</span> <span class="toc-text">MZ头</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#DOS-stub"><span class="toc-number">1.4.1.2.</span> <span class="toc-text">DOS stub</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#NT%E5%A4%B4"><span class="toc-number">1.4.2.</span> <span class="toc-text">NT头</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Signature"><span class="toc-number">1.4.2.1.</span> <span class="toc-text">Signature</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#FileHeader"><span class="toc-number">1.4.2.2.</span> <span class="toc-text">FileHeader</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#OptionalHeader"><span class="toc-number">1.4.2.3.</span> <span class="toc-text">OptionalHeader</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%BC%E5%87%BA%E8%A1%A8"><span class="toc-number">1.4.3.</span> <span class="toc-text">导出表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%BC%E5%85%A5%E8%A1%A8"><span class="toc-number">1.4.4.</span> <span class="toc-text">导入表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%87%8D%E5%AE%9A%E4%BD%8D"><span class="toc-number">1.4.5.</span> <span class="toc-text">重定位</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E4%B8%8A%E4%B8%8B%E6%96%87"><span class="toc-number">2.</span> <span class="toc-text">线程上下文</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#PEB"><span class="toc-number">2.1.</span> <span class="toc-text">PEB</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="toc-number">3.</span> <span class="toc-text">参考文章</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://meteorkai.github.io/2025/05/03/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%B9%8BPE%E7%9B%B8%E5%85%B3%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://meteorkai.github.io/2025/05/03/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%B9%8BPE%E7%9B%B8%E5%85%B3%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/&text=免杀基础知识之PE相关数据结构"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://meteorkai.github.io/2025/05/03/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%B9%8BPE%E7%9B%B8%E5%85%B3%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/&title=免杀基础知识之PE相关数据结构"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://meteorkai.github.io/2025/05/03/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%B9%8BPE%E7%9B%B8%E5%85%B3%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/&is_video=false&description=免杀基础知识之PE相关数据结构"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=免杀基础知识之PE相关数据结构&body=Check out this article: http://meteorkai.github.io/2025/05/03/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%B9%8BPE%E7%9B%B8%E5%85%B3%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://meteorkai.github.io/2025/05/03/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%B9%8BPE%E7%9B%B8%E5%85%B3%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/&title=免杀基础知识之PE相关数据结构"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://meteorkai.github.io/2025/05/03/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%B9%8BPE%E7%9B%B8%E5%85%B3%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/&title=免杀基础知识之PE相关数据结构"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://meteorkai.github.io/2025/05/03/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%B9%8BPE%E7%9B%B8%E5%85%B3%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/&title=免杀基础知识之PE相关数据结构"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://meteorkai.github.io/2025/05/03/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%B9%8BPE%E7%9B%B8%E5%85%B3%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/&title=免杀基础知识之PE相关数据结构"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://meteorkai.github.io/2025/05/03/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%B9%8BPE%E7%9B%B8%E5%85%B3%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/&name=免杀基础知识之PE相关数据结构&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://meteorkai.github.io/2025/05/03/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%B9%8BPE%E7%9B%B8%E5%85%B3%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/&t=免杀基础知识之PE相关数据结构"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        
+<footer id="footer">
+    <div class="footer-left">
+        Copyright ©
+        
+        
+        2024-2025
+        Meteor_Kai
+        <br>
+        <a href="https://www.dkdun.cn/" target="_blank">DK盾</a>
+    </div>
+    
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <!--
+                --><li><a href="/">Home</a></li><!--
+                --><!--
+                --><li><a href="/about/">About me</a></li><!--
+                --><!--
+                --><li><a href="/archives/">Writing</a></li><!--
+                --><!--
+                --><li><a target="_blank" rel="noopener" href="https://github.com/MeteorKai/">Projects</a></li><!--
+                --><!--
+                --><li><a href="/search/">Search</a></li><!--
+                --><!--
+                --><li><a href="/categories/">categories</a></li><!--
+                --><!--
+                --><li><a href="/tags/">tags</a></li><!--
+                --><!--
+                --><li><a href="/links/">links</a></li><!--
+                -->
+            </ul>
+            <ul>
+                
+                <!-- 不蒜子统计 -->
+                <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+                <span class="post-meta-divider">|</span>
+                <span id="busuanzi_container_site_uv" style='display:none'>本站访客数<span id="busuanzi_value_site_uv"></span>人</span>
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+                
+            </ul>
+        </nav>
+    </div>
+</footer>
+
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
