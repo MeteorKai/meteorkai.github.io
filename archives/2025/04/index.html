@@ -1,419 +1,277 @@
 <!DOCTYPE html>
-<html lang=en>
+<html lang="en">
+
 <head>
-    <!-- so meta -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="HandheldFriendly" content="True">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Meteor_Kai">
+
+
+
     <meta name="description" content="Just Hack For Fun...">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Meteor_Kai">
-<meta property="og:url" content="http://meteorkai.github.io/archives/2025/04/index.html">
-<meta property="og:site_name" content="Meteor_Kai">
-<meta property="og:description" content="Just Hack For Fun...">
-<meta property="og:locale" content="en_US">
-<meta property="article:author" content="Meteor_Kai">
-<meta property="article:tag" content="Web exploits bring me great joy!">
-<meta name="twitter:card" content="summary">
-    
-    
-      
-        
-          <link rel="shortcut icon" href="/images/favicon.ico">
-        
-      
-      
-        
-          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
-        
-      
-      
-        
-          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
-        
-      
-    
-    <!-- title -->
-    <title>Writing: 2025/4</title>
-    <!-- async scripts -->
-    <!-- Google Analytics -->
 
 
-    <!-- Umami Analytics -->
+    <meta name="keywords" content="Web exploits bring me great joy!">
 
 
-    <!-- styles -->
-    
-<link rel="stylesheet" href="/css/style.css">
+<title>Archives: 2025/4 | Meteor_Kai</title>
 
-    <!-- persian styles -->
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
     
-    <!-- rss -->
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
     
     
-	<!-- mathjax -->
-	
-		<script type="text/x-mathjax-config">
-		  MathJax.Hub.Config({
-			tex2jax: {
-			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
-			  inlineMath: [['$','$']]
-			}
-		  });
-		</script>
-		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
-	
+        <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+
 <meta name="generator" content="Hexo 7.3.0"></head>
 
-<body class="max-width mx-auto px3 ltr">
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Meteor_Kai&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/categories">Categories</a>
+                
+                <a class="menu-item" href="/tags">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                <a class="menu-item" href="/links">links</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
     
-    <div class="content index py4 ">
-        
-          <header id="header">
-  <a class="u-url u-uid" href="/">
-  
-    
-      <img id="logo" alt class="u-logo" src="/images/logo.png" />
-    
-  
-    <div id="title">
-      <h1 class="p-name">Meteor_Kai</h1>
-    </div>
-  </a>
-  <div id="nav">
-    <ul>
-      <li class="icon">
-        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
-      </li>
-      <!--
-     --><li><a href="/">Home</a></li><!--
-   --><!--
-     --><li><a href="/about/">About me</a></li><!--
-   --><!--
-     --><li><a href="/archives/">Writing</a></li><!--
-   --><!--
-     --><li><a target="_blank" rel="noopener" href="https://github.com/MeteorKai/">Projects</a></li><!--
-   --><!--
-     --><li><a href="/search/">Search</a></li><!--
-   --><!--
-     --><li><a href="/categories/">categories</a></li><!--
-   --><!--
-     --><li><a href="/tags/">tags</a></li><!--
-   --><!--
-     --><li><a href="/links/">links</a></li><!--
-   -->
-    </ul>
-  </div>
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Meteor_Kai&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/categories">Categories</a>
+                
+                <a class="menu-item" href="/tags">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                <a class="menu-item" href="/links">links</a>
+                
+            </div>
+        </div>
+    </nav>
+
 </header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="post-wrap archive">
+    
+    
+        
 
         
-        <div id="archive">
-  <ul class="post-list">
-    
-    
-    
-    
-      
-      
-      
-      
-        <li class="post-year"><h2>2025</h2></li>
-      
-      <li class="post-item">
+            <h3>2025</h3>
         
-    <div class="meta">
-      
+
+        <article class="archive-item">
+            <a class="archive-item-link" href="/2025/04/29/ACTF2025-Web%E5%A4%8D%E7%8E%B0/">ACTF2025 Web复现</a>
+            <span class="archive-item-date">April 29, 2025</span>
+        </article>
+    
         
-          <time datetime="2025-04-29T02:51:52.000Z" class="dt-published" itemprop="datePublished">2025-04-29</time>
+
         
-      
-    </div>
 
-
-        <span>
+        <article class="archive-item">
+            <a class="archive-item-link" href="/2025/04/28/2025%E5%B9%B3%E8%88%AA%E6%9D%AF-wp/">2025平航杯 wp</a>
+            <span class="archive-item-date">April 28, 2025</span>
+        </article>
     
-        <a class="" href="/2025/04/29/ACTF2025-Web%E5%A4%8D%E7%8E%B0/">ACTF2025 Web复现</a>
-    
-
-
-</span>
-      </li>
-    
-      
-      
-      
-      
-      <li class="post-item">
         
-    <div class="meta">
-      
+
         
-          <time datetime="2025-04-28T03:19:53.000Z" class="dt-published" itemprop="datePublished">2025-04-28</time>
+
+        <article class="archive-item">
+            <a class="archive-item-link" href="/2025/04/17/Vite%E5%BC%80%E5%8F%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%A4%8D%E7%8E%B0-CVE-2025-32395/">Vite开发服务器任意文件读取漏洞分析复现(CVE-2025-32395)</a>
+            <span class="archive-item-date">April 17, 2025</span>
+        </article>
+    
         
-      
-    </div>
 
-
-        <span>
-    
-        <a class="" href="/2025/04/28/2025%E5%B9%B3%E8%88%AA%E6%9D%AF-wp/">2025平航杯 wp</a>
-    
-
-
-</span>
-      </li>
-    
-      
-      
-      
-      
-      <li class="post-item">
         
-    <div class="meta">
-      
+
+        <article class="archive-item">
+            <a class="archive-item-link" href="/2025/04/10/Vite%E5%BC%80%E5%8F%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%A4%8D%E7%8E%B0-CVE-2025-31486/">Vite开发服务器任意文件读取漏洞分析复现(CVE-2025-31486)</a>
+            <span class="archive-item-date">April 10, 2025</span>
+        </article>
+    
         
-          <time datetime="2025-04-17T06:34:57.000Z" class="dt-published" itemprop="datePublished">2025-04-17</time>
+
         
-      
-    </div>
 
-
-        <span>
+        <article class="archive-item">
+            <a class="archive-item-link" href="/2025/04/09/XYCTF2025-Web-wp/">XYCTF2025 Web wp</a>
+            <span class="archive-item-date">April 9, 2025</span>
+        </article>
     
-        <a class="" href="/2025/04/17/Vite%E5%BC%80%E5%8F%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%A4%8D%E7%8E%B0-CVE-2025-32395/">Vite开发服务器任意文件读取漏洞分析复现(CVE-2025-32395)</a>
-    
-
-
-</span>
-      </li>
-    
-      
-      
-      
-      
-      <li class="post-item">
         
-    <div class="meta">
-      
+
         
-          <time datetime="2025-04-10T11:26:28.000Z" class="dt-published" itemprop="datePublished">2025-04-10</time>
+
+        <article class="archive-item">
+            <a class="archive-item-link" href="/2025/04/08/bottle%E6%A1%86%E6%9E%B6%E6%96%9C%E4%BD%93%E5%AD%97%E5%BC%95%E5%8F%91%E7%9A%84ssti%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/">bottle框架斜体字引发的ssti模板注入</a>
+            <span class="archive-item-date">April 8, 2025</span>
+        </article>
+    
         
-      
-    </div>
 
-
-        <span>
-    
-        <a class="" href="/2025/04/10/Vite%E5%BC%80%E5%8F%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%A4%8D%E7%8E%B0-CVE-2025-31486/">Vite开发服务器任意文件读取漏洞分析复现(CVE-2025-31486)</a>
-    
-
-
-</span>
-      </li>
-    
-      
-      
-      
-      
-      <li class="post-item">
         
-    <div class="meta">
-      
+
+        <article class="archive-item">
+            <a class="archive-item-link" href="/2025/04/07/NCTF2024-web-wp/">NCTF2024 web wp</a>
+            <span class="archive-item-date">April 7, 2025</span>
+        </article>
+    
         
-          <time datetime="2025-04-09T07:06:23.000Z" class="dt-published" itemprop="datePublished">2025-04-09</time>
+
         
-      
-    </div>
 
-
-        <span>
+        <article class="archive-item">
+            <a class="archive-item-link" href="/2025/04/07/XS-Leaks%E5%AD%A6%E4%B9%A0/">XS-Leaks学习</a>
+            <span class="archive-item-date">April 7, 2025</span>
+        </article>
     
-        <a class="" href="/2025/04/09/XYCTF2025-Web-wp/">XYCTF2025 Web wp</a>
-    
-
-
-</span>
-      </li>
-    
-      
-      
-      
-      
-      <li class="post-item">
         
-    <div class="meta">
-      
+
         
-          <time datetime="2025-04-08T11:24:19.000Z" class="dt-published" itemprop="datePublished">2025-04-08</time>
-        
-      
-    </div>
 
-
-        <span>
+        <article class="archive-item">
+            <a class="archive-item-link" href="/2025/04/04/Vite%E5%BC%80%E5%8F%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%A4%8D%E7%8E%B0-CVE-2025-31125/">Vite开发服务器任意文件读取漏洞分析复现(CVE-2025-31125)</a>
+            <span class="archive-item-date">April 4, 2025</span>
+        </article>
     
-        <a class="" href="/2025/04/08/bottle%E6%A1%86%E6%9E%B6%E6%96%9C%E4%BD%93%E5%AD%97%E5%BC%95%E5%8F%91%E7%9A%84ssti%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/">bottle框架斜体字引发的ssti模板注入</a>
     
-
-
-</span>
-      </li>
-    
-      
-      
-      
-      
-      <li class="post-item">
-        
-    <div class="meta">
-      
-        
-          <time datetime="2025-04-07T15:59:41.000Z" class="dt-published" itemprop="datePublished">2025-04-07</time>
-        
-      
-    </div>
-
-
-        <span>
-    
-        <a class="" href="/2025/04/07/NCTF2024-web-wp/">NCTF2024 web wp</a>
-    
-
-
-</span>
-      </li>
-    
-      
-      
-      
-      
-      <li class="post-item">
-        
-    <div class="meta">
-      
-        
-          <time datetime="2025-04-07T09:08:14.000Z" class="dt-published" itemprop="datePublished">2025-04-07</time>
-        
-      
-    </div>
-
-
-        <span>
-    
-        <a class="" href="/2025/04/07/XS-Leaks%E5%AD%A6%E4%B9%A0/">XS-Leaks学习</a>
-    
-
-
-</span>
-      </li>
-    
-      
-      
-      
-      
-      <li class="post-item">
-        
-    <div class="meta">
-      
-        
-          <time datetime="2025-04-03T17:26:50.000Z" class="dt-published" itemprop="datePublished">2025-04-04</time>
-        
-      
-    </div>
-
-
-        <span>
-    
-        <a class="" href="/2025/04/04/Vite%E5%BC%80%E5%8F%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%A4%8D%E7%8E%B0-CVE-2025-31125/">Vite开发服务器任意文件读取漏洞分析复现(CVE-2025-31125)</a>
-    
-
-
-</span>
-      </li>
-    
-  </ul>
-  
-
 </div>
-
-        
-        
-<footer id="footer">
-    <div class="footer-left">
-        Copyright ©
-        
-        
-        2024-2026
-        Meteor_Kai
-        <br>
-        <a href="https://www.dkdun.cn/" target="_blank">DK盾</a>
-    </div>
-    
-    <div class="footer-right">
-        <nav>
-            <ul>
-                <!--
-                --><li><a href="/">Home</a></li><!--
-                --><!--
-                --><li><a href="/about/">About me</a></li><!--
-                --><!--
-                --><li><a href="/archives/">Writing</a></li><!--
-                --><!--
-                --><li><a target="_blank" rel="noopener" href="https://github.com/MeteorKai/">Projects</a></li><!--
-                --><!--
-                --><li><a href="/search/">Search</a></li><!--
-                --><!--
-                --><li><a href="/categories/">categories</a></li><!--
-                --><!--
-                --><li><a href="/tags/">tags</a></li><!--
-                --><!--
-                --><li><a href="/links/">links</a></li><!--
-                -->
-            </ul>
-            <ul>
-                
-                <!-- 不蒜子统计 -->
-                <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
-                <span class="post-meta-divider">|</span>
-                <span id="busuanzi_container_site_uv" style='display:none'>本站访客数<span id="busuanzi_value_site_uv"></span>人</span>
-                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-                
-            </ul>
-        </nav>
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Meteor_Kai | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
     </div>
 </footer>
 
-
     </div>
-    <!-- styles -->
-
-
-
-  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
-
-
-    <!-- jquery -->
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
-
-
-
-
-<!-- clipboard -->
-
-
-<script src="/js/main.js"></script>
-
-<!-- search -->
-
-<!-- Baidu Analytics -->
-
-<!-- Cloudflare Analytics -->
-
-<!-- Disqus Comments -->
-
-<!-- utterances Comments -->
-
 </body>
+
 </html>
