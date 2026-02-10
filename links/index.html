@@ -176,113 +176,138 @@
     }
 </script>
             <div class="main">
-                <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>友情链接</title>
-  <style>
-    body {
-      background-color: #1a1a1a;
-      color: #e0e0e0;
-      font-family: Arial, sans-serif;
-    }
-    .links-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: center;
-    }
-    .friend-link {
-      display: flex;
-      align-items: center;
-      width: calc(33.33% - 20px);
-      padding: 15px;
-      border: 1px solid #333;
-      border-radius: 8px;
-      background-color: #252525;
-      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-      cursor: pointer;
-    }
-    .friend-link:hover {
-      background-color: #333;
-      transform: scale(1.15);
-      box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
-      z-index: 1;
-    }
-    .friend-link .avatar {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      margin-right: 15px;
-      transition: all 0.4s ease;
-      border: 2px solid transparent;
-    }
-    .friend-link:hover .avatar {
-      transform: scale(1.2);
-      border-color: #555;
-    }
-    .friend-link .info {
-      flex-grow: 1;
-    }
-    .friend-link a {
-      font-weight: bold;
-      color: #b0b0b0;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      font-size: 1.1em;
-    }
-    .friend-link:hover a {
-      color: #ffffff;
-      text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
-    }
-    .friend-link p {
-      margin: 8px 0 0;
-      font-size: 0.9em;
-      color: #888888;
-      transition: all 0.3s ease;
-    }
-    .friend-link:hover p {
-      color: #aaaaaa;
-    }
-    h2 {
-      text-align: center;
-      color: #c0c0c0;
-      margin: 30px 0 20px;
-    }
-  </style>
-</head>
-<body>
+                
+  <h2>友情链接</h2>
   
+  
+    <h3>Friends🤩</h3>
     
-    
-      <h2>Friends🤩</h2>
-      
-        <div class="links-container">
-          
-            <div class="friend-link">
-              <img src="https://meteorkai.oss-cn-beijing.aliyuncs.com/lament.jpg" alt="LamentXU" class="avatar">
-              <div class="info">
-                <a href="https://lamentxu.top/" target="_blank">LamentXU</a>
-                <p>V&amp;Nの天才少年</p>
-              </div>
+      <div class="links-container">
+        
+          <div class="friend-link">
+            <img src="https://meteorkai.oss-cn-beijing.aliyuncs.com/lament.jpg" alt="LamentXU" class="avatar">
+            <div class="info">
+              <a href="https://lamentxu.top/" target="_blank">LamentXU</a>
+              <p>V&amp;Nの天才少年</p>
             </div>
-          
-            <div class="friend-link">
-              <img src="https://meteorkai.oss-cn-beijing.aliyuncs.com/aura.jpg" alt="Aura" class="avatar">
-              <div class="info">
-                <a href="https://jasmineaura.github.io/AuraBlog/" target="_blank">Aura</a>
-                <p>Polarisの天才少年</p>
-              </div>
+          </div>
+        
+          <div class="friend-link">
+            <img src="https://meteorkai.oss-cn-beijing.aliyuncs.com/aura.jpg" alt="Aura" class="avatar">
+            <div class="info">
+              <a href="https://jasmineaura.github.io/AuraBlog/" target="_blank">Aura</a>
+              <p>Polarisの天才少年</p>
             </div>
-          
-        </div>
-      
+          </div>
+        
+      </div>
     
   
-</body>
-</html>
+
+
+<style>
+  .links-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 30px;
+  }
+  .friend-link {
+    display: flex;
+    align-items: center;
+    width: calc(33.33% - 20px);
+    padding: 15px;
+    border: 1px solid #e8e8e8;
+    border-radius: 8px;
+    background-color: #fdfdfd;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    cursor: pointer;
+  }
+  .friend-link:hover {
+    background-color: #fefefe;
+    transform: scale(1.15);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+  }
+  .friend-link .avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+    transition: all 0.4s ease;
+    border: 2px solid transparent;
+  }
+  .friend-link:hover .avatar {
+    transform: scale(1.2);
+    border-color: #2d96bd;
+  }
+  .friend-link .info {
+    flex-grow: 1;
+  }
+  .friend-link a {
+    font-weight: bold;
+    color: #161209;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 1.1em;
+  }
+  .friend-link:hover a {
+    color: #2d96bd;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+  .friend-link p {
+    margin: 8px 0 0;
+    font-size: 0.9em;
+    color: #a9a9b3;
+    transition: all 0.3s ease;
+  }
+  .friend-link:hover p {
+    color: #161209;
+  }
+  h2 {
+    text-align: center;
+    color: #161209;
+    margin: 30px 0 20px;
+  }
+  h3 {
+    text-align: center;
+    color: #161209;
+    margin: 30px 0 20px;
+  }
+
+  // Dark theme styles
+  body.dark-theme .friend-link {
+    border: 1px solid #909196;
+    background-color: #252629;
+  }
+  body.dark-theme .friend-link:hover {
+    background-color: #212225;
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
+  }
+  body.dark-theme .friend-link:hover .avatar {
+    border-color: #fff;
+  }
+  body.dark-theme .friend-link a {
+    color: #a9a9b3;
+  }
+  body.dark-theme .friend-link:hover a {
+    color: #fff;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+  }
+  body.dark-theme .friend-link p {
+    color: #87878d;
+  }
+  body.dark-theme .friend-link:hover p {
+    color: #a9a9b3;
+  }
+  body.dark-theme h2 {
+    color: #a9a9b3;
+  }
+  body.dark-theme h3 {
+    color: #a9a9b3;
+  }
+</style>
 
 
             </div>
