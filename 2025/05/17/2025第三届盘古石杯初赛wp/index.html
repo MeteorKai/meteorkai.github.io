@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Meteor_Kai">
+
+
+
+    <meta name="description" content="Just Hack For Fun...">
+
+
+    <meta name="keywords" content="Web exploits bring me great joy!">
+
+
+<title>2025第三届盘古石杯初赛wp | Meteor_Kai</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Meteor_Kai&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/categories">Categories</a>
+                
+                <a class="menu-item" href="/tags">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                <a class="menu-item" href="/links">Links</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Meteor_Kai&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/categories">Categories</a>
+                
+                <a class="menu-item" href="/tags">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                <a class="menu-item" href="/links">Links</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">2025第三届盘古石杯初赛wp</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Meteor_Kai</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">May 17, 2025&nbsp;&nbsp;15:09:44</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/">电子取证</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">VR容器密码：9f8L2kP7mQv3RzX1tB5n6yH4CwJp9TqEa2rF1xSbD0LcKjZ</span><br><span class="line">容器密码：01tn0GdE0]BF00pT0T&amp;f00&amp;u0k-q0Up41UhA00N,0\-L0kRr0j-p0T&amp;R1F&amp;=0\Ni1GR]</span><br></pre></td></tr></table></figure>
+
+<p>VR场景如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250512221548158.png" alt="image-20250512221548158"></p>
+<h2 id="手机"><a href="#手机" class="headerlink" title="手机"></a>手机</h2><h3 id="T1"><a href="#T1" class="headerlink" title="T1"></a>T1</h3><blockquote>
+<p>分析安卓手机检材，手机的IMSI是？</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250510135532073.png" alt="image-20250510135532073"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">460036641292715</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T2"><a href="#T2" class="headerlink" title="T2"></a>T2</h3><blockquote>
+<p>养鱼诈骗投资1000，五天后收益是？</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250510135631987.png" alt="image-20250510135631987"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">175</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T3"><a href="#T3" class="headerlink" title="T3"></a>T3</h3><blockquote>
+<p>分析苹果手机检材，手机的IDFA是?</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250510135718773.png" alt="image-20250510135718773"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">E477D4C7-BD02-4979-BC9D-5C5DE7BD1F17</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T4"><a href="#T4" class="headerlink" title="T4"></a>T4</h3><blockquote>
+<p>Telegram应用的卸载时间是？</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250510142156828.png" alt="image-20250510142156828"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2025-04-17-10:51:39</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T5"><a href="#T5" class="headerlink" title="T5"></a>T5</h3><blockquote>
+<p>机主hotmail邮箱地址是？</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250510143718824.png" alt="image-20250510143718824"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hostsixer@hotmail.com</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T6"><a href="#T6" class="headerlink" title="T6"></a>T6</h3><blockquote>
+<p>苹果电脑开机密码是？</p>
+</blockquote>
+<p>藏在系统截屏里！</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250512162139410.png" alt="image-20250512162139410"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">12345678</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="T7"><a href="#T7" class="headerlink" title="T7"></a>T7</h3><blockquote>
+<p>Telegram加密通讯中，加密聊天信息用到的第二个解密载体是？ [答案格式：123.zip]</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250512162247601.png" alt="image-20250512162247601"></p>
+<p>在苹果手机的截屏里有涉及，看着像，但是不能完全确定。</p>
+<p>但当我们看mac镜像的时候，就会发现：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250512162918830.png" alt="image-20250512162918830"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2.mp4</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="T8"><a href="#T8" class="headerlink" title="T8"></a>T8</h3><blockquote>
+<p>贾韦码的内部代号是？</p>
+</blockquote>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20250510154339514.png" alt="image-20250510154339514"></p>
+<p>贾韦码是被清理的那个，也就是代号48.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">48</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T9"><a href="#T9" class="headerlink" title="T9"></a>T9</h3><blockquote>
+<p>特快专递的收货地址是？[标准格式：老牛市快速路11号ADE公司] What is the delivery address for the express package? [Answer format: 老牛市快速路11号ADE公司]</p>
+</blockquote>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20250510153942550.png" alt="image-20250510153942550"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">西红市中山路35号PGS健身房</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="app"><a href="#app" class="headerlink" title="app"></a>app</h2><h3 id="T1-1"><a href="#T1-1" class="headerlink" title="T1"></a>T1</h3><blockquote>
+<p>分析安卓检材，远控工具包名是？</p>
+</blockquote>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20250510155210264.png" alt="image-20250510155210264"></p>
+<p>这个银联会议下下来是一个RustDesk，是一个远控软件。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">com.carriez.flutter_hbb</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T2-1"><a href="#T2-1" class="headerlink" title="T2"></a>T2</h3><blockquote>
+<p>远控工具中继服务器IP是？</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250510163915238.png" alt="image-20250510163915238"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250512164044224.png" alt="image-20250512164044224"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">59.110.10.229</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T3-1"><a href="#T3-1" class="headerlink" title="T3"></a>T3</h3><blockquote>
+<p>远控工具ID服务器端口是？</p>
+</blockquote>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20250510163920433.png" alt="image-20250510163920433"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">21116</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T4-1"><a href="#T4-1" class="headerlink" title="T4"></a>T4</h3><blockquote>
+<p>远控工具中继服务器Key是？</p>
+</blockquote>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20250510163920433.png" alt="image-20250510163920433"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">WIUqzRq1Ocx4QNnsF26dZQijKdyd2L9OfaT55hDlQCI=</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T5-1"><a href="#T5-1" class="headerlink" title="T5"></a>T5</h3><blockquote>
+<p>远控工具中收藏的远程ID是？</p>
+</blockquote>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20250510164228457.png" alt="image-20250510164228457"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1807892422</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T6-1"><a href="#T6-1" class="headerlink" title="T6"></a>T6</h3><blockquote>
+<p>远程控制该手机的手机型号是？</p>
+</blockquote>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20250510164359710.png" alt="image-20250510164359710"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">google-Pixel</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="T7-1"><a href="#T7-1" class="headerlink" title="T7"></a>T7</h3><blockquote>
+<p>监听工具包名是？</p>
+</blockquote>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20250510161537435.png" alt="image-20250510161537435"></p>
+<p>存在录制音频的权限，且通过源码看出其开机自启动：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.liekai;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.content.BroadcastReceiver;</span><br><span class="line"><span class="keyword">import</span> android.content.Context;</span><br><span class="line"><span class="keyword">import</span> android.content.Intent;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* loaded from: classes.dex */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BootReceiver</span> <span class="keyword">extends</span> <span class="title class_">BroadcastReceiver</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span> <span class="comment">// android.content.BroadcastReceiver</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title function_">onReceive</span><span class="params">(Context context, Intent intent)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">&quot;android.intent.action.BOOT_COMPLETED&quot;</span>.equals(intent.getAction())) &#123;</span><br><span class="line">            <span class="type">Intent</span> <span class="variable">intent2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Intent</span>(context, MainActivity.class);</span><br><span class="line">            intent2.addFlags(<span class="number">268435456</span>);</span><br><span class="line">            context.startActivity(intent2);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">com.example.liekai</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T8-1"><a href="#T8-1" class="headerlink" title="T8"></a>T8</h3><blockquote>
+<p>监听工具代码主入口是？</p>
+</blockquote>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20250510161647335.png" alt="image-20250510161647335"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">com.example.liekai.MainActivity</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T9-1"><a href="#T9-1" class="headerlink" title="T9"></a>T9</h3><blockquote>
+<p>监听工具的签名算法是？</p>
+</blockquote>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20250510161844857.png" alt="image-20250510161844857"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHA256-RSA</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T10"><a href="#T10" class="headerlink" title="T10"></a>T10</h3><blockquote>
+<p>监听工具运行多少秒后会跳转成黑色幕布？[标准格式：3.000]</p>
+</blockquote>
+<p>猜测。。。直接打开liekai工具数一下。。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1.000</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="T11"><a href="#T11" class="headerlink" title="T11"></a>T11</h3><blockquote>
+<p>监听工具运行后，黑色幕布上字符串是？[标准格式：aes取证平台]</p>
+</blockquote>
+<p>我们看apk源码的时候发现了这个apk的相关框架特征：</p>
+<img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250512170156763.png" alt="image-20250512170156763" style="zoom:80%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250512170205583.png" alt="image-20250512170205583" style="zoom:80%;" />
+
+<p>应该是属于flutter框架的。</p>
+<p>在这个jadx的源码中我们没有发现任何线索，那么想办法逆向一下flutter框架。</p>
+<p>利用 Flutter 框架开发的 app，打包后，会将代码打包成 so，而且会将接口请求添加证书校验，防止中间人攻击，普通方法是抓不到包的。无形中增加了逆向的难度，说句题外话，用 Flutter 框架开发，不仅可以跨平台，还增加了安全性👍。 Flutter 框架开发的项目，打包后会生成两个 so，分别是 <code>libapp.so</code>和 <code>libflutter.so</code>，前者是业务相关的，后者是 Flutter 引擎用到的。 用 IDA 打开<code>libapp.so</code>，会发现函数名都被混淆了，这时就要借助开源框架Blutter来还原混淆的函数名了。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/worawit/blutter">https://github.com/worawit/blutter</a></p>
+<p>好像只有linux能成功，那么我们放vps上试试</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/worawit/blutter --depth=1</span><br><span class="line"></span><br><span class="line">apt install python3-pyelftools python3-requests git cmake ninja-build \</span><br><span class="line">    build-essential pkg-config libicu-dev libcapstone-dev</span><br><span class="line">    </span><br><span class="line">python3 blutter.py /root/arm64-v8a/ out_dir</span><br></pre></td></tr></table></figure>
+
+<p>获得out_dir后，打开libapp.so后运行输出文件夹中的IDApython脚本<code>ida_script/addNames.py</code>,符号就被全部恢复出来啦</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250512195922738.png" alt="image-20250512195921265"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250512200017174.png" alt="image-20250512200017174"></p>
+<p>去看一下跑出来的 asm 那个文件夹，liekai 里面有一个 screens 文件夹，里面有一个 dart 写的 black_overlay.dart，这个就是和黑色幕布相关的东西。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250512200126025.png" alt="image-20250512200126025"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250512200213488.png" alt="image-20250512200213488"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pgs比武专用</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="T12"><a href="#T12" class="headerlink" title="T12"></a>T12</h3><blockquote>
+<p>监听工具检测到多少分贝开始录音？[标准格式：30]</p>
+</blockquote>
+<p>打开工具后它会显示一秒，趁机给他截个屏！</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250512200726916.png" alt="image-20250512200726916"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">70</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T13"><a href="#T13" class="headerlink" title="T13"></a>T13</h3><blockquote>
+<p>监听工具录音连续几秒没有检测到声音停止录音？[标准格式：3]</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">4</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="T14"><a href="#T14" class="headerlink" title="T14"></a>T14</h3><blockquote>
+<p>监听工具保存文件存储路径的数据库名称是？</p>
+</blockquote>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20250510165634530.png" alt="image-20250510165634530"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">recordings.db</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="T15"><a href="#T15" class="headerlink" title="T15"></a>T15</h3><blockquote>
+<p>监听工具保存录像文件的文件夹是？</p>
+</blockquote>
+<p>保存的录像文件，应该是在storage文件夹下，我们跟进去找一下发现recording。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250512201116531.png" alt="image-20250512201116531"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">recording</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="T16"><a href="#T16" class="headerlink" title="T16"></a>T16</h3><blockquote>
+<p>监听工具数据库中保存音视频文件的路径使用什么加密？[标准格式：Rsa]</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250512211013910.png" alt="image-20250512211013910"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250512211043101.png" alt="image-20250512211043101"></p>
+<p>对应上了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Salsa20</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="T17"><a href="#T17" class="headerlink" title="T17"></a>T17</h3><blockquote>
+<p>录音的文件采用什么加密方式？[标准格式：RC4-123]</p>
+</blockquote>
+<p>录音文件，我们可以根据英文翻译来找相关的函数</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250512211310999.png" alt="image-20250512211310999"></p>
+<p>AES，那么是哪种AES呢？跟进看看</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250512211718181.png" alt="image-20250512211718181"></p>
+<p>密钥长度32位，那就是AES-256</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AES-256</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="T18"><a href="#T18" class="headerlink" title="T18"></a>T18</h3><blockquote>
+<p>录像文件加密秘钥的最后一位是？[标准格式：0x6A]</p>
+</blockquote>
+<p>录像文件，那就是video</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250512212716957.png" alt="image-20250512212716957"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0x9A</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T19"><a href="#T19" class="headerlink" title="T19"></a>T19</h3><blockquote>
+<p>原始文件md5为3b4d****55ae的创建时间是？[标准格式：2024-2-14-16:32:8]</p>
+</blockquote>
+<p>不会。</p>
+<h2 id="计算机"><a href="#计算机" class="headerlink" title="计算机"></a>计算机</h2><h3 id="T1-2"><a href="#T1-2" class="headerlink" title="T1"></a>T1</h3><blockquote>
+<p>分析贾韦码计算机检材，计算机系统Build版本为？[标准格式：19000]</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250512223441762.png" alt="image-20250512223441762"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">18362</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T2-2"><a href="#T2-2" class="headerlink" title="T2"></a>T2</h3><blockquote>
+<p>计算机最后一次正常关机的时间为？UTC +0 [标准格式：2025-05-06 09:00:00]</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250512223546871.png" alt="image-20250512223546871"></p>
+<p>注意检材的时区是 UTC+8，答案要求 UTC+0，需要减去 8 小时。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2025-04-18 3:20:54</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T3-2"><a href="#T3-2" class="headerlink" title="T3"></a>T3</h3><blockquote>
+<p>计算机网卡的MAC地址为？[标准格式：00-0B-00-A0-00-00]</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250512223746654.png" alt="image-20250512223746654"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">00-0C-29-0F-69-00</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T4-2"><a href="#T4-2" class="headerlink" title="T4"></a>T4</h3><blockquote>
+<p>计算机用户“贾韦码” 安全标识符SID为？[标准格式：S-X-X-X-X-X-X-X]</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250512225113616.png" alt="image-20250512225113616"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">S-1-5-21-3733482367-3411043098-2536183883-1001</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="T5-2"><a href="#T5-2" class="headerlink" title="T5"></a>T5</h3><blockquote>
+<p>计算机默认浏览器为？[标准格式：Mozilla Firefox]</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250512231907132.png" alt="image-20250512231907132"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Google Chrome</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T6-2"><a href="#T6-2" class="headerlink" title="T6"></a>T6</h3><blockquote>
+<p>计算机默认浏览器版本为？[标准格式：000.0.0000.00]</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250512232406278.png" alt="image-20250512232406278"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">135.0.7049.96</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T7-2"><a href="#T7-2" class="headerlink" title="T7"></a>T7</h3><blockquote>
+<p>机主通过浏览器搜索国外社交软件为？[标准格式：Whatsapp]</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250512232504724.png" alt="image-20250512232504724"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Telegram</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T8-2"><a href="#T8-2" class="headerlink" title="T8"></a>T8</h3><blockquote>
+<p>机主的邮箱账号为？[标准格式：<a href="mailto:&#x70;&#x67;&#x73;&#x63;&#x75;&#x70;&#64;&#112;&#x67;&#x73;&#x2e;&#x63;&#111;&#x6d;">&#x70;&#x67;&#x73;&#x63;&#x75;&#x70;&#64;&#112;&#x67;&#x73;&#x2e;&#x63;&#111;&#x6d;</a>]</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250512233327494.png" alt="image-20250512233327494"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tqmdavidjohnson300@gmail.com</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T9-2"><a href="#T9-2" class="headerlink" title="T9"></a>T9</h3><blockquote>
+<p>计算机装过一款反取证软件为？[标准格式：EnCrypt.exe]</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250512233417365.png" alt="image-20250512233417365"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">VeraCrypt.exe</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T10-1"><a href="#T10-1" class="headerlink" title="T10"></a>T10</h3><blockquote>
+<p>计算机通过Xshell远程连接的ip地址为？[标准格式：127.0.0.1]</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250512233515931.png" alt="image-20250512233515931"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">192.168.56.129</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T11-1"><a href="#T11-1" class="headerlink" title="T11"></a>T11</h3><blockquote>
+<p>机主曾买过一个美国的TG账号，请给该账号的原两步验证密码？[标准格式：8位数字]</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250512233704073.png" alt="image-20250512233704073"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">13770603</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T12-1"><a href="#T12-1" class="headerlink" title="T12"></a>T12</h3><blockquote>
+<p>给出其电脑内加密容器的解密密码？[标准格式：Abc@123]</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250512234808567.png" alt="image-20250512234808567"></p>
+<p>确实是存在加密容器的</p>
+<p>记得之前VR场景的纸条吗？有容器以及vmx加密规则</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250512221548158.png" alt="image-20250512221548158"></p>
+<p>用passwareKit爆破一下？</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250513204838924.png" alt="image-20250513204838924"></p>
+<p>这个爆破速度有点破防。。。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250513204907540.png" alt="image-20250513204907540"></p>
+<p>感觉是因为我的笔记本电脑太垃圾了。。。。。。生气！！</p>
+<p>直接给出密码吧</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Pgs8521d3j</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T13-1"><a href="#T13-1" class="headerlink" title="T13"></a>T13</h3><blockquote>
+<p>给出其电脑内加密容器挂载的盘符？[标准格式：C]</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250514095708079.png" alt="image-20250514095708079"></p>
+<p>仿真后我们是知道文件系统只有C盘的，而这里存在F盘的访问路径，那么加密容器挂载的就是F盘</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">F</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T14-1"><a href="#T14-1" class="headerlink" title="T14"></a>T14</h3><blockquote>
+<p>给出其电脑内存放了多少张伪造身份证？[标准格式：10]</p>
+</blockquote>
+<p>先挂载加密容器，发现里面的output文件夹其实就是伪造的身份证。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250514103118781.png" alt="image-20250514103118781"></p>
+<p>原以为是1024，但是最后一个是一个excel表，因此就是1023张。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1023</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T15-1"><a href="#T15-1" class="headerlink" title="T15"></a>T15</h3><blockquote>
+<p>找出任敏的身份证编号？[标准格式：18位]</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250514103305703.png" alt="image-20250514103305703"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">430529195112085460</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T16-1"><a href="#T16-1" class="headerlink" title="T16"></a>T16</h3><blockquote>
+<p>找出其电脑内存放的密钥文件，计算其MD5? [标准格式：字母小写]</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250514104013063.png" alt="image-20250514104013063"></p>
+<p>发现了一个可疑的文件，但是找不到源文件。源文件是一个快捷方式。。</p>
+<p>尝试在火眼爆搜，但是搜不出来。那么用xways搜一下？直接爆搜十六进制文件头</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">526172211A070100</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250514110940692.png" alt="image-20250514110940692"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250514111440407.png" alt="image-20250514111440407"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1022cc083a4a5a9e2036065e2822c48e</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T17-1"><a href="#T17-1" class="headerlink" title="T17"></a>T17</h3><blockquote>
+<p>找出其电脑内存放的密钥文件，解密此密钥文件，给出其内容？[标准格式：第3届pgscup]</p>
+</blockquote>
+<p>一眼base64</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250514111538720.png" alt="image-20250514111538720"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zfs加密pool密钥文件</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T18-1"><a href="#T18-1" class="headerlink" title="T18"></a>T18</h3><blockquote>
+<p>对macOS系统进行解析，登陆的电子邮件服务是谁提供的？[标准格式:pgscup]</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250514112109947.png" alt="image-20250514112109947"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Outlook</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T19-1"><a href="#T19-1" class="headerlink" title="T19"></a>T19</h3><blockquote>
+<p>系统备忘录的包名是什么？[标准格式:com.dfefef.note]</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250514112218864.png" alt="image-20250514112218864"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">com.apple.Notes</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T20"><a href="#T20" class="headerlink" title="T20"></a>T20</h3><blockquote>
+<p>图片中隐藏的内容是什么？[标准格式：隐藏内容 厨子戏子痞子]</p>
+</blockquote>
+<p>密语规则中有一个png图片，不出意外就是隐写了一些东西。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250514114443586.png" alt="image-20250514114443586"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250514114728547.png" alt="image-20250514114728547"></p>
+<p>red plane0通道有一个二维码</p>
+<p>解码后如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">位移加密 正向位移操作</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T21"><a href="#T21" class="headerlink" title="T21"></a>T21</h3><blockquote>
+<p>被加密文件的扩展名是什么？[标准格式：123]</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250514114846453.png" alt="image-20250514114846453"></p>
+<p>存在一个文件加密器app和一个资料文件，一眼加密过的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">enc</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T22"><a href="#T22" class="headerlink" title="T22"></a>T22</h3><blockquote>
+<p>被加密的文件总共有几个？[标准格式：5]</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250514115128813.png" alt="image-20250514115128813"></p>
+<p>应该只有一个，其他不是，因为这个加密的话是在整个文件名（包括后缀）后加上<code>.enc</code>的。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T23"><a href="#T23" class="headerlink" title="T23"></a>T23</h3><blockquote>
+<p>贾韦码家使用的智能门锁品牌型号是什么？[标准格式：小米X号]</p>
+</blockquote>
+<p>这应该是需要解密jwm的资料了。我们可以先看苹果应用取证。</p>
+<p>文件加密的逻辑如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">encrypt_file</span>(<span class="params">self, input_file, output_file=<span class="literal">None</span></span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> output_file:</span><br><span class="line">        output_file = input_file + <span class="string">&#x27;.enc&#x27;</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        cipher = AES.new(<span class="variable language_">self</span>.enhanced_key, AES.MODE_CBC)</span><br><span class="line">        iv = cipher.iv</span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(input_file, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">            file_data = f.read()</span><br><span class="line">        padded_data = <span class="variable language_">self</span>.pad_data(file_data)</span><br><span class="line">        encrypted_data = cipher.encrypt(padded_data)</span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(output_file, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">            f.write(iv + encrypted_data)</span><br><span class="line">        <span class="keyword">return</span> (<span class="literal">True</span>, output_file)</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="keyword">return</span> (<span class="literal">False</span>, <span class="built_in">str</span>(e))</span><br><span class="line"> </span><br></pre></td></tr></table></figure>
+
+<p>我们不知道enhanced_key是什么，尝试直接在加密的时候输出它。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516184216509.png" alt="image-20250516184216509"></p>
+<p>iv为文件的前 16 个字节，接下来用cyberchef解密</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a78ea9f73a9d69af44e014943ed38dd1</span><br><span class="line">2cd7460b2f7fd3c26c86c81a9adc27ca</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516190556777.png" alt="image-20250516190556777"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516190606880.png" alt="image-20250516190606880"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">金刚Ⅲ号</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="苹果应用取证"><a href="#苹果应用取证" class="headerlink" title="苹果应用取证"></a>苹果应用取证</h2><h3 id="T1-3"><a href="#T1-3" class="headerlink" title="T1"></a>T1</h3><blockquote>
+<p>对mac电脑中的加密程序进行分析，使用了一个特定的数作为密钥生成的种子，请问这个数是什么？[标准格式：1234]</p>
+</blockquote>
+<p>尝试直接运行该加密程序的gui</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250514115558992.png" alt="image-20250514115558992"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250514115742318.png" alt="image-20250514115742318"></p>
+<p>找到这个模块，反编译后导入即可。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pycdc.exe C:\Users\TY\Desktop\encrypt_deobfuscated.pyc -o encrypt_deobfuscated.py</span><br></pre></td></tr></table></figure>
+
+
+
+<p>我们先找一下这段加密的逻辑，这个缺失的模块就很像。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250514120702214.png" alt="image-20250514120702214"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">42</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T2-3"><a href="#T2-3" class="headerlink" title="T2"></a>T2</h3><blockquote>
+<p>分析文件头部元素并确定它们的正确顺序。将字段名称按顺序连接并提交？[标准格式：字段1_字段2_字段3…]</p>
+</blockquote>
+<p>这时，我发现在pycdc反编译出来的py文件中是没有这个答案的，答案是部分缺失的。</p>
+<p>接下来用pylingual在线网站进行反编译。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516003315680.png" alt="image-20250516003315680"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Decompiled with PyLingual (https://pylingual.io)</span></span><br><span class="line"><span class="comment"># Internal filename: encrypt_deobfuscated.pyc</span></span><br><span class="line"><span class="comment"># Bytecode version: 3.8.0rc1+ (3413)</span></span><br><span class="line"><span class="comment"># Source timestamp: 2025-04-17 01:58:27 UTC (1744855107)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> tkinter <span class="keyword">as</span> tk</span><br><span class="line"><span class="keyword">from</span> tkinter <span class="keyword">import</span> filedialog, messagebox</span><br><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> AES</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">EncryptionTool</span>:</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>._generate_key()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_generate_key</span>(<span class="params">self</span>):</span><br><span class="line">        seed_values = [(<span class="number">19</span>, <span class="number">7</span>, <span class="number">83</span>), (<span class="number">5</span>, <span class="number">31</span>, <span class="number">69</span>), (<span class="number">13</span>, <span class="number">11</span>, <span class="number">86</span>), (<span class="number">41</span>, <span class="number">3</span>, <span class="number">76</span>), (<span class="number">2</span>, <span class="number">57</span>, <span class="number">55</span>), (<span class="number">23</span>, <span class="number">5</span>, <span class="number">96</span>), (<span class="number">17</span>, <span class="number">13</span>, <span class="number">58</span>), (<span class="number">29</span>, <span class="number">7</span>, <span class="number">94</span>), (<span class="number">11</span>, <span class="number">19</span>, <span class="number">102</span>), (<span class="number">7</span>, <span class="number">17</span>, <span class="number">42</span>), (<span class="number">43</span>, <span class="number">3</span>, <span class="number">48</span>), (<span class="number">37</span>, <span class="number">11</span>, <span class="number">51</span>), (<span class="number">3</span>, <span class="number">43</span>, <span class="number">52</span>), (<span class="number">59</span>, <span class="number">7</span>, <span class="number">53</span>), (<span class="number">47</span>, <span class="number">5</span>, <span class="number">54</span>)]</span><br><span class="line">        key_parts = []</span><br><span class="line">        <span class="keyword">for</span> a, b, base <span class="keyword">in</span> seed_values:</span><br><span class="line">            val = (a * b % <span class="number">60</span> + base) % <span class="number">256</span></span><br><span class="line">            <span class="keyword">if</span> val % <span class="number">2</span> == <span class="number">0</span>:</span><br><span class="line">                val = (val + <span class="number">13</span>) % <span class="number">256</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                val = (val + <span class="number">7</span>) % <span class="number">256</span></span><br><span class="line">            key_parts.append(<span class="built_in">chr</span>(val))</span><br><span class="line">        scrambled = []</span><br><span class="line">        indices = [<span class="number">3</span>, <span class="number">7</span>, <span class="number">2</span>, <span class="number">12</span>, <span class="number">0</span>, <span class="number">11</span>, <span class="number">5</span>, <span class="number">14</span>, <span class="number">9</span>, <span class="number">1</span>, <span class="number">6</span>, <span class="number">4</span>, <span class="number">10</span>, <span class="number">8</span>, <span class="number">13</span>]</span><br><span class="line">        <span class="keyword">for</span> idx <span class="keyword">in</span> indices:</span><br><span class="line">            scrambled.append(key_parts[idx])</span><br><span class="line">        raw_key = <span class="string">&#x27;&#x27;</span>.join(scrambled)</span><br><span class="line">        timestamp = <span class="built_in">int</span>(time.time()) % <span class="number">1000</span></span><br><span class="line">        random_val = random.randint(<span class="number">1</span>, <span class="number">255</span>)</span><br><span class="line">        entropy = <span class="built_in">chr</span>(timestamp % <span class="number">256</span>) + <span class="built_in">chr</span>(random_val)</span><br><span class="line">        temp_key = hashlib.sha256((raw_key + entropy).encode()).digest()</span><br><span class="line">        <span class="variable language_">self</span>._descramble_key(temp_key)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_descramble_key</span>(<span class="params">self, temp_key</span>):</span><br><span class="line">        mixed_base = <span class="string">b&#x27;&#x27;</span>.join([<span class="built_in">bytes</span>([b ^ <span class="number">42</span>]) <span class="keyword">for</span> b <span class="keyword">in</span> temp_key[:<span class="number">10</span>]])</span><br><span class="line">        actual_key = <span class="string">&#x27;SecureKey123456&#x27;</span></span><br><span class="line">        <span class="variable language_">self</span>.enhanced_key = <span class="variable language_">self</span>.enhance_key(actual_key)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">enhance_key</span>(<span class="params">self, key</span>):</span><br><span class="line">        round1 = <span class="variable language_">self</span>._add_salt(key)</span><br><span class="line">        round2 = <span class="variable language_">self</span>._ascii_transform(round1)</span><br><span class="line">        round3 = <span class="variable language_">self</span>._xor_transform(round2)</span><br><span class="line">        round4 = round3[::-<span class="number">1</span>]</span><br><span class="line">        final_key = hashlib.md5(round4.encode()).digest()</span><br><span class="line">        <span class="keyword">return</span> final_key</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_add_salt</span>(<span class="params">self, key</span>):</span><br><span class="line">        salt_components = [<span class="string">&#x27;salt&#x27;</span>, <span class="string">&#x27;_&#x27;</span>, <span class="string">&#x27;value&#x27;</span>]</span><br><span class="line">        <span class="keyword">return</span> key + <span class="string">&#x27;&#x27;</span>.join(salt_components)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_ascii_transform</span>(<span class="params">self, text</span>):</span><br><span class="line">        result = <span class="string">&#x27;&#x27;</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(text)):</span><br><span class="line">            ascii_val = <span class="built_in">ord</span>(text[i])</span><br><span class="line">            <span class="keyword">if</span> i % <span class="number">3</span> == <span class="number">0</span>:</span><br><span class="line">                result += <span class="built_in">chr</span>((ascii_val + <span class="number">7</span>) % <span class="number">256</span>)</span><br><span class="line">            <span class="keyword">elif</span> i % <span class="number">3</span> == <span class="number">1</span>:</span><br><span class="line">                result += <span class="built_in">chr</span>((ascii_val ^ <span class="number">15</span>) % <span class="number">256</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                result += <span class="built_in">chr</span>(ascii_val * <span class="number">5</span> % <span class="number">256</span>)</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_xor_transform</span>(<span class="params">self, text</span>):</span><br><span class="line">        xor_keys = [<span class="string">&#x27;XorKey123456789&#x27;</span>, <span class="string">&#x27;AnotherKey987654&#x27;</span>]</span><br><span class="line">        result = text</span><br><span class="line">        <span class="keyword">for</span> xor_key <span class="keyword">in</span> xor_keys:</span><br><span class="line">            temp = <span class="string">&#x27;&#x27;</span></span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(result)):</span><br><span class="line">                temp += <span class="built_in">chr</span>(<span class="built_in">ord</span>(result[i]) ^ <span class="built_in">ord</span>(xor_key[i % <span class="built_in">len</span>(xor_key)]))</span><br><span class="line">            result = temp</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">pad_data</span>(<span class="params">self, data</span>):</span><br><span class="line">        block_size = AES.block_size</span><br><span class="line">        padding_length = block_size - <span class="built_in">len</span>(data) % block_size</span><br><span class="line">        padding = <span class="built_in">bytes</span>([padding_length]) * padding_length</span><br><span class="line">        <span class="keyword">return</span> data + padding</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">unpad_data</span>(<span class="params">self, data</span>):</span><br><span class="line">        padding_length = data[-<span class="number">1</span>]</span><br><span class="line">        <span class="keyword">return</span> data[:-padding_length]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">encrypt_file</span>(<span class="params">self, input_file, output_file=<span class="literal">None</span></span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> output_file:</span><br><span class="line">            output_file = input_file + <span class="string">&#x27;.enc&#x27;</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            cipher = AES.new(<span class="variable language_">self</span>.enhanced_key, AES.MODE_CBC)</span><br><span class="line">            iv = cipher.iv</span><br><span class="line">            <span class="keyword">with</span> <span class="built_in">open</span>(input_file, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">                file_data = f.read()</span><br><span class="line">            padded_data = <span class="variable language_">self</span>.pad_data(file_data)</span><br><span class="line">            encrypted_data = cipher.encrypt(padded_data)</span><br><span class="line">            <span class="keyword">with</span> <span class="built_in">open</span>(output_file, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">                f.write(iv + encrypted_data)</span><br><span class="line">            <span class="keyword">return</span> (<span class="literal">True</span>, output_file)</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            <span class="keyword">return</span> (<span class="literal">False</span>, <span class="built_in">str</span>(e))</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">EncryptionGUI</span>:</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, root</span>):</span><br><span class="line">        <span class="variable language_">self</span>.root = root</span><br><span class="line">        <span class="variable language_">self</span>.root.title(<span class="string">&#x27;File Encryption Tool&#x27;</span>)</span><br><span class="line">        <span class="variable language_">self</span>.root.geometry(<span class="string">&#x27;500x300&#x27;</span>)</span><br><span class="line">        <span class="variable language_">self</span>.root.resizable(<span class="literal">False</span>, <span class="literal">False</span>)</span><br><span class="line">        <span class="variable language_">self</span>.encryptor = EncryptionTool()</span><br><span class="line">        <span class="variable language_">self</span>.setup_ui()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">setup_ui</span>(<span class="params">self</span>):</span><br><span class="line">        file_frame = tk.Frame(<span class="variable language_">self</span>.root, pady=<span class="number">20</span>)</span><br><span class="line">        file_frame.pack(fill=<span class="string">&#x27;x&#x27;</span>)</span><br><span class="line">        tk.Label(file_frame, text=<span class="string">&#x27;Select File to Encrypt:&#x27;</span>).pack(side=<span class="string">&#x27;left&#x27;</span>, padx=<span class="number">10</span>)</span><br><span class="line">        <span class="variable language_">self</span>.file_path = tk.StringVar()</span><br><span class="line">        tk.Entry(file_frame, textvariable=<span class="variable language_">self</span>.file_path, width=<span class="number">30</span>).pack(side=<span class="string">&#x27;left&#x27;</span>, padx=<span class="number">5</span>)</span><br><span class="line">        tk.Button(file_frame, text=<span class="string">&#x27;Browse&#x27;</span>, command=<span class="variable language_">self</span>.browse_file).pack(side=<span class="string">&#x27;left&#x27;</span>, padx=<span class="number">5</span>)</span><br><span class="line">        action_frame = tk.Frame(<span class="variable language_">self</span>.root, pady=<span class="number">20</span>)</span><br><span class="line">        action_frame.pack()</span><br><span class="line">        tk.Button(action_frame, text=<span class="string">&#x27;Encrypt File&#x27;</span>, command=<span class="variable language_">self</span>.encrypt_file, bg=<span class="string">&#x27;#4CAF50&#x27;</span>, fg=<span class="string">&#x27;white&#x27;</span>, width=<span class="number">15</span>, height=<span class="number">2</span>).pack(pady=<span class="number">10</span>)</span><br><span class="line">        status_frame = tk.Frame(<span class="variable language_">self</span>.root, pady=<span class="number">10</span>)</span><br><span class="line">        status_frame.pack(fill=<span class="string">&#x27;x&#x27;</span>)</span><br><span class="line">        <span class="variable language_">self</span>.status_var = tk.StringVar()</span><br><span class="line">        <span class="variable language_">self</span>.status_var.<span class="built_in">set</span>(<span class="string">&#x27;Ready&#x27;</span>)</span><br><span class="line">        tk.Label(status_frame, textvariable=<span class="variable language_">self</span>.status_var, bd=<span class="number">1</span>, relief=tk.SUNKEN, anchor=tk.W).pack(fill=<span class="string">&#x27;x&#x27;</span>, padx=<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">browse_file</span>(<span class="params">self</span>):</span><br><span class="line">        filename = filedialog.askopenfilename(title=<span class="string">&#x27;Select File to Encrypt&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> filename:</span><br><span class="line">            <span class="variable language_">self</span>.file_path.<span class="built_in">set</span>(filename)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">encrypt_file</span>(<span class="params">self</span>):</span><br><span class="line">        file_path = <span class="variable language_">self</span>.file_path.get()</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> file_path:</span><br><span class="line">            messagebox.showerror(<span class="string">&#x27;Error&#x27;</span>, <span class="string">&#x27;Please select a file first!&#x27;</span>)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        <span class="variable language_">self</span>.status_var.<span class="built_in">set</span>(<span class="string">&#x27;Encrypting...&#x27;</span>)</span><br><span class="line">        <span class="variable language_">self</span>.root.update()</span><br><span class="line">        success, result = <span class="variable language_">self</span>.encryptor.encrypt_file(file_path)</span><br><span class="line">        <span class="keyword">if</span> success:</span><br><span class="line">            <span class="variable language_">self</span>.status_var.<span class="built_in">set</span>(<span class="string">f&#x27;Encryption complete! Output: <span class="subst">&#123;result&#125;</span>&#x27;</span>)</span><br><span class="line">            messagebox.showinfo(<span class="string">&#x27;Success&#x27;</span>, <span class="string">f&#x27;File encrypted successfully!\nOutput: <span class="subst">&#123;result&#125;</span>&#x27;</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="variable language_">self</span>.status_var.<span class="built_in">set</span>(<span class="string">f&#x27;Encryption failed: <span class="subst">&#123;result&#125;</span>&#x27;</span>)</span><br><span class="line">            messagebox.showerror(<span class="string">&#x27;Error&#x27;</span>, <span class="string">f&#x27;Encryption failed: <span class="subst">&#123;result&#125;</span>&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    root = tk.Tk()</span><br><span class="line">    app = EncryptionGUI(root)</span><br><span class="line">    root.mainloop()</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<p>完整了，很不错！</p>
+<p>接下来我们主要关注的函数是<code>encrypt_file</code></p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516003502242.png" alt="image-20250516003502242"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iv_encrypted_data</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T3-3"><a href="#T3-3" class="headerlink" title="T3"></a>T3</h3><blockquote>
+<p>密钥派生过程中使用了几个算法步骤。其中一个函数使用了与其实际功能不符的名称。找出这个函数名并提交？[标准格式：函数名]</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516182239493.png" alt="image-20250516182239493"></p>
+<p>这个函数是对密钥进行一些混淆，但是这个 mixed_base 变量根本就没用到，相当于直接把下面的 actual_key 当成了密钥，符合题目描述。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_descramble_key</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T4-3"><a href="#T4-3" class="headerlink" title="T4"></a>T4</h3><blockquote>
+<p>程序中实现了一个故意减慢加密过程的机制，延迟值是多少？[标准格式：1.1]</p>
+</blockquote>
+<h3 id="T5-3"><a href="#T5-3" class="headerlink" title="T5"></a>T5</h3><blockquote>
+<p>程序中隐藏了一个版本标识符，请找出版本号？[标准格式：v1.1.1]</p>
+</blockquote>
+<h2 id="exe"><a href="#exe" class="headerlink" title="exe"></a>exe</h2><h3 id="T1-4"><a href="#T1-4" class="headerlink" title="T1"></a>T1</h3><blockquote>
+<p>分析Windows木马，其控制端ip是？</p>
+</blockquote>
+<p><img src="C:\Users\TY\AppData\Roaming\Typora\typora-user-images\image-20250510171728680.png" alt="image-20250510171728680"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">104.18.45.79</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T2-4"><a href="#T2-4" class="headerlink" title="T2"></a>T2</h3><blockquote>
+<p>软件会复制自身到哪个文件夹下？</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516191134309.png" alt="image-20250516191134309"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SubDir</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T3-4"><a href="#T3-4" class="headerlink" title="T3"></a>T3</h3><blockquote>
+<p>接上题，复制后软件名称是？</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BwAcr.exe</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T4-4"><a href="#T4-4" class="headerlink" title="T4"></a>T4</h3><blockquote>
+<p>软件一共可以窃取多少种浏览器的信息？[标准格式：3]</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516191825588.png" alt="image-20250516191825588"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516192802166.png" alt="image-20250516192802166"></p>
+<p>全是乱码，找不到。</p>
+<h3 id="T5-4"><a href="#T5-4" class="headerlink" title="T5"></a>T5</h3><blockquote>
+<p>软件查询安装的杀毒软件出错或异常会返回什么字符串？[标准格式：Apps]</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516192827918.png" alt="image-20250516192827918"></p>
+<p>直接去github看源码</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/quasar/Quasar/blob/master/Quasar.Client/Helper/SystemHelper.cs">https://github.com/quasar/Quasar/blob/master/Quasar.Client/Helper/SystemHelper.cs</a></p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516192922240.png" alt="image-20250516192922240"></p>
+<h2 id="IOT"><a href="#IOT" class="headerlink" title="IOT"></a>IOT</h2><h3 id="T1-5"><a href="#T1-5" class="headerlink" title="T1"></a>T1</h3><blockquote>
+<p>分析冰箱，请问智能冰箱的品牌？[标准格式:xiaomi]</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516195931480.png" alt="image-20250516195931480"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516201732332.png" alt="image-20250516201732332"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Panasonic</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T2-5"><a href="#T2-5" class="headerlink" title="T2"></a>T2</h3><blockquote>
+<p>请问智能冰箱的型号？[标准格式:MiFridge2024]</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516202126819.png" alt="image-20250516202126819"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NR-E46CV1</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T3-5"><a href="#T3-5" class="headerlink" title="T3"></a>T3</h3><blockquote>
+<p>请找智能冰箱的uuid？[标准格式：34567890-12cd-efab-3456-789012cdefab]</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516202329072.png" alt="image-20250516202329072"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">12345678-90AB-CDEF-1234-567890ABCDEF</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T4-5"><a href="#T4-5" class="headerlink" title="T4"></a>T4</h3><blockquote>
+<p>请问智能冰箱默认保存几张图片？[标准格式：1]</p>
+</blockquote>
+<p>发现有明显的jpg文件头，直接搜即可</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250516202534128.png" alt="image-20250516202534128"></p>
+<h3 id="T5-5"><a href="#T5-5" class="headerlink" title="T5"></a>T5</h3><blockquote>
+<p>请问冰箱中已存的第一张图片上的内容是什么？[标准格式：满城尽带黄金甲]</p>
+</blockquote>
+<p>我们在SmartFridge.bin中是有看到很多jpg文件头的特征的，尝试binwalk提取。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250517143656943.png" alt="image-20250517143656943"></p>
+<p>以下为第一张照片</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image.jpg" alt="image"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">盘古石杯贾韦码</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T6-3"><a href="#T6-3" class="headerlink" title="T6"></a>T6</h3><blockquote>
+<p>请问冰箱中已存的第二张图片的名称是什么？[标准格式：123.jpg]</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250517144124116.png" alt="image-20250517144124116"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">face2.jpg</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T7-3"><a href="#T7-3" class="headerlink" title="T7"></a>T7</h3><blockquote>
+<p>请找冰箱中隐藏的内容？[标准格式：chuzixizipizi]</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250517144333093.png" alt="image-20250517144333093"></p>
+<p>我们在最后发现了一个特殊字符串</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250517144352228.png" alt="image-20250517144352228"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pangushicup</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T8-3"><a href="#T8-3" class="headerlink" title="T8"></a>T8</h3><blockquote>
+<p>请找出冰箱中嫌疑人图片MD5值的后六位？[标准格式：1a2b3d]</p>
+</blockquote>
+<p>嫌疑人是钟无声，那就是以下这张图片</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250517144544414.png" alt="image-20250517144544414"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250517144702487.png" alt="image-20250517144702487"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">882564</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T9-3"><a href="#T9-3" class="headerlink" title="T9"></a>T9</h3><blockquote>
+<p>请找出冰箱最后一次开门时间？[标准格式：10:11]</p>
+</blockquote>
+<p><code>贾韦码资料.rar.enc</code>，解压出来一个 face1.jpg 和 资料.docx，这个 face1.jpg 很明显和冰箱有关，就是冰箱保存的图片，这个文件的修改时间对应最后一次开门的时间。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250517145109076.png" alt="image-20250517145109076"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">15:48</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T10-2"><a href="#T10-2" class="headerlink" title="T10"></a>T10</h3><blockquote>
+<p>默认图片的存储限制大小是多少？[标准格式：1KB]</p>
+</blockquote>
+<p>两个图片之间的大小就是存储限制大小</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250517145231679.png" alt="image-20250517145231679"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">100KB</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="T11-2"><a href="#T11-2" class="headerlink" title="T11"></a>T11</h3><blockquote>
+<p>分析video.E01，被修改的录像md5前5位是？[标准格式：1a2b3]</p>
+</blockquote>
+<p>发现以下文件名格式比较鹤立鸡群，而且时间较短，我们看看。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250517150258979.png" alt="image-20250517150258979"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/MeteorKai/blogImage@main/img/image-20250517150242991.png" alt="image-20250517150242991"></p>
+<p>发现最后几秒监控时间回退了3、4秒</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ea7be</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Meteor_Kai</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://meteorkai.github.io/2025/05/17/2025%E7%AC%AC%E4%B8%89%E5%B1%8A%E7%9B%98%E5%8F%A4%E7%9F%B3%E6%9D%AF%E5%88%9D%E8%B5%9Bwp/">http://meteorkai.github.io/2025/05/17/2025%E7%AC%AC%E4%B8%89%E5%B1%8A%E7%9B%98%E5%8F%A4%E7%9F%B3%E6%9D%AF%E5%88%9D%E8%B5%9Bwp/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>CyberSecurity brings me great joy!</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E5%8F%96%E8%AF%81/"># 取证</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>路 </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2025/05/18/%E5%86%85%E7%BD%91%E5%AF%B9%E6%8A%97-%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8%E7%AF%87/">内网对抗-横向移动篇</a>
+            
+            
+            <a class="next" rel="next" href="/2025/05/09/%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0JavaScript%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/">深入学习JavaScript原型链污染</a>
+            
+        </section>
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Meteor_Kai | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+        <span class="post-meta-divider">|</span>
+        <span id="busuanzi_container_site_uv">
+            访客数：<span id="busuanzi_value_site_uv"></span>
+        </span>
+        <span class="post-meta-divider">|</span>
+        <span id="busuanzi_container_site_pv">
+            总访问量：<span id="busuanzi_value_site_pv"></span>
+        </span>
+    </div>
+    <!-- 不蒜子计数器 -->
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</footer>
+
+    </div>
+</body>
+
+</html>
