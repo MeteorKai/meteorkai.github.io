@@ -1,58 +1,35 @@
-/* 首页两栏并排布局 */
+/* 首页两个跳转按钮 */
 .home-columns {
   display: flex;
-  gap: 2.5rem;
-  max-width: 1100px;
-  margin: 0 auto;
+  justify-content: center;
+  gap: 2rem;
   padding: 1rem 2rem 2rem;
 }
-.home-column {
-  flex: 1;
-  min-width: 0;
-}
-/* 板块标题样式 */
-.home-column .post-title {
-  font-size: 1.3em;
-  font-weight: 600;
+.home-btn {
+  display: inline-block;
+  padding: 0.8rem 2.5rem;
+  font-size: 1.05em;
+  font-weight: 500;
   color: #4a4a5a;
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid #e8e4df;
-  letter-spacing: 0.05em;
+  border: 1.5px solid #d0ccc8;
+  border-radius: 6px;
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  transition: all 0.25s ease;
 }
-.dark-theme .home-column .post-title {
-  color: #c8c8d0;
-  border-bottom-color: #555;
+.home-btn:hover {
+  color: #fff;
+  background-color: #5a8aa8;
+  border-color: #5a8aa8;
 }
-/* 文章列表项样式 */
-.home-column .archive-item {
-  margin-left: 0;
-  padding: 0.45rem 0;
-  border-bottom: 1px dashed #eee;
-  transition: all 0.2s ease;
+.dark-theme .home-btn {
+  color: #b8b8c0;
+  border-color: #555;
 }
-.dark-theme .home-column .archive-item {
-  border-bottom-color: #444;
-}
-.home-column .archive-item:hover {
-  padding-left: 0.4rem;
-  background-color: rgba(0,0,0,0.015);
-}
-.dark-theme .home-column .archive-item:hover {
-  background-color: rgba(255,255,255,0.02);
-}
-/* 文章链接样式 */
-.home-column .archive-item-link {
-  font-size: 0.95em;
-  color: #3a3a4a;
-  font-weight: 400;
-}
-.dark-theme .home-column .archive-item-link {
-  color: #b0b0b8;
-}
-/* 日期样式 */
-.home-column .archive-item-date {
-  font-size: 0.8em;
+.dark-theme .home-btn:hover {
+  color: #fff;
+  background-color: #6a9ab8;
+  border-color: #6a9ab8;
 }
 /* 柔化全局字体和颜色 */
 body {
@@ -94,5 +71,8 @@ body {
     flex-direction: column;
     gap: 1rem;
     padding: 1rem;
+  }
+  .home-btn {
+    text-align: center;
   }
 }
