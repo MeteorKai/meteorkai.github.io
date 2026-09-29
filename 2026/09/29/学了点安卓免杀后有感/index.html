@@ -17,7 +17,7 @@
     <meta name="keywords" content="Web exploits bring me great joy!">
 
 
-<title>about | Meteor_Kai</title>
+<title>学了点安卓免杀后有感 | Meteor_Kai</title>
 
 
 
@@ -181,26 +181,109 @@
 </script>
             <div class="main">
                 <div class="container">
-    <article class="post-wrap page">
-        
-        <h2 class="post-title">about</h2>
-        
-        <section class="post-content">
-            <h2 id="About-Me"><a href="#About-Me" class="headerlink" title="About Me"></a><strong>About Me</strong></h2><p>ID：Meteor_Kai</p>
-<p>Interested in：Web Security，渗透测试，电子取证，逆向工程……</p>
-<p>同时也是热爱开发的04小哥哥一枚捏~</p>
-<p>Team：Polaris的Web菜鸡 （欢迎大哥们投星盟安全团队来带我）</p>
-<p>motto：Web exploits bring me great joy！</p>
-<h2 id="CVE-CNVD"><a href="#CVE-CNVD" class="headerlink" title="CVE &amp; CNVD"></a>CVE &amp; CNVD</h2><p>CNVD-2026-07139，CVE-2026-38674，CVE-2026-38675，CVE-2026-38676，CVE-2026-38677，CVE-2026-38678，CVE-2026-38679，CVE-2026-38680，CVE-2026-52176，CNVD-2026-34324，CNVD-2026-34325，CNVD-2026-34735，CNVD-2026-37953</p>
-<h2 id="Contact-Me"><a href="#Contact-Me" class="headerlink" title="Contact Me"></a>Contact Me</h2><p>🐧：MTMxODcyMzkxNg&#x3D;&#x3D;</p>
-<h2 id="Projects"><a href="#Projects" class="headerlink" title="Projects"></a>Projects</h2><ul>
-<li><p><strong>HashcatGUI</strong>：<a target="_blank" rel="noopener" href="https://github.com/MeteorKai/hashcatGUI">MeteorKai&#x2F;hashcatGUI: 基于rust的hashcatGUI，更好用的hashcat。</a></p>
-</li>
-<li><p><strong>BetterNotepad</strong>：<a target="_blank" rel="noopener" href="https://github.com/MeteorKai/BetterNotepad">MeteorKai&#x2F;BetterNotepad: 更好的记事本程序</a>。更好的Windows记事本</p>
-</li>
-</ul>
+    
+    
 
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">学了点安卓免杀后有感</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Meteor_Kai</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">September 29, 2026&nbsp;&nbsp;19:06:58</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/tech-article/">tech_article</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>​	其实我一直都对免杀兴趣斐然，大学期间花心思学了点exe的免杀，但却从来没有接触过安卓免杀。最近闲来无事，便在网上搜寻到一些文章进行初步的体验。</p>
+<p>​	学习过程中发现除了MSF以外还有一个一个不错的RAT框架叫AhMyth，这里将拿它来举例谈谈我对安卓免杀的看法。在此之前说三个名词：</p>
+<ul>
+<li><code>compileSdkVersion</code>：用哪版 SDK 编译，决定你能调用哪些 API，AhMyth的值为24</li>
+<li><code>minSdkVersion</code>：最低支持到 Android 什么版本，AhMyth的值为11</li>
+<li><code>targetSdkVersion</code>：行为契约——决定系统对你启用&#x2F;豁免哪些规则，AhMyth的值为24</li>
+</ul>
+<p>​	下图为不同版本的<code>targetSdk</code>所必须遵循的一些规则：</p>
+<img src="/2026/09/29/%E5%AD%A6%E4%BA%86%E7%82%B9%E5%AE%89%E5%8D%93%E5%85%8D%E6%9D%80%E5%90%8E%E6%9C%89%E6%84%9F/image-20260929191257323.png" class="" title="This is an example image">
+
+<p>​	所以说targetSdk越大，那么必须要遵守的行为规范就越多，比如说API30，后台服务就被限制、后台传感器也被限制；而API24后台服务可以不被限制。</p>
+<p>​	同时 Android 14（API 34）起，系统拒绝安装 <code>targetSdk &lt; 23</code> 的应用，logcat 报：<code>INSTALL_FAILED_DEPRECATED_SDK_VERSION: App package must target at least SDK version 23</code>的错误。因此现代手机的targetSdk必须在23及其以上。这就导致了我们几乎必须要遵守运行时权限这一规则了（除非是古董手机）。</p>
+<p>​	然后我们再回到AhMyth工具。它 target 24 ≥ 23，所以侧载到任何 Android 版本都能装上——<strong>装得上，但跑不出东西</strong>（权限弹窗没人点）。它唯一能工作的场景是：用户手动把所有权限都打开了。而这在今天意味着用户要连续点十几个授权弹窗，每一个都是放弃的机会。</p>
+<p>​	因此，在我看来，目前的安卓远控极度依赖社会工程（伪装成”系统更新””安全插件”诱导安装并授权），而不是靠技术绕过——技术这条路越走越窄，人就变成了最薄弱的环节。但是这里一些专业的APT组织所定制的安卓远控工具除外，他们可能是利用了系统的某些漏洞直接授权。</p>
+<p>​	说到这里又想说说目前的AI人工智能，在使用过程中人类又何尝不是最薄弱的环节呢？我们的工作就是对AI下达指令，由AI全自动去完成某一项工作，不需要任何人为的技术支持。但是指令的质量会使AI给出的结果大相径庭，我在使用AI的过程中有过一些小巧思，让AI去完成一项目标时，如开发一个安全工具，我们不能直接让它开发一个安全工具，而应该尽可能地提出细节，否则AI不知道我们具体要做什么，只会给出一个很普通、很大众化的结果，甚至不符合我们的预期。同时，我们不仅可以主动向AI提出要求，我们作为人类，思维或多或少是会被局限的，那么此时我们就可以让AI来提出想法，不断地向用户提出假设与问题（这样好不好？这部分我们要去怎么做？我的建议是？……），这样我们的思维就会被AI拓展开，从而让整个项目的视野不再局限。在AI大致完成某项工作后，我们可以让AI作为一个客观的评价者去锐评这个项目，我们也就得到了这个项目的一些优缺点，从而再去循环优化。</p>
+<p>​	说着说着说偏题了…但是回头看看，也没有什么再多的可以去说了…夜也深了，晚安…</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Meteor_Kai</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://blog.meteorkai.top/2026/09/29/%E5%AD%A6%E4%BA%86%E7%82%B9%E5%AE%89%E5%8D%93%E5%85%8D%E6%9D%80%E5%90%8E%E6%9C%89%E6%84%9F/">https://blog.meteorkai.top/2026/09/29/%E5%AD%A6%E4%BA%86%E7%82%B9%E5%AE%89%E5%8D%93%E5%85%8D%E6%9D%80%E5%90%8E%E6%9C%89%E6%84%9F/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>CyberSecurity brings me great joy!</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E5%85%8D%E6%9D%80%E5%AF%B9%E6%8A%97/"># 免杀对抗</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span> | </span>
+                <a href="/">home</a>
+            </div>
         </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2026/09/05/Metinfo-CMS-v7-6-%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%88%86%E6%9E%90/">Metinfo CMS v7.6 前台SQL注入分析</a>
+            
+        </section>
+
     </article>
 </div>
 
