@@ -1,8 +1,8 @@
-/* 首页柔和光晕与细点纹理，不影响其他页面 */
-body.home-page {
+/* 全站柔和光晕与细点纹理 */
+body {
   isolation: isolate;
 }
-body.home-page::before {
+body::before {
   top: -8%;
   left: -8%;
   width: 116%;
@@ -10,9 +10,9 @@ body.home-page::before {
   opacity: 1;
   pointer-events: none;
   background-image: radial-gradient(ellipse at 18% 28%, rgba(155,196,226,0.32), transparent 52%), radial-gradient(ellipse at 82% 30%, rgba(196,177,224,0.26), transparent 50%), radial-gradient(ellipse at 55% 90%, rgba(239,206,173,0.28), transparent 52%);
-  animation: home-glow-drift 24s ease-in-out infinite alternate;
+  animation: background-glow-drift 24s ease-in-out infinite alternate;
 }
-body.home-page::after {
+body::after {
   content: "";
   position: fixed;
   inset: 0;
@@ -22,14 +22,14 @@ body.home-page::after {
   background-image: radial-gradient(rgba(102,123,143,0.2) 0.7px, transparent 0.7px);
   background-size: 26px 26px;
 }
-body.home-page.dark-theme::before {
+body.dark-theme::before {
   background-image: radial-gradient(ellipse at 18% 28%, rgba(78,131,171,0.22), transparent 52%), radial-gradient(ellipse at 82% 30%, rgba(132,99,169,0.2), transparent 50%), radial-gradient(ellipse at 55% 90%, rgba(76,132,131,0.16), transparent 52%);
 }
-body.home-page.dark-theme::after {
+body.dark-theme::after {
   background-image: radial-gradient(rgba(174,192,211,0.2) 0.7px, transparent 0.7px);
 }
 @media (prefers-reduced-motion: reduce) {
-  body.home-page::before {
+  body::before {
     animation: none;
   }
 }
@@ -111,7 +111,7 @@ body {
     text-align: center;
   }
 }
-@-moz-keyframes home-glow-drift {
+@-moz-keyframes background-glow-drift {
   from {
     transform: translate3d(-1%, -1%, 0);
   }
@@ -119,7 +119,7 @@ body {
     transform: translate3d(1%, 1%, 0) scale(1.03);
   }
 }
-@-webkit-keyframes home-glow-drift {
+@-webkit-keyframes background-glow-drift {
   from {
     transform: translate3d(-1%, -1%, 0);
   }
@@ -127,7 +127,7 @@ body {
     transform: translate3d(1%, 1%, 0) scale(1.03);
   }
 }
-@-o-keyframes home-glow-drift {
+@-o-keyframes background-glow-drift {
   from {
     transform: translate3d(-1%, -1%, 0);
   }
@@ -135,7 +135,7 @@ body {
     transform: translate3d(1%, 1%, 0) scale(1.03);
   }
 }
-@keyframes home-glow-drift {
+@keyframes background-glow-drift {
   from {
     transform: translate3d(-1%, -1%, 0);
   }
