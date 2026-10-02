@@ -2,15 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://blog.meteorkai.top/2026/10/01/test%E5%86%99%E4%BD%9C%E5%8F%B0/</loc>
-    
-    <lastmod>2026-10-02</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.meteorkai.top/about/index.html</loc>
     
     <lastmod>2026-09-30</lastmod>
@@ -457,13 +448,6 @@
   
   <url>
     <loc>https://blog.meteorkai.top/tags/%E5%85%8D%E6%9D%80%E5%AF%B9%E6%8A%97/</loc>
-    <lastmod>2026-10-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.meteorkai.top/tags/test/</loc>
     <lastmod>2026-10-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
