@@ -111,6 +111,15 @@ body {
     text-align: center;
   }
 }
+/* 正文里两张图直接相邻时隔开一行 */
+/* 主题默认的 .post-content img 是 margin: 0 auto —— 上下边距为 0；
+   而 Hexo 的 {% asset_img %} 渲染出来是裸 <img>（外面没有 <p> 包着），
+   所以连续两张图之间除了一个换行什么都没有，看上去是粘在一起的。
+   这里只补「图紧挨着图」这一种情况（相邻兄弟选择器），
+   图片与正文段落之间原本的间距一点都不动。想更宽/更窄就改这个 1.8em。 */
+.post-content > img + img {
+  margin-top: 1.8em;
+}
 @-moz-keyframes background-glow-drift {
   from {
     transform: translate3d(-1%, -1%, 0);

@@ -1427,6 +1427,9 @@ body {
     text-align: center;
   }
 }
+.post-content > img + img {
+  margin-top: 1.8em;
+}
 @-moz-keyframes background-glow-drift {
   from {
     transform: translate3d(-1%, -1%, 0);
