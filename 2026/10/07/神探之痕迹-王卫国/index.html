@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Meteor_Kai">
+
+
+
+    <meta name="description" content="Just Hack For Fun...">
+
+
+    <meta name="keywords" content="Web exploits bring me great joy!">
+
+
+<title>神探之痕迹-王卫国 | Meteor_Kai</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Meteor_Kai&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/">首页</a>
+                
+                <a class="menu-item" href="/categories/tech-article">技术文章</a>
+                
+                <a class="menu-item" href="/categories/life-article">生活板块</a>
+                
+                <a class="menu-item" href="/tags">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                <a class="menu-item" href="/links">Links</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Meteor_Kai&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/">首页</a>
+                
+                <a class="menu-item" href="/categories/tech-article">技术文章</a>
+                
+                <a class="menu-item" href="/categories/life-article">生活板块</a>
+                
+                <a class="menu-item" href="/tags">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                <a class="menu-item" href="/links">Links</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">神探之痕迹-王卫国</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Meteor_Kai</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">October 7, 2026&nbsp;&nbsp;0:02:03</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/life-article/">life_article</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <img src="/2026/10/07/%E7%A5%9E%E6%8E%A2%E4%B9%8B%E7%97%95%E8%BF%B9-%E7%8E%8B%E5%8D%AB%E5%9B%BD/12901a315f791ee7838d813625ee4567.jpg" class="" title="This is an example image"> 
+
+<p>王卫国<br>  一个很朴素的名字，一个很简单的人。<br>  作为20世纪70年代时期的省厅刑警队长。他的为人，或许正是绝大多数人心中人民警察的样子，靠着一双腿、一张嘴以及自己的毕生经验来破案，这一点与崔寻截然不同，崔寻只相信物证、只强调痕迹。这也决定了他们两人本质上并非一路人。<br>  然而，从1971冰城色魔案的”刑侦技术人员只有听从刑警队命令才能进入案发现场”到1983特大杀人抢劫案的”技术员首先进入案发现场”，其实也印证着王卫国内心方法论的改变，从相信人的经验，逐渐走向客观的证据。<br>  他是个刀子嘴豆腐心的人，对于崔寻的请求口头上拒绝，私下却不遗余力，帮助崔寻收集庞大的数据，为同一认定作最底层的数据支撑。<br>  他是个热心的人，在崔寻忙得顾不上家时，带着老婆去帮着带孩子，自己则蹲在路边啃着馒头嚼着大葱，也没有觉得苦，反倒是苦中作乐罢。<br>  1983特大杀人抢劫案，也就是马朝阳的案子。他独自一人顶着直属上级的压力，还被嫌疑人马朝阳做局诬告陷害，但仍把军队的人堵在单位门口，力图为崔寻争取最后的同一认定证明时间。当军官打算强闯时，他掏出了枪，义无反顾，所有人都后退了，但他并没有退却，反而将枪指向自己的脑门，那时我只看到了一名无私、敞亮且无比称职的民警。可是呢，在同一认定证明之后，等待王卫国的并非嘉奖，而是灰暗的前程——他顶撞了自己的直属上司。多么令人可笑，在嘉奖会完毕之后，他拉着崔寻说自己做了那么多的好事，换来的却是功过相抵，而直属上司做了那么多错事，可什么也没发生。也就是这次，他的那股劲开始逐渐黯淡。<br>  再到后来，闺女要出国，家里缺钱。他终究踏出了那没有回头路的一步。但倘若1983特大杀人抢劫案没有发生呢？是不是一切都会改变，心气依旧的他又怎会突破自己的底线？<br>  王卫国打动人的地方在于他并不是一开始就坏的，也不是突然变坏。恰恰相反，他是个有拼劲、与受害人家属有共情、敢于直面压力、敢担责的人。他与崔寻对于案件方面的争执也并不意味着他不在乎真相，而是他们两人对于”如何抵达真相”这条路的理解不同: 王卫国相信从警生涯积累的经验与”人”，而崔寻相信的只有物证。又有谁能证明另一条路是错误的呢？所以他结局的坠落显得格外令人痛惜，一个彻头彻尾的恶人走向犯罪，观众们只会拍案叫绝，而一个曾经为了案子把枪口指向自己、心里确确实实装着老百姓的人，最后却在现实利益面前妥协，悲剧感就完全不同了。<br>  电影并没有为他做出任何解释。被指认的那天，他为崔寻留下了告别信，什么也没说，走到大桥上，跳了。这或许是该角色最完美的结局，电影没有安排歇斯底里的忏悔，也没有用大段台词诉说他是如何走到今天。他最终选择独自跳桥，可能就是自己毕生坚守的原则在最后被自己亲手打破后无法面对崔寻与曾经意气风发的自己的选择。他不是一个丧尽良心的人，他的行为正是因为他的良知尚存，才更加无法承受最后的真相。那个曾经帮助崔寻照顾孩子、一起办案、一起出生入死的人，最后没有死在抓捕罪犯的现场，而是败给了自己人生中一次又一次的选择。<br>  有人说他是被时代摒弃了，有人说他是自己走错了道。其实并不复杂，只是他的心气磨灭了、棱角磨平了，最后撑不住了。<br>  他最令人惋惜的，绝不是未曾拥有过初心，相反，他曾经那么坚定地拥有过初心。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Meteor_Kai</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://blog.meteorkai.top/2026/10/07/%E7%A5%9E%E6%8E%A2%E4%B9%8B%E7%97%95%E8%BF%B9-%E7%8E%8B%E5%8D%AB%E5%9B%BD/">https://blog.meteorkai.top/2026/10/07/%E7%A5%9E%E6%8E%A2%E4%B9%8B%E7%97%95%E8%BF%B9-%E7%8E%8B%E5%8D%AB%E5%9B%BD/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>CyberSecurity brings me great joy!</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E8%A7%82%E5%90%8E%E6%84%9F/"># 观后感</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span> | </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2026/10/03/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%93%9D%E9%B2%B8%E6%99%BA%E4%BA%91%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B0(BlueKing%20Container%20Service)%E7%9A%84%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">记一次蓝鲸智云容器管理平台(BlueKing Container Service)的代码审计</a>
+            
+        </section>
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Meteor_Kai | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+        <span class="post-meta-divider">|</span>
+        <span id="busuanzi_container_site_uv">
+            访客数：<span id="busuanzi_value_site_uv"></span>
+        </span>
+        <span class="post-meta-divider">|</span>
+        <span id="busuanzi_container_site_pv">
+            总访问量：<span id="busuanzi_value_site_pv"></span>
+        </span>
+    </div>
+    <!-- 不蒜子计数器 -->
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</footer>
+
+    </div>
+</body>
+
+</html>
