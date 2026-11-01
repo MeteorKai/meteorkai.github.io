@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Meteor_Kai">
+
+
+
+    <meta name="description" content="Just Hack For Fun...">
+
+
+    <meta name="keywords" content="Web exploits bring me great joy!">
+
+
+<title>深夜对于AI的一些小思考 | Meteor_Kai</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Meteor_Kai&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/">首页</a>
+                
+                <a class="menu-item" href="/categories/tech-article">技术文章</a>
+                
+                <a class="menu-item" href="/categories/life-article">生活板块</a>
+                
+                <a class="menu-item" href="/tags">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                <a class="menu-item" href="/links">Links</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Meteor_Kai&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/">首页</a>
+                
+                <a class="menu-item" href="/categories/tech-article">技术文章</a>
+                
+                <a class="menu-item" href="/categories/life-article">生活板块</a>
+                
+                <a class="menu-item" href="/tags">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                <a class="menu-item" href="/links">Links</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">深夜对于AI的一些小思考</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Meteor_Kai</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">November 1, 2026&nbsp;&nbsp;10:29:01</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/life-article/">life_article</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <pre><code>夜深了，却翻来覆去怎么也无法入睡，古法和AI在我的大脑中相互纠缠，像打了死结的绳子，怎么也解不开。
+前几年，CTF给我带来的有熬夜抽丝剥茧拿到flag的快感与成就感，有知识库被一个个trick填满的满足感，也有和同好共同激情探讨各种思路、方法、预期非预期的幸福感，那时的CTF在绝大多数情况下是那么纯粹。但是现在的CTF，很多人都产生了对AI的绝对化依赖，失去了解题的自主性，或许是名利的驱使，证书与奖项对他们有好处，让一些人&quot;义无反顾&quot;地走上AI一把梭的道路，但在我看来，如今的CTF&quot;盛状&quot;来源于人们不甘落后于他人的无奈，可能大家都这么想吧&quot;现在别人都用AI了，我不用AI还怎么打？我怎么可能打得过AI&quot;诸如此类，所以被迫走上了AI自动化capture the flag的道路。
+我说上面这些并不是在否定AI，AI是新时代的必然选择，但我认为它不应该是CTF比赛的一种手段。这失去的不只是CTF为大家带来的成长与乐趣，更是在一定程度上失去了比赛的公平性，它将原本存在的资源差距转化成了一种更直接的竞技优势，相信这里一定有人会反驳说&quot;用好AI也是一种本事&quot;，这固然是对的，但是大多数情况下，比拼的不是使用AI的本事，而是比拼你的钱包和你的资源。有的人或许是古法手搓大王，但是他拿到的只有未经daybreak的gpt和国模;有的人或许是对网络安全略知皮毛的新手，但是他有一个国外的亲戚朋友让他得到了daybreak，或者是有着鼓鼓的钱包，足够中转站claude的大量消耗。生产力的结构被重构了，CTF原有的乐趣也消散了。
+上面所说的一切都只针对AI对于CTF比赛的方面，也是深夜翻来覆去的一些思考。笔者对于AI是非常认可的，在如今这个时代，所有人的表象生产力都被重置为了同一起跑线(在暂时排除资源差异的前提下，当每个人都能够使用同样的AI工具时，人们所能表现出来的初始生产能力相同)，但是每个人的认知水平不同，这也造就了每个人所达到的高度不同。有的人使用AI未经任何思考去自动化解题，有的人使用AI结合自己的一些方法论或者是人机协同产出一些好项目，这是两条截然不同的道路，一条选择了结果，另一条选择了借助AI形成自己的创造力，他们在短期内取得的成就可能是接近的，但是路漫漫，其修远兮，他们的认知、创造力与独立解决问题的能力，将逐步拉开明显的差距。AI为所有人带来了史无前例的生产力，但无法直接性地提升人们的认知。所以我认为AI时代最重要的是idea，是人类全面均衡发展，而不再是一方面的绝对专精(一些特例除外)。AI时代，单一技能的重复性劳动正在被压缩，但深度专业能力与跨领域整合能力的结合，反正显得尤为重要。AI并不看中你拥有某一孤立的特长，而是需要你涉猎各种领域，海纳百川，最后打出一套组合拳。
+工具越来越强大，但决定工具应该如何被使用的终究还是人。当技术达到了一定的高度，人类本身就成了最大的薄弱点。因此，这里我站一波薄肌理论和大水理论(哦不是水杯理论)hhhh。睡了，明天再发布。
+</code></pre>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Meteor_Kai</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://blog.meteorkai.top/2026/11/01/%E6%B7%B1%E5%A4%9C%E5%AF%B9%E4%BA%8EAI%E7%9A%84%E4%B8%80%E4%BA%9B%E5%B0%8F%E6%80%9D%E8%80%83/">https://blog.meteorkai.top/2026/11/01/%E6%B7%B1%E5%A4%9C%E5%AF%B9%E4%BA%8EAI%E7%9A%84%E4%B8%80%E4%BA%9B%E5%B0%8F%E6%80%9D%E8%80%83/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>CyberSecurity brings me great joy!</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E9%9A%8F%E7%AC%94/"># 随笔</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span> | </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2026/10/07/%E7%A5%9E%E6%8E%A2%E4%B9%8B%E7%97%95%E8%BF%B9-%E7%8E%8B%E5%8D%AB%E5%9B%BD/">神探之痕迹-王卫国</a>
+            
+        </section>
+
+    </article>
+</div>
+
+            </div>
+            
+<footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Meteor_Kai | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+        <span class="post-meta-divider">|</span>
+        <span id="busuanzi_container_site_uv">
+            访客数：<span id="busuanzi_value_site_uv">4035</span>
+        </span>
+        <span class="post-meta-divider">|</span>
+        <span id="busuanzi_container_site_pv">
+            总访问量：<span id="busuanzi_value_site_pv">8038</span>
+        </span>
+    </div>
+    
+    <!-- 访客统计：基数已直接渲染在上面，脚本拿到真实数据后再覆盖 -->
+    <script>
+        window.__visitorCounter = {
+            baseUv: 4035,
+            basePv: 8038,
+            basePagePv: 0
+        };
+    </script>
+    <script defer src="/js/visitor-counter.js"></script>
+    
+</footer>
+
+    </div>
+</body>
+
+</html>
